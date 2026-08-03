@@ -1,29 +1,35 @@
-# Session state — schema v2
+# Session state — schema v3
 
-A session is an **append-only event log**. Nothing is ever edited or deleted; the
-concept tree and the knowledge base are *derived* by folding the log
-(`lib/view.cjs → foldEvents`).
+A session is an **append-only event DAG in one file**. Nothing is ever edited or
+deleted; the concept tree and the knowledge base are *derived* by walking a branch
+back to the root and folding it (`lib/view.cjs → chainOf`, `foldEvents`).
 
-Three things fall out of that choice rather than being built:
+Four things fall out of that choice rather than being built:
 
 - **Provenance** — every event names the C and K it came from, so the link between
   the two spaces is structural, not a side note.
-- **The timeline** — folding the first *n* events is the state after *n* operations.
-  Rewinding is a fold, not an undo stack.
+- **The timeline** — folding the first *n* events of a chain is the state after *n*
+  operations. Rewinding is a fold, not an undo stack.
+- **Branches** — a branch is a *name pointing at an event*. Creating one copies
+  nothing, because the shared history is the same events, not a duplicate of them.
 - **Auditability** — the operator sequence *is* the file. There is no separate log to
   drift out of sync with the tree.
 
 ```jsonc
 {
-  "version": 2,
+  "version": 3,
   "title": "Beating hull speed",
   "brief": "One paragraph of what prompted the session.",
   "createdAt": "2026-08-03",
-  "forkedFrom": { "session": "example-hull-speed.ck.json", "at": 9 },  // forks only
+
+  "branches": { "main": 22, "always-in-transit": 23 },  // name → tip seq
+  "head": "main",                                        // where mutations append
 
   "events": [
     {
-      "seq": 8,                                  // index in the log; also the timeline position
+      "seq": 8,                                  // globally unique, never reused
+      "parent": 7,                               // ← the DAG edge; null at the root
+      "branch": "main",                          // which branch appended it (provenance)
       "at": "2026-08-03T09:36:00Z",
       "actor": "claude",                         // claude | user
       "op": "K→C",                               // seed | C→C | K→K | K→C | C→K | prune
@@ -101,9 +107,28 @@ brainstorming.
 5. Ids are allocated from the folded state and never reused. Nothing is deleted —
    pruning appends a `set-status` event.
 
-## Forking
+## Branching
 
-`ck fork <session> --at N --as <slug>` writes a new session containing `events[0..N]`
-and a `forkedFrom` stamp. The original is untouched. This is how you go back to a
-partition point and take a different route without losing the road already travelled —
-which is the whole reason a designer would want to rewind at all.
+```bash
+ck branch <session> <name> [--at N] [--from B]
+```
+
+sets `branches[name]` to the seq of the Nth event on branch `B`. **No events are
+copied.** Two branches that share a prefix share the *same event objects*; they differ
+only in where their walk starts. Folding either one gives an independent tree.
+
+The earlier design wrote a whole new file per fork, duplicating the shared prefix. That
+was wasteful and, worse, made "which timeline am I in" a filesystem question instead of
+a session one. `lib/migrate-v3.cjs` converts such files, verifying that a fork's events
+really are the prefix it claims before absorbing it as a ref.
+
+Two rules that make branches meaningful rather than merely possible:
+
+1. **Node ids are allocated across the whole file**, never per branch. `C12` denotes the
+   same concept in every timeline, so branches can be compared. Per-branch allocation
+   would let two different concepts both be `C12`.
+2. **Mutations always append to `head`**, with `parent` set to the current tip. An event
+   therefore records both *when* it happened and *on which line of reasoning*.
+
+`divergence(events, tipA, tipB)` walks both chains to the last common event, which is
+what the canvas shows as `@22 +1` — diverged at step 22, one step ahead since.

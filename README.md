@@ -54,11 +54,13 @@ on. `references/GRAMMAR.md` is the shared theory core they all read.
 
 ## Architecture
 
-A session is an **append-only event log**. The tree and the knowledge base are *derived*
-by folding it. Three things fall out of that rather than being built: provenance
-(every event names the C and K it came from), the timeline (folding the first *n*
-events is the state after *n* operations), and auditability (the operator sequence
-*is* the file).
+A session is an **append-only event DAG in one file**. Events carry a `parent` seq;
+`branches` maps a name to the seq it points at. The tree and knowledge base are
+*derived* by walking a branch to the root and folding it. Four things fall out of that
+rather than being built: provenance (every event names the C and K it came from), the
+timeline (folding the first *n* events of a chain is the state after *n* operations),
+branches (a name pointing at an existing event — creating one copies nothing), and
+auditability (the operator sequence *is* the file).
 
 ```
 sessions/*.ck.json ──fold──▶ render.cjs ──▶ .ck/viewer/content/*.html ──server──▶ browser
@@ -71,10 +73,10 @@ sessions/*.ck.json ──fold──▶ render.cjs ──▶ .ck/viewer/content/*
 runs under the `Monitor` tool and turns each press into a notification, so clicking
 *partition* on a node wakes Claude and runs `ck-expand` without you typing anything.
 
-**One renderer, two runtimes.** `lib/view.cjs` holds pure functions (`foldEvents`,
-`metrics`, `renderTree`, `renderK`) that are used in Node for the initial paint and
-serialised into the page for timeline scrubbing. There is no second implementation to
-drift out of sync.
+**One renderer, two runtimes.** `lib/view.cjs` holds pure functions (`chainOf`,
+`divergence`, `foldEvents`, `metrics`, `renderTree`, `renderK`) used in Node for the
+initial paint and serialised into the page for scrubbing and branch switching. There is
+no second implementation to drift out of sync.
 
 **`lib/ck.cjs` is the only mutation path.** It enforces the invariants in `SCHEMA.md` —
 an expansive partition without a `breaks` is rejected, and a conjunction without a
@@ -89,29 +91,37 @@ The scrubber folds client-side, so rewinding is instant and read-only. Arrow key
 one operation at a time.
 
 Operator buttons are withdrawn while the scrubber is in the past, and replaced by a
-fork hint. That isn't timidity: an event appended while rewound would still land at the
-end of the log, so the fold would present it as though it were made knowing everything
-you had just scrubbed past — a provenance that never existed. Forking gives you the
-branch *with only the knowledge that existed at that point*, which is the thing you
-actually wanted.
+branch hint. That isn't timidity: an event appended while rewound would still land at
+the tip of the current branch, so the fold would present it as though it were made
+knowing everything you had just scrubbed past — a provenance that never existed.
+Branching gives you the line *with only the knowledge that existed at that point*,
+which is the thing you actually wanted.
 
 ```bash
-node lib/ck.cjs show my-session --at 7            # state after 7 operations
-node lib/ck.cjs fork my-session --at 7 --as alt   # take a different route from there
+node lib/ck.cjs show my-session --at 7                # state after 7 operations
+node lib/ck.cjs branch my-session alt --at 7          # a different route from there
+node lib/ck.cjs branches my-session                   # list, with divergence
+node lib/ck.cjs switch my-session main
 ```
 
-Forking never rewrites the original — that's the point of an append-only log. It's the
-answer to "what if we'd gone the other way at C3", which is the only reason a designer
-wants to rewind at all.
+Branching never rewrites history — that's the point of an append-only log — and it
+copies nothing: `branches[name]` is just a seq to start walking from, so two branches
+sharing a prefix share the same event objects. Node ids are allocated across the whole
+file, so `C12` means the same concept in every timeline and branches can be compared.
+
+Since every branch ships inside the page, **switching timelines is a click in the
+header** — instant and client-side. The picker shows divergence as `@22 +1`: split at
+step 22, one step ahead since.
 
 ## Files
 
 | Path | |
 |---|---|
-| `lib/ck.cjs` | Event-log mutation CLI — invariant enforcement lives here |
-| `lib/view.cjs` | Pure fold + render functions, shared by Node and the browser |
+| `lib/ck.cjs` | Event-DAG mutation CLI — branches and invariant enforcement live here |
+| `lib/view.cjs` | Pure chain/fold/render functions, shared by Node and the browser |
 | `lib/render.cjs` | Session → canvas HTML |
 | `lib/ck-server.cjs` | Zero-dep viewer server (SSE reload + click capture) |
+| `lib/migrate-v3.cjs` | Converts v2 one-file-per-fork sessions into v3 branches |
 | `lib/watch-events.cjs` | Monitor script: canvas clicks → Claude notifications |
 | `lib/start-viewer.sh`, `stop-viewer.sh` | Lifecycle |
 | `references/GRAMMAR.md` | The operator grammar and the undecidability test |

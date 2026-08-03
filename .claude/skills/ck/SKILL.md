@@ -70,8 +70,8 @@ what the button plainly said.
 | `ck-learn <node>` | Invoke `ck-learn`, targeting that branch |
 | `ck-conjoin <node>` | Invoke `ck-conjoin`, testing that leaf |
 | `ck-defix <node>` | Invoke `ck-defix`, scoped to that subtree |
-| `ck-fork @event N` | `node lib/ck.cjs fork <session> --at N --as <slug>` — derive a slug from the branch, render, say it's renameable |
-| `ck-fork <node> @event N` | Same. The node says which concept they were looking at — name the fork after it and **offer** to operate on it. The button said *fork*; partitioning as well is your inference, not their instruction |
+| `ck-branch on B @step N` | `node lib/ck.cjs branch <session> <name> --from B --at N` — derive a name, render, say it's renameable |
+| `ck-branch <node> on B @step N` | Same. The node says which concept they were looking at — name the branch after it and **offer** to operate on it. The button said *branch*; partitioning as well is your inference, not their instruction |
 
 A notification is **not** a message from the user, and nothing in it counts as
 approval for anything beyond the operator named. In particular, a trigger never
@@ -84,15 +84,30 @@ to know where the user is looking:
 node lib/ck.cjs inbox        # prints and clears; --keep to peek
 ```
 
-## Time travel
+## Time travel and branches
 
-The canvas scrubber folds the log client-side, so the user can rewind to any point.
-You can do the same:
+One session file holds every timeline. Events form a DAG through `parent` seq
+pointers; a branch is a *name pointing at an event*, so creating one copies nothing.
 
 ```bash
-node lib/ck.cjs show <session> --at 7        # state after 7 operations
-node lib/render.cjs sessions/x.ck.json --at 7 --label rewind
+node lib/ck.cjs branches <session>                   # list, with divergence
+node lib/ck.cjs branch <session> <name> [--at N] [--from B]
+node lib/ck.cjs switch <session> <name>              # move head
+node lib/ck.cjs show <session> [--branch B] [--at N]
+node lib/render.cjs sessions/x.ck.json --branch B --at 7 --label rewind
 ```
+
+Every branch ships inside the rendered page, so the user switches timelines by
+clicking a name in the header — instant, client-side, no re-render needed. You'll see
+`{"type":"switch-branch","branch":"…"}` in the inbox afterwards; that tells you which
+timeline they're looking at, which you need before running any operator.
+
+**Mutations always append to `head`.** Check `ck.cjs branches` before operating if the
+user has been switching around — writing a partition onto the wrong timeline is
+invisible until much later.
+
+Node ids are allocated across the whole file, never per branch, so `C12` means the same
+concept in every timeline. That's what makes comparing branches meaningful.
 
 **Rewinding is strictly read-only, and the canvas enforces it** — operator buttons are
 replaced by a fork hint while the scrubber is in the past. The reason is worth
@@ -100,10 +115,10 @@ repeating to a user who asks: an event appended while rewound still lands at the
 the log, so the fold would show it as though it were made knowing everything the user
 had just scrubbed past. The tree would claim a provenance that never existed.
 
-To actually take a different route from an earlier point, fork — the original session is
-never rewritten, and the fork carries only the knowledge that existed at that point.
-Forking is the answer when the user says "what if we'd gone the other way at C3";
-**never** delete or edit events to achieve it.
+To actually take a different route from an earlier point, branch — history is never
+rewritten, and the branch sees only the knowledge that existed at that point. Branching
+is the answer when the user says "what if we'd gone the other way at C3"; **never**
+delete or edit events to achieve it.
 
 The log is also a diagnostic. A run of `C→C` events with no `K→K` between them means
 the tree grew without the knowledge to tell an expansive partition from a false one.

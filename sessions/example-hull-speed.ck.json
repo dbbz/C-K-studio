@@ -1,8 +1,13 @@
 {
-  "version": 2,
+  "version": 3,
   "title": "Beating hull speed",
   "brief": "Worked example. Scrub the timeline to watch the reasoning fixate, then break. Events 3–6 are what naval architecture actually did for a century; event 7 is the piece of knowledge that made an expansive partition thinkable.",
   "createdAt": "2026-08-03",
+  "branches": {
+    "main": 22,
+    "always-in-transit": 23
+  },
+  "head": "always-in-transit",
   "events": [
     {
       "seq": 0,
@@ -20,7 +25,9 @@
         "status": "true",
         "source": "displacement hull hydrodynamics"
       },
-      "summary": "Seeded the constraint everyone treats as a law of nature."
+      "summary": "Seeded the constraint everyone treats as a law of nature.",
+      "parent": null,
+      "branch": "main"
     },
     {
       "seq": 1,
@@ -38,7 +45,9 @@
         "status": "true",
         "source": "Froude"
       },
-      "summary": "Seeded why brute force fails."
+      "summary": "Seeded why brute force fails.",
+      "parent": 0,
+      "branch": "main"
     },
     {
       "seq": 2,
@@ -61,7 +70,9 @@
         "proposition": "There exists a vessel that travels far faster than the hull speed of its waterline length.",
         "note": "Undecidable against K0–K1: they say the cost is prohibitive, not that it is impossible."
       },
-      "summary": "Framed C0 against K0–K1."
+      "summary": "Framed C0 against K0–K1.",
+      "parent": 1,
+      "branch": "main"
     },
     {
       "seq": 3,
@@ -85,7 +96,9 @@
         "proposition": "There exists a vessel that beats hull speed by installing more engine.",
         "note": ""
       },
-      "summary": "First partition — restrictive."
+      "summary": "First partition — restrictive.",
+      "parent": 2,
+      "branch": "main"
     },
     {
       "seq": 4,
@@ -109,7 +122,9 @@
         "proposition": "There exists a vessel that beats a given hull speed by being longer.",
         "note": "Works, but it moves the constraint instead of removing it."
       },
-      "summary": "Second partition — also restrictive. The tree is fixating."
+      "summary": "Second partition — also restrictive. The tree is fixating.",
+      "parent": 3,
+      "branch": "main"
     },
     {
       "seq": 5,
@@ -126,7 +141,9 @@
         ]
       },
       "note": "K1 settles this directly — a restrictive partition K can decide was never a concept.",
-      "summary": "C1 refuted by K1."
+      "summary": "C1 refuted by K1.",
+      "parent": 4,
+      "branch": "main"
     },
     {
       "seq": 6,
@@ -140,7 +157,9 @@
         "c": [],
         "k": []
       },
-      "summary": "C2 set aside — the archetypal fixated answer."
+      "summary": "C2 set aside — the archetypal fixated answer.",
+      "parent": 5,
+      "branch": "main"
     },
     {
       "seq": 7,
@@ -160,7 +179,9 @@
         "status": "true",
         "source": "K→K on K0/K1 — is the constraint a law, or an artefact of the usual implementation?"
       },
-      "summary": "The unlock: the constraint belongs to displacement, not to boats."
+      "summary": "The unlock: the constraint belongs to displacement, not to boats.",
+      "parent": 6,
+      "branch": "main"
     },
     {
       "seq": 8,
@@ -184,7 +205,9 @@
         "proposition": "There exists a vessel that moves over water without displacing it.",
         "note": ""
       },
-      "summary": "K2 supplied the attribute that broke buoyancy."
+      "summary": "K2 supplied the attribute that broke buoyancy.",
+      "parent": 7,
+      "branch": "main"
     },
     {
       "seq": 9,
@@ -204,7 +227,9 @@
         "status": "true",
         "source": "foil theory"
       },
-      "summary": "Attribute-bearing knowledge for C3."
+      "summary": "Attribute-bearing knowledge for C3.",
+      "parent": 8,
+      "branch": "main"
     },
     {
       "seq": 10,
@@ -228,7 +253,9 @@
         "proposition": "There exists a vessel lifted clear of the surface by foils while remaining in the water.",
         "note": "Restrictive *relative to C3* — once you accept a non-displacing vessel, foils are a known means."
       },
-      "summary": "Partitioned C3 — foils."
+      "summary": "Partitioned C3 — foils.",
+      "parent": 9,
+      "branch": "main"
     },
     {
       "seq": 11,
@@ -250,7 +277,9 @@
         "proposition": "There exists a vessel that rides on a cushion of pressurised air.",
         "note": ""
       },
-      "summary": "Partitioned C3 — air cushion."
+      "summary": "Partitioned C3 — air cushion.",
+      "parent": 10,
+      "branch": "main"
     },
     {
       "seq": 12,
@@ -272,7 +301,9 @@
         "proposition": "There exists a way to move cargo over water with no vessel at all.",
         "note": "Still open. K is empty here — that is the signal to run K→K."
       },
-      "summary": "Partitioned C3 — a second expansive step."
+      "summary": "Partitioned C3 — a second expansive step.",
+      "parent": 11,
+      "branch": "main"
     },
     {
       "seq": 13,
@@ -292,7 +323,9 @@
         "status": "true",
         "source": "conjunction of C4 — Forlanini 1906, Supramar PT10 1952"
       },
-      "summary": "Conjunction of C4: the hydrofoil."
+      "summary": "Conjunction of C4: the hydrofoil.",
+      "parent": 12,
+      "branch": "main"
     },
     {
       "seq": 14,
@@ -308,7 +341,9 @@
           "K4"
         ]
       },
-      "summary": "C4 closed."
+      "summary": "C4 closed.",
+      "parent": 13,
+      "branch": "main"
     },
     {
       "seq": 15,
@@ -328,7 +363,9 @@
         "status": "true",
         "source": "conjunction of C5 — Cockerell SR.N1, 1959"
       },
-      "summary": "Conjunction of C5: the hovercraft."
+      "summary": "Conjunction of C5: the hovercraft.",
+      "parent": 14,
+      "branch": "main"
     },
     {
       "seq": 16,
@@ -344,7 +381,9 @@
           "K5"
         ]
       },
-      "summary": "C5 closed. Two conjunctions from one expansive partition."
+      "summary": "C5 closed. Two conjunctions from one expansive partition.",
+      "parent": 15,
+      "branch": "main"
     },
     {
       "seq": 17,
@@ -364,7 +403,9 @@
         "status": "uncertain",
         "source": "open question on C6"
       },
-      "summary": "C6 remains open; this is the lead that would decide it."
+      "summary": "C6 remains open; this is the lead that would decide it.",
+      "parent": 16,
+      "branch": "main"
     },
     {
       "op": "C→C",
@@ -388,7 +429,9 @@
       "seq": 18,
       "at": "2026-08-03T21:09:46.648Z",
       "actor": "claude",
-      "summary": "Partitioned C6 — the carrier dissolves into the cargo."
+      "summary": "Partitioned C6 — the carrier dissolves into the cargo.",
+      "parent": 17,
+      "branch": "main"
     },
     {
       "op": "C→C",
@@ -410,7 +453,9 @@
       "seq": 19,
       "at": "2026-08-03T21:09:46.693Z",
       "actor": "claude",
-      "summary": "Partitioned C6 — propulsion harvested, not supplied."
+      "summary": "Partitioned C6 — propulsion harvested, not supplied.",
+      "parent": 18,
+      "branch": "main"
     },
     {
       "op": "C→C",
@@ -432,7 +477,9 @@
       "seq": 20,
       "at": "2026-08-03T21:09:46.736Z",
       "actor": "claude",
-      "summary": "Partitioned C6 — transmit the specification, not the matter."
+      "summary": "Partitioned C6 — transmit the specification, not the matter.",
+      "parent": 19,
+      "branch": "main"
     },
     {
       "op": "C→C",
@@ -454,7 +501,9 @@
       "seq": 21,
       "at": "2026-08-03T21:09:46.780Z",
       "actor": "claude",
-      "summary": "Partitioned C6 — circulation replaces shipment."
+      "summary": "Partitioned C6 — circulation replaces shipment.",
+      "parent": 20,
+      "branch": "main"
     },
     {
       "op": "C→C",
@@ -476,7 +525,33 @@
       "seq": 22,
       "at": "2026-08-03T21:09:46.824Z",
       "actor": "claude",
-      "summary": "Partitioned C6 — rafting, a known means."
+      "summary": "Partitioned C6 — rafting, a known means.",
+      "parent": 21,
+      "branch": "main"
+    },
+    {
+      "op": "C→C",
+      "kind": "add-c",
+      "from": {
+        "c": [
+          "C10"
+        ],
+        "k": []
+      },
+      "node": {
+        "id": "C12",
+        "attribute": "+ the network never stops",
+        "partition": "restrictive",
+        "breaks": "",
+        "proposition": "There exists a circulation whose vessels never call at a port, transferring cargo underway.",
+        "note": ""
+      },
+      "seq": 23,
+      "parent": 21,
+      "at": "2026-08-03T21:31:33.372Z",
+      "actor": "claude",
+      "branch": "always-in-transit",
+      "summary": "Only on the always-in-transit branch."
     }
   ]
 }
