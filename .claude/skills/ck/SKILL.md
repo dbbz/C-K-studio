@@ -31,6 +31,11 @@ other `ck-*` skills assume you know it.
    ```
    This is what makes the canvas bidirectional. Arm it **once** per session — check
    for a running monitor before starting another.
+
+   **Node loads the watcher once, at launch.** If you edit `watch-events.cjs`, the
+   running monitor keeps executing the old copy and its notifications silently keep
+   the old format. Stop it with `TaskStop` and re-arm, or you will debug a payload
+   that was never actually wrong.
 4. **Load state** with `node lib/ck.cjs show <session>` rather than reading the raw
    JSON. It prints the folded tree, K, the operation log, and the metrics.
 
@@ -93,6 +98,8 @@ pointers; a branch is a *name pointing at an event*, so creating one copies noth
 node lib/ck.cjs branches <session>                   # list, with divergence
 node lib/ck.cjs branch <session> <name> [--at N] [--from B]
 node lib/ck.cjs switch <session> <name>              # move head
+node lib/ck.cjs rename-branch <session> <old> <new>
+node lib/ck.cjs drop <session> <name>                # removes the ref, never the events
 node lib/ck.cjs show <session> [--branch B] [--at N]
 node lib/render.cjs sessions/x.ck.json --branch B --at 7 --label rewind
 ```
