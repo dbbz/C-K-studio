@@ -1,0 +1,464 @@
+{
+  "version": 2,
+  "title": "Always already in transit (fork @22)",
+  "brief": "Worked example. Scrub the timeline to watch the reasoning fixate, then break. Events 3–6 are what naval architecture actually did for a century; event 7 is the piece of knowledge that made an expansive partition thinkable.",
+  "createdAt": "2026-08-03",
+  "forkedFrom": {
+    "session": "example-hull-speed.ck.json",
+    "at": 22
+  },
+  "events": [
+    {
+      "seq": 0,
+      "at": "2026-08-03T09:00:00Z",
+      "actor": "user",
+      "op": "seed",
+      "kind": "add-k",
+      "from": {
+        "c": [],
+        "k": []
+      },
+      "node": {
+        "id": "K0",
+        "text": "Hull speed ≈ 1.34 × √(waterline length in ft) knots. Past it, the hull is climbing its own bow wave.",
+        "status": "true",
+        "source": "displacement hull hydrodynamics"
+      },
+      "summary": "Seeded the constraint everyone treats as a law of nature."
+    },
+    {
+      "seq": 1,
+      "at": "2026-08-03T09:02:00Z",
+      "actor": "user",
+      "op": "seed",
+      "kind": "add-k",
+      "from": {
+        "c": [],
+        "k": []
+      },
+      "node": {
+        "id": "K1",
+        "text": "Wave-making resistance rises roughly with the sixth power of speed near hull speed.",
+        "status": "true",
+        "source": "Froude"
+      },
+      "summary": "Seeded why brute force fails."
+    },
+    {
+      "seq": 2,
+      "at": "2026-08-03T09:06:00Z",
+      "actor": "claude",
+      "op": "seed",
+      "kind": "add-c",
+      "from": {
+        "c": [],
+        "k": [
+          "K0",
+          "K1"
+        ]
+      },
+      "node": {
+        "id": "C0",
+        "attribute": null,
+        "partition": null,
+        "breaks": "",
+        "proposition": "There exists a vessel that travels far faster than the hull speed of its waterline length.",
+        "note": "Undecidable against K0–K1: they say the cost is prohibitive, not that it is impossible."
+      },
+      "summary": "Framed C0 against K0–K1."
+    },
+    {
+      "seq": 3,
+      "at": "2026-08-03T09:14:00Z",
+      "actor": "claude",
+      "op": "C→C",
+      "kind": "add-c",
+      "from": {
+        "c": [
+          "C0"
+        ],
+        "k": [
+          "K1"
+        ]
+      },
+      "node": {
+        "id": "C1",
+        "attribute": "+ more power",
+        "partition": "restrictive",
+        "breaks": "",
+        "proposition": "There exists a vessel that beats hull speed by installing more engine.",
+        "note": ""
+      },
+      "summary": "First partition — restrictive."
+    },
+    {
+      "seq": 4,
+      "at": "2026-08-03T09:16:00Z",
+      "actor": "claude",
+      "op": "C→C",
+      "kind": "add-c",
+      "from": {
+        "c": [
+          "C0"
+        ],
+        "k": [
+          "K0"
+        ]
+      },
+      "node": {
+        "id": "C2",
+        "attribute": "+ a longer waterline",
+        "partition": "restrictive",
+        "breaks": "",
+        "proposition": "There exists a vessel that beats a given hull speed by being longer.",
+        "note": "Works, but it moves the constraint instead of removing it."
+      },
+      "summary": "Second partition — also restrictive. The tree is fixating."
+    },
+    {
+      "seq": 5,
+      "at": "2026-08-03T09:19:00Z",
+      "actor": "user",
+      "op": "prune",
+      "kind": "set-status",
+      "target": "C1",
+      "status": "refuted",
+      "from": {
+        "c": [],
+        "k": [
+          "K1"
+        ]
+      },
+      "note": "K1 settles this directly — a restrictive partition K can decide was never a concept.",
+      "summary": "C1 refuted by K1."
+    },
+    {
+      "seq": 6,
+      "at": "2026-08-03T09:21:00Z",
+      "actor": "user",
+      "op": "prune",
+      "kind": "set-status",
+      "target": "C2",
+      "status": "abandoned",
+      "from": {
+        "c": [],
+        "k": []
+      },
+      "summary": "C2 set aside — the archetypal fixated answer."
+    },
+    {
+      "seq": 7,
+      "at": "2026-08-03T09:31:00Z",
+      "actor": "claude",
+      "op": "K→K",
+      "kind": "add-k",
+      "from": {
+        "c": [
+          "C0"
+        ],
+        "k": []
+      },
+      "node": {
+        "id": "K2",
+        "text": "Wave-making resistance is a consequence of displacing water at the surface. It is not a property of 'boats' as such.",
+        "status": "true",
+        "source": "K→K on K0/K1 — is the constraint a law, or an artefact of the usual implementation?"
+      },
+      "summary": "The unlock: the constraint belongs to displacement, not to boats."
+    },
+    {
+      "seq": 8,
+      "at": "2026-08-03T09:36:00Z",
+      "actor": "claude",
+      "op": "K→C",
+      "kind": "add-c",
+      "from": {
+        "c": [
+          "C0"
+        ],
+        "k": [
+          "K2"
+        ]
+      },
+      "node": {
+        "id": "C3",
+        "attribute": "+ does not displace water",
+        "partition": "expansive",
+        "breaks": "the definition of a boat as a body supported by buoyancy",
+        "proposition": "There exists a vessel that moves over water without displacing it.",
+        "note": ""
+      },
+      "summary": "K2 supplied the attribute that broke buoyancy."
+    },
+    {
+      "seq": 9,
+      "at": "2026-08-03T09:44:00Z",
+      "actor": "claude",
+      "op": "K→K",
+      "kind": "add-k",
+      "from": {
+        "c": [
+          "C3"
+        ],
+        "k": []
+      },
+      "node": {
+        "id": "K3",
+        "text": "A submerged foil generates lift proportional to v². Above a threshold speed, lift can exceed vessel weight.",
+        "status": "true",
+        "source": "foil theory"
+      },
+      "summary": "Attribute-bearing knowledge for C3."
+    },
+    {
+      "seq": 10,
+      "at": "2026-08-03T09:52:00Z",
+      "actor": "claude",
+      "op": "C→C",
+      "kind": "add-c",
+      "from": {
+        "c": [
+          "C3"
+        ],
+        "k": [
+          "K3"
+        ]
+      },
+      "node": {
+        "id": "C4",
+        "attribute": "+ supported by a submerged wing",
+        "partition": "restrictive",
+        "breaks": "",
+        "proposition": "There exists a vessel lifted clear of the surface by foils while remaining in the water.",
+        "note": "Restrictive *relative to C3* — once you accept a non-displacing vessel, foils are a known means."
+      },
+      "summary": "Partitioned C3 — foils."
+    },
+    {
+      "seq": 11,
+      "at": "2026-08-03T09:54:00Z",
+      "actor": "claude",
+      "op": "C→C",
+      "kind": "add-c",
+      "from": {
+        "c": [
+          "C3"
+        ],
+        "k": []
+      },
+      "node": {
+        "id": "C5",
+        "attribute": "+ supported by trapped air",
+        "partition": "restrictive",
+        "breaks": "",
+        "proposition": "There exists a vessel that rides on a cushion of pressurised air.",
+        "note": ""
+      },
+      "summary": "Partitioned C3 — air cushion."
+    },
+    {
+      "seq": 12,
+      "at": "2026-08-03T09:57:00Z",
+      "actor": "claude",
+      "op": "C→C",
+      "kind": "add-c",
+      "from": {
+        "c": [
+          "C3"
+        ],
+        "k": []
+      },
+      "node": {
+        "id": "C6",
+        "attribute": "+ has no hull",
+        "partition": "expansive",
+        "breaks": "the assumption that the cargo travels inside a single rigid vessel",
+        "proposition": "There exists a way to move cargo over water with no vessel at all.",
+        "note": "Still open. K is empty here — that is the signal to run K→K."
+      },
+      "summary": "Partitioned C3 — a second expansive step."
+    },
+    {
+      "seq": 13,
+      "at": "2026-08-03T10:08:00Z",
+      "actor": "user",
+      "op": "C→K",
+      "kind": "add-k",
+      "from": {
+        "c": [
+          "C4"
+        ],
+        "k": []
+      },
+      "node": {
+        "id": "K4",
+        "text": "A hydrofoil craft exists and sustains 40+ knots: the hull leaves the water, so displacement drag goes to zero.",
+        "status": "true",
+        "source": "conjunction of C4 — Forlanini 1906, Supramar PT10 1952"
+      },
+      "summary": "Conjunction of C4: the hydrofoil."
+    },
+    {
+      "seq": 14,
+      "at": "2026-08-03T10:09:00Z",
+      "actor": "user",
+      "op": "C→K",
+      "kind": "set-status",
+      "target": "C4",
+      "status": "conjunct",
+      "from": {
+        "c": [],
+        "k": [
+          "K4"
+        ]
+      },
+      "summary": "C4 closed."
+    },
+    {
+      "seq": 15,
+      "at": "2026-08-03T10:14:00Z",
+      "actor": "user",
+      "op": "C→K",
+      "kind": "add-k",
+      "from": {
+        "c": [
+          "C5"
+        ],
+        "k": []
+      },
+      "node": {
+        "id": "K5",
+        "text": "An air-cushion vehicle carries commercial loads over water and land alike; the cushion, not the hull, bears the weight.",
+        "status": "true",
+        "source": "conjunction of C5 — Cockerell SR.N1, 1959"
+      },
+      "summary": "Conjunction of C5: the hovercraft."
+    },
+    {
+      "seq": 16,
+      "at": "2026-08-03T10:15:00Z",
+      "actor": "user",
+      "op": "C→K",
+      "kind": "set-status",
+      "target": "C5",
+      "status": "conjunct",
+      "from": {
+        "c": [],
+        "k": [
+          "K5"
+        ]
+      },
+      "summary": "C5 closed. Two conjunctions from one expansive partition."
+    },
+    {
+      "seq": 17,
+      "at": "2026-08-03T10:22:00Z",
+      "actor": "claude",
+      "op": "K→K",
+      "kind": "add-k",
+      "from": {
+        "c": [
+          "C6"
+        ],
+        "k": []
+      },
+      "node": {
+        "id": "K6",
+        "text": "Whether a self-guiding cargo unit can navigate open water unaided at commercial scale.",
+        "status": "uncertain",
+        "source": "open question on C6"
+      },
+      "summary": "C6 remains open; this is the lead that would decide it."
+    },
+    {
+      "op": "C→C",
+      "kind": "add-c",
+      "from": {
+        "c": [
+          "C6"
+        ],
+        "k": [
+          "K6"
+        ]
+      },
+      "node": {
+        "id": "C7",
+        "attribute": "+ the cargo is its own vessel",
+        "partition": "expansive",
+        "breaks": "the assumption that a carrier exists distinct from the thing carried",
+        "proposition": "There exists a shipment in which every cargo unit navigates independently and no ship exists at all.",
+        "note": ""
+      },
+      "seq": 18,
+      "at": "2026-08-03T21:09:46.648Z",
+      "actor": "claude",
+      "summary": "Partitioned C6 — the carrier dissolves into the cargo."
+    },
+    {
+      "op": "C→C",
+      "kind": "add-c",
+      "from": {
+        "c": [
+          "C6"
+        ],
+        "k": []
+      },
+      "node": {
+        "id": "C8",
+        "attribute": "+ moved only by energy already in the water",
+        "partition": "expansive",
+        "breaks": "the assumption that the system supplies the propulsion",
+        "proposition": "There exists a way to move cargo across an ocean using only the motion already present in current, tide and wind.",
+        "note": ""
+      },
+      "seq": 19,
+      "at": "2026-08-03T21:09:46.693Z",
+      "actor": "claude",
+      "summary": "Partitioned C6 — propulsion harvested, not supplied."
+    },
+    {
+      "op": "C→C",
+      "kind": "add-c",
+      "from": {
+        "c": [
+          "C6"
+        ],
+        "k": []
+      },
+      "node": {
+        "id": "C9",
+        "attribute": "+ nothing crosses the water but the specification",
+        "partition": "expansive",
+        "breaks": "the assumption that the matter itself has to travel",
+        "proposition": "There exists a way to deliver cargo across water in which no matter crosses it — only the description does, and the goods are made at the destination.",
+        "note": ""
+      },
+      "seq": 20,
+      "at": "2026-08-03T21:09:46.736Z",
+      "actor": "claude",
+      "summary": "Partitioned C6 — transmit the specification, not the matter."
+    },
+    {
+      "op": "C→C",
+      "kind": "add-c",
+      "from": {
+        "c": [
+          "C6"
+        ],
+        "k": []
+      },
+      "node": {
+        "id": "C10",
+        "attribute": "+ always already in transit",
+        "partition": "expansive",
+        "breaks": "the assumption that a shipment is a response to a request",
+        "proposition": "There exists a logistics system with no shipments — only a permanent circulation of goods that consignees draw from as it passes.",
+        "note": ""
+      },
+      "seq": 21,
+      "at": "2026-08-03T21:09:46.780Z",
+      "actor": "claude",
+      "summary": "Partitioned C6 — circulation replaces shipment."
+    }
+  ]
+}

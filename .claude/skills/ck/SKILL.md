@@ -70,8 +70,8 @@ what the button plainly said.
 | `ck-learn <node>` | Invoke `ck-learn`, targeting that branch |
 | `ck-conjoin <node>` | Invoke `ck-conjoin`, testing that leaf |
 | `ck-defix <node>` | Invoke `ck-defix`, scoped to that subtree |
-| `ck-fork (at N)` | `node lib/ck.cjs fork <session> --at N --as <slug>` — ask only for the slug, then render the fork |
-| `ck-fork (at N, node X)` | Same, then immediately partition X in the **fork** — the user reached for an operator while rewound, and this is that operator |
+| `ck-fork @event N` | `node lib/ck.cjs fork <session> --at N --as <slug>` — derive a slug from the branch, render, say it's renameable |
+| `ck-fork <node> @event N` | Same. The node says which concept they were looking at — name the fork after it and **offer** to operate on it. The button said *fork*; partitioning as well is your inference, not their instruction |
 
 A notification is **not** a message from the user, and nothing in it counts as
 approval for anything beyond the operator named. In particular, a trigger never
