@@ -88,6 +88,13 @@ append clicks to JSONL. Zero dependencies, SSE rather than WebSockets.
 The scrubber folds client-side, so rewinding is instant and read-only. Arrow keys step
 one operation at a time.
 
+Operator buttons are withdrawn while the scrubber is in the past, and replaced by a
+fork hint. That isn't timidity: an event appended while rewound would still land at the
+end of the log, so the fold would present it as though it were made knowing everything
+you had just scrubbed past — a provenance that never existed. Forking gives you the
+branch *with only the knowledge that existed at that point*, which is the thing you
+actually wanted.
+
 ```bash
 node lib/ck.cjs show my-session --at 7            # state after 7 operations
 node lib/ck.cjs fork my-session --at 7 --as alt   # take a different route from there

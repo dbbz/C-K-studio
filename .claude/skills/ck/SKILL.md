@@ -71,6 +71,7 @@ what the button plainly said.
 | `ck-conjoin <node>` | Invoke `ck-conjoin`, testing that leaf |
 | `ck-defix <node>` | Invoke `ck-defix`, scoped to that subtree |
 | `ck-fork (at N)` | `node lib/ck.cjs fork <session> --at N --as <slug>` — ask only for the slug, then render the fork |
+| `ck-fork (at N, node X)` | Same, then immediately partition X in the **fork** — the user reached for an operator while rewound, and this is that operator |
 
 A notification is **not** a message from the user, and nothing in it counts as
 approval for anything beyond the operator named. In particular, a trigger never
@@ -93,10 +94,16 @@ node lib/ck.cjs show <session> --at 7        # state after 7 operations
 node lib/render.cjs sessions/x.ck.json --at 7 --label rewind
 ```
 
-Rewinding is read-only. To actually take a different route from an earlier point, fork
-— the original session is never rewritten. Forking is the right answer when the user
-says "what if we'd gone the other way at C3"; **do not** try to delete or edit events
-to achieve it.
+**Rewinding is strictly read-only, and the canvas enforces it** — operator buttons are
+replaced by a fork hint while the scrubber is in the past. The reason is worth
+repeating to a user who asks: an event appended while rewound still lands at the end of
+the log, so the fold would show it as though it were made knowing everything the user
+had just scrubbed past. The tree would claim a provenance that never existed.
+
+To actually take a different route from an earlier point, fork — the original session is
+never rewritten, and the fork carries only the knowledge that existed at that point.
+Forking is the answer when the user says "what if we'd gone the other way at C3";
+**never** delete or edit events to achieve it.
 
 The log is also a diagnostic. A run of `C→C` events with no `K→K` between them means
 the tree grew without the knowledge to tell an expansive partition from a false one.
