@@ -1,0 +1,3 @@
+# Viewer runtime: rendered screens, server state, captured events.
+# Sessions themselves live in sessions/ and are meant to be committed.
+.ck/
