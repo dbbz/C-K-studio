@@ -8,14 +8,14 @@ description: Render a C-K session to the browser canvas and report its state - t
 ## Render
 
 ```bash
-node lib/render.cjs sessions/<slug>.ck.json --label map
-node lib/render.cjs sessions/<slug>.ck.json --label rewind --at 7   # a past position
+ck render sessions/<slug>.ck.json --label map
+ck render sessions/<slug>.ck.json --label rewind --at 7   # a past position
 ```
 
 If the canvas isn't up, or `.ck/viewer/state/server-stopped` exists:
 
 ```bash
-./lib/start-viewer.sh --project-dir "$(pwd)" --open
+ck view --open
 ```
 
 Restarting reuses the state directory, so an already-open tab reconnects on its own —

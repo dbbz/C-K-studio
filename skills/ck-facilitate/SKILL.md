@@ -14,7 +14,7 @@ is your judgement — which operator, on which node, now — not their homework.
 to use them, and it is the only skill in the set written to be read by someone who is
 running the session rather than performing a move in it.
 
-Read `references/GRAMMAR.md` once before your first operator call.
+Read `${CLAUDE_PLUGIN_ROOT}/references/GRAMMAR.md` once before your first operator call.
 
 ## The stance
 
@@ -34,7 +34,7 @@ Read `references/GRAMMAR.md` once before your first operator call.
   when they are looking at the canvas; otherwise they are noise.
 - **Never tell anyone to be creative.** The documented protocol pointedly does not. What
   it asks for is maximum expansion in *both* spaces, which is a request you can actually
-  act on. See `references/TECHNIQUES.md` §5.
+  act on. See `${CLAUDE_PLUGIN_ROOT}/references/TECHNIQUES.md` §5.
 
 ## The arc
 
@@ -54,11 +54,11 @@ Setup is `ck`'s procedure. Do it in one block without commentary:
 
 ```bash
 ls sessions/*.ck.json
-node lib/ck.cjs new <slug> --title "..." --brief "..."
-./lib/start-viewer.sh --project-dir "$(pwd)" --open
+ck new <slug> --title "..." --brief "..."
+ck view --open
 ```
 
-Then arm the `Monitor` watcher (`node lib/watch-events.cjs`, `persistent: true`) once —
+Then arm the `Monitor` watcher (`lib/watch-events.cjs`, `persistent: true`) once —
 `ck` has the detail, including why editing the watcher requires re-arming it. Give the
 URL **with its `?key=…`**. Pass `--summary` on every mutation; a timeline of captionless
 events is unreadable, and the timeline is half the deliverable.
@@ -68,7 +68,7 @@ events is unreadable, and the timeline is half the deliverable.
 Their own first idea fixates them harder than any example you could show them. Leahy et
 al. (2020): participants shown an external example fixated *less* than controls fixated
 on their own self-generated concept. It is the most actionable finding in the sweep and
-it inverts the usual worry (`references/TECHNIQUES.md` §6d).
+it inverts the usual worry (`${CLAUDE_PLUGIN_ROOT}/references/TECHNIQUES.md` §6d).
 
 So, in order:
 
@@ -188,7 +188,7 @@ from a fantasy, and everything you generate from here is unfalsifiable.
 or when the research would settle a concept you have not finished expanding — settling a
 branch early kills the children it hasn't had yet. When alternatives are cheap and
 knowledge is expensive, go breadth-first: the Mars-engine case failed by going deep with
-known attributes before evaluating anything (`references/TECHNIQUES.md` R6).
+known attributes before evaluating anything (`${CLAUDE_PLUGIN_ROOT}/references/TECHNIQUES.md` R6).
 
 **The drift to watch in yourself.** Research feels productive and is comfortable, and
 coaches in every studied C-K group had to interrupt the same slide from C-talk into
@@ -214,7 +214,7 @@ tool's invention rather than the literature's. The shape says more.
   spaces have been running in parallel without interacting, which means this has been an
   idea list with extra vocabulary.
 
-`node lib/ck.cjs show <session>` prints the tree, K, the operator sequence and the state
+`ck show <session>` prints the tree, K, the operator sequence and the state
 in one pass. Read the operator sequence, not just the tree.
 
 ### Fixated, or genuinely constrained
@@ -239,7 +239,7 @@ Test the constraint instead:
 And the hard rule from the steering evidence: **do not tell someone they are stuck in a
 class of solution unless you have actually built the taxonomy of classes.** Per-idea
 feedback matched to a real taxonomy raises expansive output substantially; *mismatched*
-feedback is far worse than saying nothing (`references/TECHNIQUES.md` §3, T3). If you
+feedback is far worse than saying nothing (`${CLAUDE_PLUGIN_ROOT}/references/TECHNIQUES.md` §3, T3). If you
 haven't enumerated the branches, say nothing about which one they're in.
 
 ### Push, or back off
@@ -293,7 +293,7 @@ specifically to stop a group converging on the apparently dominant option, and i
 multiple alternatives alive by design. And selection fails independently of generation —
 groups *and individuals* systematically fail to choose their most creative ideas from
 their own pool, favouring feasibility over originality. A selection step at the end
-quietly undoes the session (`references/TECHNIQUES.md` §6d).
+quietly undoes the session (`${CLAUDE_PLUGIN_ROOT}/references/TECHNIQUES.md` §6d).
 
 What they should walk away with, via `ck-map`:
 
@@ -340,7 +340,7 @@ restrictive-versus-expansive *is* the disagreement on the table. Otherwise, don'
 ## If there is more than one person
 
 Default to one. If there are two to six, three things change, and the first overturns
-standard workshop practice. Sources for all of it are in `references/TECHNIQUES.md` §6d,
+standard workshop practice. Sources for all of it are in `${CLAUDE_PLUGIN_ROOT}/references/TECHNIQUES.md` §6d,
 under *For Stage 2*.
 
 - **Do not run a verbal round-robin.** Group brainstorming was falsified in 1958 and
@@ -375,7 +375,7 @@ The undecidability gate is a forcing function that makes a knowledge-relative ju
 explicit and reviewable, not a decision procedure; `GRAMMAR.md` says so at the end and
 means it. Defixation reliably changes *what kinds* of options appear. That this produces
 *better* outcomes is inference, and for open-ended problems — which design problems are —
-it is empirically unestablished (`references/TECHNIQUES.md` §6d).
+it is empirically unestablished (`${CLAUDE_PLUGIN_ROOT}/references/TECHNIQUES.md` §6d).
 
 If they push on numbers, give them the ceiling rather than a success story. The largest
 meta-analysis of creativity training — 169 studies, five decades, unpublished work

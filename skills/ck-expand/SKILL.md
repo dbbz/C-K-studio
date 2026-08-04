@@ -5,7 +5,7 @@ description: Apply the C→C operator - partition a concept node into child conc
 
 # C→C — partitioning a concept
 
-Read `references/GRAMMAR.md` first. Partition type is judged relative to the **parent
+Read `${CLAUDE_PLUGIN_ROOT}/references/GRAMMAR.md` first. Partition type is judged relative to the **parent
 node's** object, not the root.
 
 ## The craft move: negate the constitutive properties
@@ -39,7 +39,7 @@ branch gets close enough to reality to conjoin. Just know which you're writing.
 
 This is the literature's own move, not a heuristic invented here — it is how the tested
 defixation stimuli in the hen's-egg experiments were authored. See
-`references/TECHNIQUES.md` §4 (R2).
+`${CLAUDE_PLUGIN_ROOT}/references/TECHNIQUES.md` §4 (R2).
 
 **Note where the reversal happens.** This is assumption reversal, and it belongs to
 *you*, authoring the partition. It is not an instruction to hand the user ("try
@@ -104,7 +104,7 @@ condition: forbid any object not already in the problem or its immediate environ
 That is a good generator of the reattribution move above — but it is the exact opposite
 of C-K's doctrine that expansion needs knowledge from outside the room. Use the closed
 world to unstick a specific branch, never as a standing rule. See
-`references/TECHNIQUES.md` §6.
+`${CLAUDE_PLUGIN_ROOT}/references/TECHNIQUES.md` §6.
 
 ## The fallback harvest: five ways to move off a statement you can't build
 
@@ -126,7 +126,7 @@ like anything else. This is de Bono's "movement" apparatus, and it is worth havi
 one reason: it is a *harvest* procedure, the same job as step 5 of the virtual-form move
 above. The generation half of that method — deliberately silly statements, random words —
 is either untested or tested and failed, so don't import it. `[E4]`, prescription only;
-see `references/TECHNIQUES.md` §6f.
+see `${CLAUDE_PLUGIN_ROOT}/references/TECHNIQUES.md` §6f.
 
 ## The first partition of a root: author a projector set
 
@@ -144,21 +144,21 @@ nobody is meant to build a projector, so do not soften one to make it buildable.
 
 Check each is *undecidable* in K, not *false*. A branch known false in K is not a
 concept and cannot be partitioned — which is why "make it deliberately impossible" is
-bad advice, however often it is repeated. See `references/TECHNIQUES.md` §1.
+bad advice, however often it is repeated. See `${CLAUDE_PLUGIN_ROOT}/references/TECHNIQUES.md` §1.
 
 ## Quotas
 
 - **3–6 children per pass.** More is a list, not a partition.
 - **At least half expansive**, unless the node is deliberately in a convergence phase —
   and if so, say that out loud to the user.
-- **Every expansive node names what it breaks.** `lib/ck.cjs` rejects it otherwise,
+- **Every expansive node names what it breaks.** `ck` rejects it otherwise,
   and the rejection is the point: if you cannot name the violated property, you have
   written a restrictive partition and mislabelled it.
 
 ## Writing the nodes
 
 ```bash
-node lib/ck.cjs add-c <session> --parent C3 \
+ck add-c <session> --parent C3 \
   --attribute "+ does not displace water" \
   --partition expansive \
   --breaks "the definition of a boat as a body supported by buoyancy" \
@@ -174,7 +174,7 @@ how you can later tell whether the return path from K ever actually fired.
 Restrictive ones drop `--breaks`:
 
 ```bash
-node lib/ck.cjs add-c <session> --parent C3 \
+ck add-c <session> --parent C3 \
   --attribute "+ supported by a submerged wing" \
   --partition restrictive \
   --proposition "There exists a vessel lifted clear of the surface by foils." \

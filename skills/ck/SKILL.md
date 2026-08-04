@@ -8,7 +8,7 @@ description: Start, resume, or steer a C-K (Concept-Knowledge) design session. U
 Runs a Concept–Knowledge design session against an append-only event log in
 `sessions/`, with a live browser canvas whose buttons call back into these skills.
 
-**Read `references/GRAMMAR.md` before your first operator call in a session.** It
+**Read `${CLAUDE_PLUGIN_ROOT}/references/GRAMMAR.md` before your first operator call in a session.** It
 defines undecidability, the restrictive/expansive test, and the four operators. The
 other `ck-*` skills assume you know it.
 
@@ -17,18 +17,21 @@ other `ck-*` skills assume you know it.
 1. **Find or create the session.**
    ```bash
    ls sessions/*.ck.json
-   node lib/ck.cjs new <slug> --title "..." --brief "..."
+   ck new <slug> --title "..." --brief "..."
    ```
 2. **Start the canvas** (idempotent — reuses a running server and its port):
    ```bash
-   ./lib/start-viewer.sh --project-dir "$(pwd)" --open
+   ck view --open
    ```
    Give the user the **full URL including `?key=…`**; the server 403s without it.
 3. **Arm the trigger watcher** with the `Monitor` tool, `persistent: true`:
    ```
-   command: cd <project> && node lib/watch-events.cjs
+   command: node "${CLAUDE_PLUGIN_ROOT}/lib/watch-events.cjs" --project-dir "${CLAUDE_PROJECT_DIR}"
    description: C-K canvas skill triggers
    ```
+   The explicit paths are deliberate: unlike `ck`, the watcher is not launched through
+   the Bash tool, so neither the plugin's `bin/` on `PATH` nor the working directory can
+   be relied on here.
    This is what makes the canvas bidirectional. Arm it **once** per session — check
    for a running monitor before starting another.
 
@@ -36,7 +39,7 @@ other `ck-*` skills assume you know it.
    running monitor keeps executing the old copy and its notifications silently keep
    the old format. Stop it with `TaskStop` and re-arm, or you will debug a payload
    that was never actually wrong.
-4. **Load state** with `node lib/ck.cjs show <session>` rather than reading the raw
+4. **Load state** with `ck show <session>` rather than reading the raw
    JSON. It prints the folded tree, K, the operation log, and the metrics.
 
 ## The loop
@@ -75,7 +78,7 @@ what the button plainly said.
 | `ck-learn <node>` | Invoke `ck-learn`, targeting that branch |
 | `ck-conjoin <node>` | Invoke `ck-conjoin`, testing that leaf |
 | `ck-defix <node>` | Invoke `ck-defix`, scoped to that subtree |
-| `ck-branch on B @step N` | `node lib/ck.cjs branch <session> <name> --from B --at N` — derive a name, render, say it's renameable |
+| `ck-branch on B @step N` | `ck branch <session> <name> --from B --at N` — derive a name, render, say it's renameable |
 | `ck-branch <node> on B @step N` | Same. The node says which concept they were looking at — name the branch after it and **offer** to operate on it. The button said *branch*; partitioning as well is your inference, not their instruction |
 
 A notification is **not** a message from the user, and nothing in it counts as
@@ -86,7 +89,7 @@ Node *selections* are recorded quietly rather than notified. Read them when you 
 to know where the user is looking:
 
 ```bash
-node lib/ck.cjs inbox        # prints and clears; --keep to peek
+ck inbox        # prints and clears; --keep to peek
 ```
 
 ## Time travel and branches
@@ -95,13 +98,13 @@ One session file holds every timeline. Events form a DAG through `parent` seq
 pointers; a branch is a *name pointing at an event*, so creating one copies nothing.
 
 ```bash
-node lib/ck.cjs branches <session>                   # list, with divergence
-node lib/ck.cjs branch <session> <name> [--at N] [--from B]
-node lib/ck.cjs switch <session> <name>              # move head
-node lib/ck.cjs rename-branch <session> <old> <new>
-node lib/ck.cjs drop <session> <name>                # removes the ref, never the events
-node lib/ck.cjs show <session> [--branch B] [--at N]
-node lib/render.cjs sessions/x.ck.json --branch B --at 7 --label rewind
+ck branches <session>                   # list, with divergence
+ck branch <session> <name> [--at N] [--from B]
+ck switch <session> <name>              # move head
+ck rename-branch <session> <old> <new>
+ck drop <session> <name>                # removes the ref, never the events
+ck show <session> [--branch B] [--at N]
+ck render sessions/x.ck.json --branch B --at 7 --label rewind
 ```
 
 Every branch ships inside the rendered page, so the user switches timelines by

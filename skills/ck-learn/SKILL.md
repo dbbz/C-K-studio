@@ -8,7 +8,7 @@ description: Apply the K→K operator - expand the knowledge space around a bloc
 K→K is not general research. It is research aimed at **changing the decidability of a
 specific concept**. Always name the target node before you start.
 
-Read `references/GRAMMAR.md` first.
+Read `${CLAUDE_PLUGIN_ROOT}/references/GRAMMAR.md` first.
 
 ## Procedure
 
@@ -101,7 +101,7 @@ found **negatively** related to training effectiveness — imagery, metaphor and
 constraint identification sat on the right one. The distinguishing feature is whether
 there is a procedure for getting back to the problem. Personal analogy has one: you were
 inside a specific mechanism, and you come back with what it was doing. See
-`references/TECHNIQUES.md` §6f.
+`${CLAUDE_PLUGIN_ROOT}/references/TECHNIQUES.md` §6f.
 
 ### 3. Classify what you found
 
@@ -119,7 +119,7 @@ interesting-but-inert facts makes the space harder to reason over.
 ### 4. Record
 
 ```bash
-node lib/ck.cjs add-k <session> \
+ck add-k <session> \
   --text "One proposition." \
   --status true \
   --source "IEC 61851-23:2023 §6.4" \
@@ -143,7 +143,7 @@ Often it is *not* the branch you were researching. Knowledge gathered on one bra
 routinely opens a different one.
 
 ```bash
-node lib/ck.cjs add-c <session> --parent C0 \
+ck add-c <session> --parent C0 \
   --attribute "+ ..." --partition expansive --op "K→C" \
   --breaks "..." --proposition "..." --k K7 \
   --summary "K7 supplied the attribute."

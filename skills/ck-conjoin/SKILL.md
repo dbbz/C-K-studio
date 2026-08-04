@@ -8,7 +8,7 @@ description: Apply the C→K operator - test whether a concept has acquired logi
 The terminating operator. A concept becomes a proposition with definite status, and
 the design of that branch is complete.
 
-Read `references/GRAMMAR.md` first.
+Read `${CLAUDE_PLUGIN_ROOT}/references/GRAMMAR.md` first.
 
 ## The test
 
@@ -30,7 +30,7 @@ Conjunction is *not*:
 
 Those are enthusiasm, prioritisation, and pattern-matching. The requirement is
 narrow: **something must now be known that was not known before.** If you cannot
-write that sentence as a K entry, the conjunction has not happened, and `lib/ck.cjs`
+write that sentence as a K entry, the conjunction has not happened, and `ck`
 will refuse the status change — by design.
 
 Watch for the commonest cause of a false conjunction: a restrictive partition that was
@@ -43,14 +43,14 @@ Conjunction is two commands, in this order. The K entry comes first because it *
 the conjunction; the status change is bookkeeping.
 
 ```bash
-node lib/ck.cjs add-k <session> \
+ck add-k <session> \
   --text "What is now known." \
   --status true \
   --source "<the evidence>" \
   --op "C→K" --for C4 \
   --summary "Conjunction of C4: the hydrofoil."
 
-node lib/ck.cjs set <session> C4 --status conjunct --k K5 --summary "C4 closed."
+ck set <session> C4 --status conjunct --k K5 --summary "C4 closed."
 ```
 
 `--for C4` is what makes it a conjunction *of that concept*, and it is how invariant 4
@@ -74,7 +74,7 @@ The move, in order:
 In the ESA/CNES Mars-engine case this is what reopened a concept that looked dead: the
 new partition was possible *only because* the negative results had generated the
 knowledge to formulate it. Log the re-partition as `--op "K→C"`, since that is what it
-is. See `references/TECHNIQUES.md` §4 (R5).
+is. See `${CLAUDE_PLUGIN_ROOT}/references/TECHNIQUES.md` §4 (R5).
 
 If a refutation produced no new knowledge, that is worth noticing on its own — it
 usually means the branch was decidable from the start and was never a concept.
@@ -94,14 +94,14 @@ questions, cheapest first:
 | At the **same scale**? | separate *parts from whole* — a bicycle chain: rigid links, flexible chain |
 
 If any answer is no, the contradiction dissolves and the node goes back to `open`. Only
-refute once all four hold. See `references/TECHNIQUES.md` §6e.
+refute once all four hold. See `${CLAUDE_PLUGIN_ROOT}/references/TECHNIQUES.md` §6e.
 
 Refutation is otherwise simple — no C→K entry is required, since what you learned is
 ordinary knowledge:
 
 ```bash
-node lib/ck.cjs add-k <session> --text "Why it fails." --status false --source "..." --op "K→K" --for C1
-node lib/ck.cjs set <session> C1 --status refuted --k K2 \
+ck add-k <session> --text "Why it fails." --status false --source "..." --op "K→K" --for C1
+ck set <session> C1 --status refuted --k K2 \
   --note "K2 settles this directly." --summary "C1 refuted by K2."
 ```
 
@@ -120,5 +120,5 @@ Two things are worth doing immediately, and both are easy to skip:
    it. What did building this branch reveal about the object? Those entries feed K→C
    elsewhere.
 2. **Re-read the open leaves.** New K can decide branches you weren't looking at.
-   Run `node lib/ck.cjs show <session>` and scan them against the new knowledge before
+   Run `ck show <session>` and scan them against the new knowledge before
    moving on.

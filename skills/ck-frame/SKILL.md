@@ -8,7 +8,7 @@ description: State the root concept of a C-K session and gate it against the und
 The single highest-leverage step. A root that fails the undecidability test produces
 a tree of obvious answers no matter how well the rest of the session is run.
 
-Read `references/GRAMMAR.md` first.
+Read `${CLAUDE_PLUGIN_ROOT}/references/GRAMMAR.md` first.
 
 ## Procedure
 
@@ -23,7 +23,7 @@ them is easy, fast, and produces sharper K — people who cannot generate a cons
 will immediately tell you when one is wrong.
 
 ```bash
-node lib/ck.cjs add-k <session> --text "..." --status true --source "..." --op seed \
+ck add-k <session> --text "..." --status true --source "..." --op seed \
   --summary "Seeded the constraint everyone treats as a law of nature."
 ```
 
@@ -66,7 +66,7 @@ deleting the attribute that points at the known answer.
 ### 5. Write it
 
 ```bash
-node lib/ck.cjs add-c <session> \
+ck add-c <session> \
   --proposition "There exists a ... such that ..." \
   --k K0,K1 \
   --note "Undecidable against K0–K1 because ..." \
@@ -111,7 +111,7 @@ Two constraints on the example, both measured: it must sit **outside** the obvio
 because a typical example standing alone *lowers* originality and fluency and wipes out
 the advantage experienced designers otherwise hold; and it does **not** need to displace
 the obvious answer — obvious and far-off shown side by side works nearly as well as
-far-off alone. Flank, don't suppress. See `references/TECHNIQUES.md` §3 and §6f.
+far-off alone. Flank, don't suppress. See `${CLAUDE_PLUGIN_ROOT}/references/TECHNIQUES.md` §3 and §6f.
 
 Whether an example is far-off is a property of *this* designer's knowledge, not of the
 example. Pick it against the K you just seeded, not against your own sense of surprise.

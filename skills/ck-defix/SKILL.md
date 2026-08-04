@@ -8,7 +8,7 @@ description: Adversarial anti-fixation pass over a C-K tree - detect where the d
 Fixation is the default state of design reasoning, not an occasional lapse. This pass
 assumes the tree is fixated and looks for the evidence.
 
-Read `references/GRAMMAR.md` first. Load state with `node lib/ck.cjs show <session>`.
+Read `${CLAUDE_PLUGIN_ROOT}/references/GRAMMAR.md` first. Load state with `ck show <session>`.
 
 ## Detect
 
@@ -64,7 +64,7 @@ often significant impairment**, with a Bayesian meta-analysis strongly supportin
 null. The authors' reading is the useful part: the stimulus was *too* random, and failed
 attempts to connect an irrelevant prompt appear to have derailed trains of thought that
 were going somewhere. A prompt list earns its keep by being structured and plausibly
-related to the domain, not by being surprising. See `references/TECHNIQUES.md` §6f.
+related to the domain, not by being surprising. See `${CLAUDE_PLUGIN_ROOT}/references/TECHNIQUES.md` §6f.
 
 Its output is raw attribute material, so run the survivors through the undecidability
 test before anything reaches C.
@@ -80,7 +80,7 @@ matches proteins, whose advantage is informational rather than energetic.
 So "add power, add material, add strength" is not just one option among many; it is a
 documented attractor. When a tree is full of it, the productive question is *what would
 solve this with no extra energy and no new material — only a different arrangement or a
-different piece of information?* See `references/TECHNIQUES.md` §6b.
+different piece of information?* See `${CLAUDE_PLUGIN_ROOT}/references/TECHNIQUES.md` §6b.
 
 Run the *survivors* through the undecidability test. Many limit-moves produce
 propositions K refutes instantly — those are knowledge, and worth adding to K, but
@@ -89,7 +89,7 @@ they are not concepts.
 ## Three rules from the experimental evidence
 
 These are not style preferences. All three are measured effects, and all three are easy
-to get backwards. Detail and sources in `references/TECHNIQUES.md` §3 and §6f.
+to get backwards. Detail and sources in `${CLAUDE_PLUGIN_ROOT}/references/TECHNIQUES.md` §3 and §6f.
 
 **1. If you state a prohibition at all, state it at category level.**
 
