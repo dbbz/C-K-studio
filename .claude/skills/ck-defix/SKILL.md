@@ -57,6 +57,15 @@ random-word group** — on idea count *and* solution breadth. The random-word ar
 it rules out "any prompt helps." Most forcing moves in this file are reasoned; this one
 was measured.
 
+**Never substitute a random prompt for this list.** Random stimulation is the one
+technique in this area with a pre-registered, adequately powered test against it: N=592,
+random Wikipedia pages, one convergent and two divergent tasks — **no improvement and
+often significant impairment**, with a Bayesian meta-analysis strongly supporting the
+null. The authors' reading is the useful part: the stimulus was *too* random, and failed
+attempts to connect an irrelevant prompt appear to have derailed trains of thought that
+were going somewhere. A prompt list earns its keep by being structured and plausibly
+related to the domain, not by being surprising. See `references/TECHNIQUES.md` §6f.
+
 Its output is raw attribute material, so run the survivors through the undecidability
 test before anything reaches C.
 
@@ -77,10 +86,10 @@ Run the *survivors* through the undecidability test. Many limit-moves produce
 propositions K refutes instantly — those are knowledge, and worth adding to K, but
 they are not concepts.
 
-## Two rules from the experimental evidence
+## Three rules from the experimental evidence
 
-These are not style preferences. Both are measured effects, and both are easy to get
-backwards. Detail and sources in `references/TECHNIQUES.md` §3.
+These are not style preferences. All three are measured effects, and all three are easy
+to get backwards. Detail and sources in `references/TECHNIQUES.md` §3 and §6f.
 
 **1. If you state a prohibition at all, state it at category level.**
 
@@ -115,6 +124,21 @@ otherwise hold over engineers.
 So when you report fixation, always pair it: name the class the tree is stuck in, and
 put one concrete concept from an unvisited branch next to it. Naming the fixation
 without supplying somewhere else to stand is the intervention that backfires.
+
+**3. The contrasting example is worth most early, and this pass is usually too late.**
+
+In a design-sketching experiment, a novel example raised the novelty of the following
+design at *every* stage it was introduced, and a typical one lowered it at every stage —
+but both effects were **strongest when the example came before the first sketch**, and
+they persisted through later sketches. Pair that with the finding that a designer's own
+first idea fixates them **harder** than any external example does, and the ordering is
+forced: the contrasting artefact should arrive *before* the thing that will do most of
+the fixating exists.
+
+The practical consequence for this skill is uncomfortable: `ck-defix` is remedial by
+construction, and remediation is the weaker position. When you run it, say so — and if
+there is a next session or a next branch, get the contrasting example in at framing time
+rather than saving it for the rescue.
 
 ## Why "just don't be obvious" fails
 

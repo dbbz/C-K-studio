@@ -41,6 +41,13 @@ This is the literature's own move, not a heuristic invented here — it is how t
 defixation stimuli in the hen's-egg experiments were authored. See
 `references/TECHNIQUES.md` §4 (R2).
 
+**Note where the reversal happens.** This is assumption reversal, and it belongs to
+*you*, authoring the partition. It is not an instruction to hand the user ("try
+reversing your assumptions"). The tested relative of that instruction — asking people to
+consider the opposite of their own answer — produced no effect, and the general finding
+is that you can push a room toward a reference but not away from one. Do the reversal;
+present the result.
+
 ## Two more moves, for when negation stalls
 
 **Reattribute the property to a different entity.** When an attribute you just added is
@@ -98,6 +105,28 @@ That is a good generator of the reattribution move above — but it is the exact
 of C-K's doctrine that expansion needs knowledge from outside the room. Use the closed
 world to unstick a specific branch, never as a standing rule. See
 `references/TECHNIQUES.md` §6.
+
+## The fallback harvest: five ways to move off a statement you can't build
+
+Sometimes you end up holding a proposition that is plainly unbuildable and won't
+decompose — a stray remark, a deliberately broken statement, something the user said and
+then laughed at. Don't discard it and don't defend it. Run it through five questions and
+keep whatever survives:
+
+| Operator | Ask |
+|---|---|
+| **Principle** | What principle is at work here, separated from this silly instantiation? |
+| **Difference** | What is different about this compared to the normal case? Start from the difference. |
+| **Moment to moment** | Play it forward. What happens next, and next? Somewhere downstream is a usable state. |
+| **Positive aspects** | Which single aspect of this has value, ignoring that the whole is unworkable? |
+| **Special circumstances** | Under what circumstance would this be exactly right? Is that circumstance reachable? |
+
+Whatever comes out is a **candidate attribute** and goes through the undecidability test
+like anything else. This is de Bono's "movement" apparatus, and it is worth having for
+one reason: it is a *harvest* procedure, the same job as step 5 of the virtual-form move
+above. The generation half of that method — deliberately silly statements, random words —
+is either untested or tested and failed, so don't import it. `[E4]`, prescription only;
+see `references/TECHNIQUES.md` §6f.
 
 ## The first partition of a root: author a projector set
 

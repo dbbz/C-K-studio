@@ -93,3 +93,25 @@ a reaction; "does this look right?" does not.
 
 Do not partition until that lands. A wrong root wastes every subsequent operator, and
 reframing at step three costs one exchange.
+
+## Put one contrasting example on the table before anyone has an idea
+
+Alongside the root, show **one concrete concept from a region nobody would go to
+unprompted**. Not a proposal, not something to build — a marker that the space extends
+that way. One sentence is enough: *"For calibration: something in this space could look
+like ⟨far-off concrete thing⟩. I'm not proposing it."*
+
+This is the most consistently supported intervention in the whole research base, and its
+timing is the part that gets lost. A contrasting example raises the novelty of what
+follows at any point it is introduced, but **the effect is largest when it arrives before
+the first idea** — and a designer's own first idea fixates them harder than any external
+example does. So the window is now, at framing, not later when the tree looks stuck.
+
+Two constraints on the example, both measured: it must sit **outside** the obvious class,
+because a typical example standing alone *lowers* originality and fluency and wipes out
+the advantage experienced designers otherwise hold; and it does **not** need to displace
+the obvious answer — obvious and far-off shown side by side works nearly as well as
+far-off alone. Flank, don't suppress. See `references/TECHNIQUES.md` §3 and §6f.
+
+Whether an example is far-off is a property of *this* designer's knowledge, not of the
+example. Pick it against the K you just seeded, not against your own sense of surprise.

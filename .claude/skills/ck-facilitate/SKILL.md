@@ -88,6 +88,13 @@ So, in order:
 The same applies to their existing product, their competitor's product, and the thing
 their boss suggested. All K.
 
+Then, in the same breath, **put one far-off concrete example on the table** — before any
+partitioning, not saved for when things stall. The novelty benefit of a contrasting
+example is largest when it lands before the first idea and decays the longer you hold it,
+which is exactly backwards from the usual instinct to keep provocations in reserve.
+One sentence, explicitly not a proposal. `ck-frame` has the wording and the two
+constraints on choosing it.
+
 ## Finding the object — and knowing early that you have the wrong one
 
 A wrong root wastes every operator after it. Reframing at step three costs one exchange.
@@ -369,6 +376,13 @@ explicit and reviewable, not a decision procedure; `GRAMMAR.md` says so at the e
 means it. Defixation reliably changes *what kinds* of options appear. That this produces
 *better* outcomes is inference, and for open-ended problems — which design problems are —
 it is empirically unestablished (`references/TECHNIQUES.md` §6d).
+
+If they push on numbers, give them the ceiling rather than a success story. The largest
+meta-analysis of creativity training — 169 studies, five decades, unpublished work
+included — finds an unadjusted effect around half a standard deviation that falls to
+**roughly a quarter of one** once publication bias is corrected for, and to the same
+figure again when you keep only the best-designed studies. That is the honest size of the
+whole field's claim, this method included. Small and real.
 
 So the honest claim is: this changes which options you can see, and it leaves a record of
 why you believed what you believed at each step. Neither of those is a guarantee that the

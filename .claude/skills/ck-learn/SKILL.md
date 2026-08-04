@@ -79,6 +79,30 @@ constraints, not your engineering objective, so "nature does it this way" carrie
 presumption of fitness for your purpose. Record the mechanism and its evidence; do not
 record the narrative.
 
+### 2d. One analogy move worth having: put yourself inside the mechanism
+
+When the blocking question is *how does this thing actually behave*, and reading has
+stopped producing anything, take the component's position and describe what is happening
+to you. Faraday "looking into the middle of an electrolyte"; the designer standing inside
+the joint as the load arrives. Narrate it physically — what pushes on you, what you can
+and cannot move, what you'd want.
+
+It is a K→C generator, and it generates by embodiment rather than by lookup, which is
+why it reaches attributes a literature search doesn't. Its output is raw material: run it
+through the undecidability gate like anything else. `[E2]` — the one adult study
+manipulated exactly this instruction and beat standard brainstorming on all nine
+problems, significantly on four.
+
+**Do not import the rest of that toolkit with it.** Symbolic analogy ("a compressed,
+purposefully illogical, poetic description"), fantasy analogy, guided imagery and
+free-association exercises belong to the technique cluster that a 70-study meta-analysis
+found **negatively** related to training effectiveness — imagery, metaphor and
+"illumination" all sat on the wrong side, while analogy used systematically and
+constraint identification sat on the right one. The distinguishing feature is whether
+there is a procedure for getting back to the problem. Personal analogy has one: you were
+inside a specific mechanism, and you come back with what it was doing. See
+`references/TECHNIQUES.md` §6f.
+
 ### 3. Classify what you found
 
 Every finding lands in exactly one of three buckets. Sort them explicitly:

@@ -3,11 +3,11 @@
 Findings from a literature sweep, kept so the skills encode what the literature
 supports rather than what is commonly repeated about C-K.
 
-**Status: one strand outstanding.** The C-K-native, imported-techniques, TRIZ and
-evidence/criticism strands are complete. Still missing: **provocation techniques** —
-de Bono PO and its movement operators, synectics, assumption reversal. Do not treat
-that absence as a finding; §6 covers the two documented provocation procedures that
-were found (virtual form, particles method), but not that family.
+**Status: complete.** All five strands are in — C-K-native, imported techniques, TRIZ,
+evidence/criticism, and provocation (§6f, the one that was outstanding: de Bono PO and
+its movement operators, synectics, assumption reversal). §6f also carries the
+frame-level finding about the creativity-training literature as a whole, which bounds
+what anything in this file can claim.
 
 Evidence grades: `[E1]` randomised experiment · `[E2]` quasi-experiment / classroom ·
 `[E3]` industrial case · `[E4]` prescription only, never evaluated.
@@ -519,6 +519,194 @@ common belief — it is a standalone psychological-inertia operator from earlier
   honest that much of it missed p<0.05. Same direction as Okudan et al. (2006) and Howard
   et al. (2008). Consistent with §6d: fixation and its remedies are not fluency effects.
 
+## 6f. Provocation — the family that turns out to be mostly untested
+
+The strand this file was missing. Short version: **the provocation family splits cleanly
+into a part that has been tested and works, and a part that has been tested and doesn't.
+The split is not where practitioners put it.**
+
+### What de Bono's PO actually prescribes
+
+Two stages, and only the first is ever quoted.
+
+**Setting up the provocation** — five named methods: **escape** (deny something taken for
+granted), **reversal**, **exaggeration**, **distortion**, **wishful thinking**. The output
+is prefixed *po* to mark that it is not an assertion. `[E4]`
+
+**Movement** — the operators for extracting value, and the real content of the method:
+extract a **principle**; focus on the **difference** from the current situation; play it
+**moment to moment** and see what happens next; take the **positive aspects**; find the
+**special circumstances** in which it would have value. `[E4]`
+
+Note what this is: not an idea generator but a **harvest procedure** — structurally the
+same role as USIT's translate-back step (§6). That is the salvageable part.
+
+### The evidence for PO itself: none found
+
+No controlled test of PO, of any individual movement operator, or of the setup methods was
+located. The surrounding programme fares no better. Moseley et al., *Frameworks for
+Thinking* (CUP 2005), reviewing 42 frameworks: *"There is sparse research evidence to show
+that generalised improvements in thinking performance can be attributed to training in the
+use of CoRT or Thinking Hats tools."* Sternberg's *Handbook of Creativity* puts the
+pragmatic school — de Bono its named exemplar — as *"concerned primarily with developing
+creativity, secondarily with understanding it, but almost not at all with testing the
+validity of their ideas."*
+
+**On the "Venezuela result", which is the one thing defenders cite.** It exists: a
+1970s Venezuelan evaluation reporting generalised improvement in pupils completing CoRT,
+usually reached through a secondary source (Nickerson, 1999) rather than read directly.
+Two things to hold about it. Venezuela ran **two** thinking-skills programmes under the
+same ministry in that period, and the one with a substantial published evaluation record
+is **Project Intelligence / Odyssey** (Harvard + Bolt Beranek and Newman) — a different
+curriculum, and a common source of borrowed credit. And the closest thing to an
+independent follow-up, an Australian study of CoRT-1 (Edwards & Baldauf, 67 Grade-7
+students), found *"little evidence of generalisation… other than in the area of creative
+thinking."*
+
+Note the shape of that last result honestly: the domain where CoRT did show an effect is
+the one this tool cares about. It is a single small study, and it does not rescue the
+transfer claim the programme is sold on — but it is not nothing, and reporting it as
+nothing would be the same sin this file catches other people in.
+
+### The sibling technique that *was* tested, and failed
+
+**Random entry / random word.** Malthouse, Liang, Russell & Hills (2022), *Cognition*
+218:104937 — **pre-registered, N=592**. Treatment was Wikipedia's random-page generator
+(four pages, summarise each in ≤10 words), against a mental-arithmetic control, across one convergent
+forecasting task and two divergent fluency tasks. Result: **no improvement, and often
+significant impairment.** Bayesian meta-analysis gave strong support for the null —
+BF₁₀ ran 0.24–0.82 across all seven outcomes (fluency, judge-scored creativity, and
+SemDis semantic-distance creativity in both divergent studies).
+
+The authors' own diagnosis is the useful part: the stimulus was *too* random. They
+conclude lateral stimulation *"may require such stimuli to be sufficiently task-related or
+'optimally random'"*, and note that **failed attempts to connect an irrelevant stimulus may
+have derailed trains of thought that were going somewhere.** `[E1]`
+
+This converges with §6e from the other direction: in Belski et al., the su-field field
+sweep beat a **random-word arm** used as an active comparator. Two independent lines, same
+conclusion — **randomness is the weak form; a structured, domain-relevant prompt list is
+the strong form.** Anything random this tool might add is already dominated by MATCEMIB.
+
+Study 1 of the same paper also ran a **consider-the-opposite** arm — the closest tested
+relative of assumption reversal — and found no main effect of treatment (p = .24). Scope
+that honestly: it was a numerical forecasting task, not a design task, and
+consider-the-opposite has support elsewhere as a *debiasing* technique. It is evidence
+against reversal-as-an-instruction-to-participants, not against reversal as an analytic
+move.
+
+### What does survive: provocation as an artefact, not an instruction
+
+**Smith, Kohn & Shah (2008)**, *Design Computing and Cognition '08*. Experiment 1
+(n=56, 47 analysed) built frequency norms for a sketched invention task on four
+dimensions — propulsion, medium, motion, number of parts. Experiment 2 (n=139, 119
+analysed, ~20 per cell) crossed **example type** (typical vs novel, both drawn from
+Experiment 1's own output) with **when it was shown** (before sketch 1, 2 or 3).
+
+Result: the typical example lowered the novelty of the immediately following sketch **at
+every stage**; the novel example raised it **at every stage**. Both effects persisted into
+later sketches, and both were **stronger the earlier the example was seen**.
+
+Caveat, and it matters: the paper reports cell means only — **no inferential statistics
+for Experiment 2**, and one between-subjects sentence is left unfinished in the published
+text. Treat it as convergent support, not as a decisive test. `[E2]`
+
+Convergent it certainly is. Agogué's expansive-example result (§3, T1), Chan et al. 2011,
+Vasconcelos et al. 2018 (§6d) and this all land on the same place:
+
+> **The effective unit of provocation is a concrete, contrasting artefact placed in front
+> of the designer. Not an instruction to be provocative, not a random word, and not a
+> prohibition.**
+
+And the timing result inverts standard practice. Provocation is normally held in reserve
+for when the room stalls; the data say **give it before the first idea**. That also
+composes with Leahy et al. 2020 (§6d) — your own first idea fixates you harder than an
+external example — so the contrasting artefact should arrive *before* the thing that will
+do most of the fixating exists.
+
+### Synectics
+
+Gordon (1961). Two directions: **making the strange familiar** (ordinary analysis) and
+**making the familiar strange** — "distort, invert, or transpose" what is taken for
+granted. Four mechanisms: **direct analogy** (how is this like that; biological sources
+favoured), **personal analogy** (identify bodily with a component — Faraday "looking into
+the middle of an electrolyte"), **symbolic analogy** (a compressed description
+"purposefully wrong or illogical", approached as poetic response), **fantasy analogy**.
+
+Evidence, such as it is:
+
+- **Bouchard (1972)**, *J. Applied Psychology* 56(5):418–421 — a synectics-style
+  personal-identification instruction vs standard brainstorming, 3 sessions, 9 problems.
+  Synectics superior on **all 9**, statistically significant on **4**. The catch: *both
+  arms were interacting groups.* Given production blocking (§6d), this shows synectics
+  beats brainstorming, not that either beats the same people working alone. `[E1]`
+- **Meador (1994)**, n=107 kindergarteners: gains for the synectics group, no
+  gifted/non-gifted difference — and **the most creative children gained least**. `[E2]`
+- **Gendrop (1996)**, *Creativity Research Journal* 9(1), n=97 nurses: significant gains
+  in **originality**; fluency, flexibility and critical thinking null. `[E2]`
+
+Old, small, run on children and nurses, measured on divergent-thinking tests, and sitting
+inside the corpus shown below to be severely publication-biased. Of the four mechanisms,
+**personal analogy is the one C-K has no substitute for** — it is a K→C attribute
+generator that works by embodiment rather than by lookup, and it is the mechanism the one
+adult study actually manipulated. Symbolic and fantasy analogy are a different matter; see
+immediately below.
+
+### The technique-level finding that cuts across this whole family
+
+**Scott, Leritz & Mumford (2004)**, *Creativity Research Journal* 16(4):361–388. 70
+studies, overall Δ = 0.68 across criteria. Buried in it is a course-content analysis that
+is the sharpest thing found anywhere in this sweep about *which* techniques earn their
+place.
+
+Positively related to training effect size: **critical thinking** (r=.22, β=.26),
+**convergent thinking** (r=.17, β=.12), **constraint identification** (r=.15, β=.07), and
+**use of analogies**. Negatively related: **expressive activities** (r=−.27, β=−.24),
+**illumination** (r=−.27, β=−.38), **imagery** (r=−.21), **elaboration** (r=−.19),
+**metaphors** (r=−.18, β=−.22). On problem-solving criteria specifically the gap widens:
+convergent thinking r=.44 and constraint identification r=.39, against expressive
+activities r=−.42, imagery r=−.37, metaphors r=−.34.
+
+The authors' summary: *"successful training courses devote less time and resources to
+techniques that stress unconstrained exploration."* Their explanation is that what training
+supplies is **heuristics for working systematically with knowledge you already have** —
+which is, almost verbatim, what a partition operator is.
+
+Two caveats. It is correlational across courses, with heavily confounded content
+categories. And Sio & Lortie-Forgues (below) fault this specific moderator analysis for
+dichotomising continuous moderators, for not testing each moderator's unique contribution,
+and for often not reporting statistical significance. Directionally it is still the best
+evidence available on the question, and it points one way: **structured beats
+unconstrained, and it is not close.**
+
+### The frame-level correction: what the whole literature is worth
+
+**Sio & Lortie-Forgues (2024)**, *Psychological Bulletin* 150(5):554–585 — the largest
+meta-analysis of creativity training to date, and the most important single result in this
+file for calibration. 169 studies, 844 effect sizes, **48 of them unpublished**, five
+decades.
+
+- Unadjusted effect **g = 0.53**, in line with earlier meta-analyses including Scott et al.
+- Every publication-bias adjustment method drops it to **0.29–0.32** (PEESE 0.32,
+  trim-and-fill 0.30, RoBMA 0.29, top-10% 0.30). The authors call the bias *"severe"* and
+  say it *"casts doubt on the representativeness of the published literature in the field
+  and on the conclusions of previous meta-analyses."*
+- Restricting to the highest-quality evidence — 19 studies meeting at least 3 of 4 quality
+  indicators, and **no study met all four** — gives **g = 0.28**.
+- Only **7%** of studies were powered at 80% to detect even 0.32. **5%** were replications.
+  **One** study out of 169 was preregistered. Of the 72 using a verbal divergent-thinking
+  test, over 40% reported only some of fluency/flexibility/originality.
+- Publication year did not moderate effect size — the field *"being slow to adopt more
+  rigorous research practices."*
+
+What this does and does not do to this file. It does **not** retract anything here: the
+strongest results cited above (Agogué, Ezzat, Belski, Vasconcelos, Malthouse) are direct
+experiments on ideation, not training-programme evaluations, and the largest of them found
+nulls, which is not what a bias-inflated literature produces. What it does is set the
+ceiling. **A real but small effect, around a quarter of a standard deviation, is the most
+any method in this file can honestly claim** — and that number comes from the literature's
+own best-quality subset, not from its advertising.
+
 ## 7. Implications for this tool
 
 1. **Do not build a "crazy idea" skill** on the premise that projectors are absurd. The
@@ -549,6 +737,30 @@ common belief — it is a standalone psychological-inertia operator from earlier
     generator when a branch is stuck.
 12. **Morphological analysis stays out** (§6c). Enumerate-then-filter presupposes the
     parameter list that an expansive partition exists to revise.
+13. **Never add a random-word / random-entry move** (§6f). It is the one technique in this
+    whole sweep with a pre-registered, adequately powered test against it: null to harmful,
+    N=592. It is also already dominated by MATCEMIB, which beat a random-word arm head to
+    head. If a prompt list is wanted, use the structured one.
+14. **Provocation is delivered as an artefact and delivered early** (§6f). `ck-facilitate`
+    and `ck-frame` should place the contrasting example *before* the first idea is
+    generated, not hold it back for when the room stalls — the effect is largest earliest,
+    and the designer's own first idea is the strongest fixator.
+15. **`ck-expand` gains de Bono's movement operators as a harvest checklist, and only
+    that** (§6f) — principle, difference, moment-to-moment, positive aspects, special
+    circumstances. Marked `[E4]`, prescription only. They are the same move as USIT's
+    translate-back step: what to do with a provocation you cannot build.
+16. **Do not add imagery, symbolic analogy, fantasy analogy or "illumination" moves**
+    (§6f). That cluster is the one measurably *negatively* related to training
+    effectiveness, and it is also the cluster with no procedure for getting back to the
+    problem. Personal analogy is the exception worth one line in `ck-learn`, as a K→C
+    generator, scoped `[E2]`.
+17. **Assumption reversal needs no new skill** — it is R2, already `ck-expand`'s core move.
+    The discipline the evidence adds is *where* it goes: reversal is for **authoring** the
+    partition and the taxonomy, not for instructing the room. Handed out as an
+    instruction, its nearest tested relative was null.
+18. **Calibrate every claim this tool makes to g ≈ 0.28** (§6f). Small and real. No skill
+    should promise more, and none should imply that a session's value rests on the
+    literature being stronger than it is.
 
 ## Sources
 
@@ -558,3 +770,13 @@ Cassotti (2011), ICED'11 · Agogué & Cassotti (2013), ICED'13 · Agogué et al.
 *J. Creative Behavior* 48(1) · Ezzat et al. (2017), *PLoS ONE* 12(6) · Ezzat et al.
 (2020), *JOCB* 54(1) · Agogué et al. (2015), *Psych. Aesthetics Creativity Arts* ·
 Boudier, Le Masson & Weil (2022), AIMS · Zeiler (2012), ICDC2012.
+
+Provocation strand (§6f): Malthouse, Liang, Russell & Hills (2022), *Cognition*
+218:104937 — the pre-registered random-stimuli null · Smith, Kohn & Shah (2008), *Design Computing and
+Cognition '08* · Scott, Leritz & Mumford (2004), *Creativity Research Journal*
+16(4):361–388 · Sio & Lortie-Forgues (2024), *Psychological Bulletin* 150(5):554–585 ·
+Bouchard (1972), *J. Applied Psychology* 56(5):418–421 · Gendrop (1996), *Creativity
+Research Journal* 9(1) · Meador (1994), *J. Education of the Gifted* · Gordon (1961),
+*Synectics* · Moseley et al. (2005), *Frameworks for Thinking*, CUP · Sternberg (ed.),
+*Handbook of Creativity* · Edwards & Baldauf (1987), on CoRT-1 · Nickerson (1999), the
+usual secondary route to the Venezuela claim.
