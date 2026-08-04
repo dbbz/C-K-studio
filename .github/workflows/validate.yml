@@ -31,6 +31,13 @@ jobs:
           for f in lib/*.cjs; do node --check "$f"; done
           bash -n bin/ck lib/start-viewer.sh lib/stop-viewer.sh
 
+      # docs/*.svg is generated. Rebuilding must be a no-op, or the README is
+      # showing something the source no longer says.
+      - name: README figures are in sync with their source
+        run: |
+          node scripts/build-diagrams.cjs
+          git diff --exit-code docs/
+
       - name: No cwd-relative call sites left in skills
         run: |
           if grep -rn 'node lib/\|\./lib/\|`references/' skills/; then

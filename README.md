@@ -1,5 +1,8 @@
 # C-K Studio
 
+[![validate](https://github.com/dbbz/C-K-studio/actions/workflows/validate.yml/badge.svg)](https://github.com/dbbz/C-K-studio/actions/workflows/validate.yml)
+[![license](https://img.shields.io/badge/license-MIT-blue?style=flat)](LICENSE)
+
 An interactive tool for running **Concept–Knowledge design sessions** (Hatchuel & Weil,
 Mines ParisTech) with Claude as the generating and challenging half of the loop.
 
@@ -7,6 +10,16 @@ Not a brainstorm app. The difference is a gate: every node in the concept space 
 *undecidable* against the knowledge space, and every expansive partition must name the
 property of the object's identity it violates. Those rules are enforced mechanically,
 not by good intentions.
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/gate-dark.svg">
+  <img alt="The undecidability gate: a candidate proposition is put to K. If K says 'yes, those exist' or 'no, that's impossible', it is knowledge. If K says 'I'd have to look it up', it is an unanswered question — research it, then ask again. Only 'I can't say' makes it a concept." src="docs/gate-light.svg" width="880">
+</picture>
+
+The third answer is the one that ruins C-K sessions. "Do lithium-air batteries work?" is
+a literature search; "there exists a vehicle that stores no energy on board" is a
+concept. Conflating them turns the whole exercise into brainstorming with extra
+vocabulary.
 
 ## Install
 
@@ -30,25 +43,18 @@ they live and get committed alongside the work they're about.
 Then talk to Claude, or press the buttons on the canvas — both drive the same loop.
 Open the printed URL **including its `?key=…`**; the server rejects requests without it.
 
-To see the shape of a finished session first, run `/ck-studio:ck-demo`. That's the
-hydrofoil case: it copies the worked example into your project and walks you to
-**event 7**, where the tree sits at 0% expansive with both branches dead — which is what
-a century of naval architecture looked like. Event 7 is the piece of knowledge that
-broke it open.
-
 While the plugin is enabled, `bin/ck` is on the Bash `PATH`, so `ck` shadows any other
 command by that name.
 
 ## The loop
 
-```
-   ┌──────── C→C partition ────────┐
-   │                               ▼
- K→C disjunction              concept space
-   ▲                               │
-   │                          C→K conjunction
-knowledge space ◀── K→K learning ──┘
-```
+Design is the co-expansion of both spaces. It terminates when a concept acquires a
+logical status — when C→K fires.
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/loop-dark.svg">
+  <img alt="The four operators. C, the concept space, holds propositions K can neither prove nor refute. K, the knowledge space, holds propositions with a definite status. C→C partition adds an attribute; K→K learning researches; K→C disjunction opens a concept from new knowledge; C→K conjunction gives a concept a status." src="docs/loop-light.svg" width="880">
+</picture>
 
 | Skill | Operator | What it enforces |
 |---|---|---|
@@ -67,6 +73,22 @@ Skills live in `skills/` and are invocable as `/ck-studio:ck-frame`,
 all read; inside a skill it is addressed as `${CLAUDE_PLUGIN_ROOT}/references/GRAMMAR.md`,
 because it ships with the plugin rather than living in your project.
 
+## What a session looks like
+
+Run `/ck-studio:ck-demo` to see a finished one. That's the hydrofoil case: it copies the
+worked example into your project and walks you to **event 7**, where the tree sits at 0%
+expansive with both branches dead — which is what a century of naval architecture looked
+like. Event 7 is the piece of knowledge that broke it open.
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/tree-dark.svg">
+  <img alt="The hydrofoil session around event 7. Under the root concept, C1 '+ more power' and C2 '+ a longer waterline' are both restrictive and both dead — K can settle them, so neither is a concept. Event 7, a K→K, establishes that wave-making resistance comes from displacing water, not from being a boat. That opens C3 '+ does not displace water', an expansive partition that breaks the definition of a boat as a body supported by buoyancy, under which '+ supported by a submerged wing' is restrictive again." src="docs/tree-light.svg" width="880">
+</picture>
+
+Partition type is judged against the **parent** node, never the root. Once you accept a
+non-displacing vessel, foils are a known means — so C4 is restrictive even though its
+parent was expansive. That relativity is the part people get wrong most often.
+
 ## Architecture
 
 A session is an **append-only event DAG in one file**. Events carry a `parent` seq;
@@ -77,12 +99,10 @@ timeline (folding the first *n* events of a chain is the state after *n* operati
 branches (a name pointing at an existing event — creating one copies nothing), and
 auditability (the operator sequence *is* the file).
 
-```
-sessions/*.ck.json ──fold──▶ render.cjs ──▶ .ck/viewer/content/*.html ──server──▶ browser
-        ▲                                                                          │
-        │                                                                    click │
-   ck.cjs appends ◀── skills ◀── Monitor notification ◀── watch-events.cjs ◀── JSONL
-```
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/arch-dark.svg">
+  <img alt="The session file is folded and rendered to HTML by render.cjs (via view.cjs), then served to the browser. A click on the canvas is appended to JSONL, picked up by watch-events.cjs, notified to Claude through Monitor, and turned into a skill call that appends a new event to the same file." src="docs/arch-light.svg" width="880">
+</picture>
 
 **Bidirectional.** Canvas buttons don't just leave a note for later — `lib/watch-events.cjs`
 runs under the `Monitor` tool and turns each press into a notification, so clicking
@@ -149,6 +169,8 @@ step 22, one step ahead since.
 | `lib/watch-events.cjs` | Monitor script: canvas clicks → Claude notifications |
 | `lib/start-viewer.sh`, `stop-viewer.sh` | Lifecycle |
 | `scripts/check-skills.cjs` | Frontmatter gate — `claude plugin validate` doesn't cover skills here |
+| `scripts/build-diagrams.cjs` | Generates `docs/*.svg` — one source, a light and a dark file per figure |
+| `docs/` | The README figures. Generated; edit the script, not the SVG |
 | `references/GRAMMAR.md` | The operator grammar and the undecidability test |
 | `references/TECHNIQUES.md` | Literature notes: which techniques have evidence, which do not |
 | `SCHEMA.md` | Event log format and the five invariants |
@@ -186,6 +208,8 @@ claude plugin validate . --strict     # manifests; does NOT read skills/
 node scripts/check-skills.cjs         # frontmatter, which the above misses
 for f in lib/*.cjs; do node --check "$f"; done
 bash -n bin/ck lib/start-viewer.sh lib/stop-viewer.sh
+
+node scripts/build-diagrams.cjs && git diff --exit-code docs/   # figures in sync
 ```
 
 `version` appears in both `.claude-plugin/plugin.json` and the marketplace entry; keep
@@ -196,3 +220,42 @@ them equal or `--strict` will say so.
 Blue = restrictive, orange = expansive, validated for colour-vision deficiency and
 contrast in both light and dark modes. Partition type also carries an `R`/`E` badge, so
 it is never encoded by colour alone.
+
+The README figures use the same palette, and ship as a light and a dark file that GitHub
+picks between with `<picture>`. They are generated by `scripts/build-diagrams.cjs` from a
+single source per figure, so the two themes cannot disagree.
+
+## From the research notes
+
+`references/TECHNIQUES.md` is a literature sweep, kept so the skills encode what the
+evidence supports rather than what gets repeated about C-K. A few things out of it — not
+a summary, and not exhaustive.
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/fixation-dark.svg">
+  <img alt="The hen's egg paradigm. Asked to keep an egg dropped from 10 m from breaking, answers fall into ten categories, three of which — damping the shock, protecting the egg, slowing the fall — silently assume a device, and an inert one. Those three absorb 81% of psychology undergraduates' answers, 76% of engineers', and 63% of designers'." src="docs/fixation-light.svg" width="880">
+</picture>
+
+Children proposed wrapping the egg in foil. No adult did — ten-year-olds know what
+parachutes are, but that knowledge was never activated. Fixation is a failure of
+**activation**, not of possession, which is why injecting knowledge works at all.
+
+| Finding | |
+|---|---|
+| Your own first idea fixates you harder than an external example does | Which inverts the usual worry about showing people examples |
+| Experts fixate as much as novices — and cannot tell | Chess masters who reported searching for alternatives were still eye-tracking the familiar move |
+| "Avoid the obvious solution" mostly does nothing | Best-powered test, N=303: exposure to examples changed output, exposure to instructions did not |
+| Random-word prompts are null to harmful | Pre-registered, N=592. A structured eight-field sweep beat a random-word arm head to head |
+| Provocation works as an artefact, not an instruction | And earliest is strongest — it belongs *before* the first idea, not held back for when the room stalls |
+| Nobody reliably picks their own best idea | Generation and selection fail independently, so fixing generation alone buys nothing |
+
+A large part of the file is what the evidence *doesn't* support — including about C-K
+itself, and about this tool's own premise. It lands on a number everything else has to
+be calibrated against:
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/calibration-dark.svg">
+  <img alt="Creativity-training effect size. As published, Hedges' g is 0.53. Every publication-bias correction drops it to between 0.29 and 0.32. The highest-quality subset gives 0.28." src="docs/calibration-light.svg" width="880">
+</picture>
+
+Small and real. No skill here should promise more.
