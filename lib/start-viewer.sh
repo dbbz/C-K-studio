@@ -19,7 +19,9 @@ INFO="$STATE_DIR/server-info"
 
 # Already up? Reuse it — the user's tab stays valid.
 if [[ -f "$INFO" ]]; then
-  PID="$(node -e "process.stdout.write(String(require('$INFO').pid))" 2>/dev/null || echo "")"
+  # Read it as JSON, not as a module: the file has no extension, so require() would
+  # hand it to the .js loader and throw on the first colon.
+  PID="$(node -e "process.stdout.write(String(JSON.parse(require('fs').readFileSync(process.argv[1],'utf8')).pid))" "$INFO" 2>/dev/null || echo "")"
   if [[ -n "$PID" ]] && kill -0 "$PID" 2>/dev/null; then
     cat "$INFO"
     exit 0

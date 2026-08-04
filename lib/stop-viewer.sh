@@ -2,7 +2,14 @@
 # Stop the C-K viewer. Rendered screens and session state are left in place.
 set -euo pipefail
 
-PROJECT_DIR="${1:-$(pwd)}"
+PROJECT_DIR="$(pwd)"
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --project-dir) PROJECT_DIR="$2"; shift 2 ;;
+    *) PROJECT_DIR="$1"; shift ;;
+  esac
+done
+
 INFO="$PROJECT_DIR/.ck/viewer/state/server-info"
 
 if [[ ! -f "$INFO" ]]; then
@@ -10,7 +17,7 @@ if [[ ! -f "$INFO" ]]; then
   exit 0
 fi
 
-PID="$(node -e "process.stdout.write(String(require('$INFO').pid))")"
+PID="$(node -e "process.stdout.write(String(JSON.parse(require('fs').readFileSync(process.argv[1],'utf8')).pid))" "$INFO")"
 kill "$PID" 2>/dev/null || true
 
 for _ in $(seq 1 20); do
