@@ -3,13 +3,48 @@
 [![validate](https://github.com/dbbz/C-K-studio/actions/workflows/validate.yml/badge.svg)](https://github.com/dbbz/C-K-studio/actions/workflows/validate.yml)
 [![license](https://img.shields.io/badge/license-MIT-blue?style=flat)](LICENSE)
 
-An interactive tool for running **Concept–Knowledge design sessions** (Hatchuel & Weil,
-Mines ParisTech) with Claude as the generating and challenging half of the loop.
+An interactive tool for running **Concept–Knowledge design sessions** — a design theory
+from Mines ParisTech (Hatchuel & Weil) — with Claude as the generating and challenging
+half of the loop.
 
-Not a brainstorm app. The difference is a gate: every node in the concept space must be
-*undecidable* against the knowledge space, and every expansive partition must name the
-property of the object's identity it violates. Those rules are enforced mechanically,
-not by good intentions.
+## What C-K is
+
+Boats have a speed limit set by the length of their hull at the waterline. Ask how to
+beat it and you will hear *more power* and *a longer hull*. Both are real answers. Both
+are also answers your existing knowledge can already evaluate — which is precisely why
+neither one invents anything.
+
+C-K keeps two spaces apart and makes you say which one you are in.
+
+**K — knowledge.** Propositions you can settle right now: true, false, or go look it up.
+*"Near that limit, wave-making resistance rises with roughly the sixth power of speed."*
+
+**C — concepts.** Propositions K **cannot** settle. Not vague, not impossible —
+*undecidable*, because the object does not exist yet, so no amount of research will
+resolve it. *"There exists a vessel that travels far faster than the hull speed of its
+waterline length."*
+
+You cannot research that second one into being true or false; you can only *design* it.
+And when someone eventually does, hydrofoils exist: the proposition acquires a truth
+value, becomes ordinary knowledge, and K has grown.
+
+That is the entire engine. You expand C by adding an attribute to a concept — a
+**partition** — you expand K by learning, and the two feed each other until a concept
+lands in K. Designing *is* that co-expansion, and the theory's wager is that keeping the
+two apart is what stops you circling the obvious.
+
+The move that matters is a partition K cannot vouch for. *"+ a longer hull"* is
+**restrictive**: K already knows hulls have lengths, so it merely selects among known
+variants. *"+ does not displace water"* is **expansive**: K knows no such boat, and
+accepting it forces you to revise what a boat *is*. Expansive partitions are where new
+designs come from — and they are what every ideation method promises and few can
+actually locate.
+
+## The gate
+
+Most things people call ideas are not concepts. They are requirements, preferences, or
+questions nobody has looked up yet. So every candidate is put to K before it is allowed
+into C:
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/gate-dark.svg">
@@ -20,6 +55,10 @@ The third answer is the one that ruins C-K sessions. "Do lithium-air batteries w
 a literature search; "there exists a vehicle that stores no energy on board" is a
 concept. Conflating them turns the whole exercise into brainstorming with extra
 vocabulary.
+
+This is what makes it not a brainstorm app, and the rules are enforced mechanically
+rather than by good intentions: an expansive partition that fails to name the property
+it breaks is rejected by `lib/ck.cjs`, not by a facilitator remembering to ask.
 
 ## Install
 
@@ -37,19 +76,15 @@ ck new my-session --title "..." --brief "..."
 ck view --open
 ```
 
-Sessions are written to `sessions/` in your current directory, not into the plugin, so
-they live and get committed alongside the work they're about.
+Open the printed URL **including its `?key=…`** — the server rejects requests without
+it. From there, talk to Claude or press the buttons on the canvas; both drive the same
+loop.
 
-Then talk to Claude, or press the buttons on the canvas — both drive the same loop.
-Open the printed URL **including its `?key=…`**; the server rejects requests without it.
+Sessions are written to `sessions/` in your current directory rather than into the
+plugin, so they live and get committed alongside the work they are about. Note that
+while the plugin is enabled, `ck` shadows any other command by that name.
 
-While the plugin is enabled, `bin/ck` is on the Bash `PATH`, so `ck` shadows any other
-command by that name.
-
-## The loop
-
-Design is the co-expansion of both spaces. It terminates when a concept acquires a
-logical status — when C→K fires.
+## The operators
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/loop-dark.svg">
@@ -64,21 +99,19 @@ logical status — when C→K fires.
 | `ck-expand` | C→C | Negate constitutive properties; label every partition; name what it breaks |
 | `ck-learn` | K→K, K→C | Research aimed at decidability, sorted into deciding / refuting / attribute-bearing |
 | `ck-conjoin` | C→K | A conjunction requires new knowledge; a refutation climbs and re-partitions |
-| `ck-defix` | — | Six fixation signatures, seven forcing moves, and the two evidence-backed rules |
+| `ck-defix` | — | Six fixation signatures, eight forcing moves, three rules from the evidence |
 | `ck-map` | — | Render, assess, hand off |
 | `ck-demo` | — | Loads the worked example and narrates it |
 
-Skills live in `skills/` and are invocable as `/ck-studio:ck-frame`,
-`/ck-studio:ck-expand`, and so on. `references/GRAMMAR.md` is the shared theory core they
-all read; inside a skill it is addressed as `${CLAUDE_PLUGIN_ROOT}/references/GRAMMAR.md`,
-because it ships with the plugin rather than living in your project.
+Skills are invocable as `/ck-studio:ck-frame`, `/ck-studio:ck-expand`, and so on.
+`references/GRAMMAR.md` is the shared theory core they all read.
 
 ## What a session looks like
 
-Run `/ck-studio:ck-demo` to see a finished one. That's the hydrofoil case: it copies the
-worked example into your project and walks you to **event 7**, where the tree sits at 0%
-expansive with both branches dead — which is what a century of naval architecture looked
-like. Event 7 is the piece of knowledge that broke it open.
+Run `/ck-studio:ck-demo` to see a finished one. That is the hydrofoil case: it copies
+the worked example into your project and walks you to **event 7**, where the tree sits
+at 0% expansive with both branches dead — which is what a century of naval architecture
+looked like. Event 7 is the piece of knowledge that broke it open.
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/tree-dark.svg">
@@ -88,6 +121,10 @@ like. Event 7 is the piece of knowledge that broke it open.
 Partition type is judged against the **parent** node, never the root. Once you accept a
 non-displacing vessel, foils are a known means — so C4 is restrictive even though its
 parent was expansive. That relativity is the part people get wrong most often.
+
+Blue is restrictive and orange is expansive throughout, validated for colour-vision
+deficiency and for contrast in both light and dark modes. Type also carries an `R`/`E`
+badge, so it is never encoded by colour alone.
 
 ## Architecture
 
@@ -113,12 +150,10 @@ runs under the `Monitor` tool and turns each press into a notification, so click
 initial paint and serialised into the page for scrubbing and branch switching. There is
 no second implementation to drift out of sync.
 
-**Tool and data are in different trees.** The plugin holds the code and the shared theory
-docs; your project holds `sessions/` and `.ck/`. Every entry point takes that split
-explicitly — `ck` resolves `lib/` from `$BASH_SOURCE` while leaving cwd alone, and
-`render.cjs`, `watch-events.cjs` and `ck-server.cjs` all accept `--project-dir`
-(defaulting to cwd). Skills address the plugin side as `${CLAUDE_PLUGIN_ROOT}` and the
-project side as bare relative paths, which is the whole distinction in one line.
+**Tool and data are in different trees.** The plugin holds the code and the shared
+theory docs; your project holds `sessions/` and `.ck/`. Every entry point takes that
+split explicitly, and skills address the plugin side as `${CLAUDE_PLUGIN_ROOT}` and the
+project side as bare relative paths.
 
 **`lib/ck.cjs` is the only mutation path.** It enforces the invariants in `SCHEMA.md` —
 an expansive partition without a `breaks` is rejected, and a conjunction without a
@@ -146,31 +181,26 @@ ck branches my-session                   # list, with divergence
 ck switch my-session main
 ```
 
-Branching never rewrites history — that's the point of an append-only log — and it
-copies nothing: `branches[name]` is just a seq to start walking from, so two branches
-sharing a prefix share the same event objects. Node ids are allocated across the whole
-file, so `C12` means the same concept in every timeline and branches can be compared.
+Branching never rewrites history, and it copies nothing: `branches[name]` is just a seq
+to start walking from, so two branches sharing a prefix share the same event objects.
+Node ids are allocated across the whole file, so `C12` means the same concept in every
+timeline and branches can be compared.
 
 Since every branch ships inside the page, **switching timelines is a click in the
-header** — instant and client-side. The picker shows divergence as `@22 +1`: split at
-step 22, one step ahead since.
+header**. The picker shows divergence as `@22 +1`: split at step 22, one step ahead
+since.
 
 ## Files
 
 | Path | |
 |---|---|
-| `.claude-plugin/` | `plugin.json` and the self-hosted `marketplace.json` — the repo is its own marketplace |
 | `bin/ck` | The `ck` command: resolves `lib/` relative to itself, leaves cwd alone |
 | `lib/ck.cjs` | Event-DAG mutation CLI — branches and invariant enforcement live here |
 | `lib/view.cjs` | Pure chain/fold/render functions, shared by Node and the browser |
 | `lib/render.cjs` | Session → canvas HTML |
 | `lib/ck-server.cjs` | Zero-dep viewer server (SSE reload + click capture) |
-| `lib/migrate-v3.cjs` | Converts v2 one-file-per-fork sessions into v3 branches |
 | `lib/watch-events.cjs` | Monitor script: canvas clicks → Claude notifications |
-| `lib/start-viewer.sh`, `stop-viewer.sh` | Lifecycle |
-| `scripts/check-skills.cjs` | Frontmatter gate — `claude plugin validate` doesn't cover skills here |
-| `scripts/build-diagrams.cjs` | Generates `docs/*.svg` — one source, a light and a dark file per figure |
-| `docs/` | The README figures. Generated; edit the script, not the SVG |
+| `skills/` | The nine skills above |
 | `references/GRAMMAR.md` | The operator grammar and the undecidability test |
 | `references/TECHNIQUES.md` | Literature notes: which techniques have evidence, which do not |
 | `SCHEMA.md` | Event log format and the five invariants |
@@ -185,15 +215,14 @@ detection, timeline, bidirectional triggers.
 facilitated group sessions: K-sharing rounds, concept projectors, multi-participant
 capture, presentable outputs.
 
-**Stage 3 (not built): teaching mode.** Worked-example walkthroughs, and a stricter
-tutor that explains *why* a proposed partition is restrictive when you thought it was
-expansive.
+**Stage 3 (not built): teaching mode.** A stricter tutor that explains *why* a proposed
+partition is restrictive when you thought it was expansive.
 
-Both reuse the same event log, so they're additive rather than a rewrite.
+Both reuse the same event log, so they are additive rather than a rewrite.
 
 ## Developing this repo
 
-Install it from the working copy, so edits to skills and `lib/` take effect where you can
+Install from the working copy, so edits to skills and `lib/` take effect where you can
 see them:
 
 ```
@@ -215,15 +244,9 @@ node scripts/build-diagrams.cjs && git diff --exit-code docs/   # figures in syn
 `version` appears in both `.claude-plugin/plugin.json` and the marketplace entry; keep
 them equal or `--strict` will say so.
 
-## Colour
-
-Blue = restrictive, orange = expansive, validated for colour-vision deficiency and
-contrast in both light and dark modes. Partition type also carries an `R`/`E` badge, so
-it is never encoded by colour alone.
-
-The README figures use the same palette, and ship as a light and a dark file that GitHub
-picks between with `<picture>`. They are generated by `scripts/build-diagrams.cjs` from a
-single source per figure, so the two themes cannot disagree.
+The figures in `docs/` are generated — edit `scripts/build-diagrams.cjs`, not the SVG.
+It emits a light and a dark file per figure from one source, so the two themes cannot
+disagree, and GitHub picks between them with `<picture>`.
 
 ## From the research notes
 
