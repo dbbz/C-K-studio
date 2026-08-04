@@ -79,6 +79,23 @@ is. See `references/TECHNIQUES.md` §4 (R5).
 If a refutation produced no new knowledge, that is worth noticing on its own — it
 usually means the branch was decidable from the start and was never a concept.
 
+### Before accepting a refutation, try separating
+
+Many refutations take the form *"impossible, because it would have to be both P and
+not-P."* That is not always a refutation — it is often an unexamined assumption that both
+requirements must hold **at once, everywhere, unconditionally, at every scale.** Four
+questions, cheapest first:
+
+| Ask | If the answer is no |
+|---|---|
+| Must both hold **at the same moment**? | separate in *time* — retractable landing gear, a fuse |
+| At the **same point**? | separate in *space* — a knife's sharp edge and thick spine |
+| Under the **same condition**? | separate by *condition* — photochromic glass, a shear pin |
+| At the **same scale**? | separate *parts from whole* — a bicycle chain: rigid links, flexible chain |
+
+If any answer is no, the contradiction dissolves and the node goes back to `open`. Only
+refute once all four hold. See `references/TECHNIQUES.md` §6e.
+
 Refutation is otherwise simple — no C→K entry is required, since what you learned is
 ordinary knowledge:
 

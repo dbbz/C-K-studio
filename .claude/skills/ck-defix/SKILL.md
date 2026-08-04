@@ -44,7 +44,25 @@ mechanical — use them when inspiration doesn't arrive:
 | **Swap the beneficiary** | What if it's designed for a non-obvious party? | packaging designed for the recycler |
 | **Leave the energy attractor** | Is every partition manipulating energy or material? | solve it with structure or information instead |
 
-That last one is the only forcing move here with a measured basis. Across ~2500 analysed
+## When nothing above unsticks it: sweep the field types
+
+The best-evidenced ideation prompt in the whole research sweep, and it takes five
+minutes. Walk eight field types, pausing on each to ask *could this do the work?*
+
+> **M**echanical · **A**coustic · **T**hermal · **C**hemical · **E**lectric ·
+> **M**agnetic · **I**ntermolecular · **B**iological
+
+In a three-arm controlled study this beat **both** a no-prompt control **and a
+random-word group** — on idea count *and* solution breadth. The random-word arm matters:
+it rules out "any prompt helps." Most forcing moves in this file are reasoned; this one
+was measured.
+
+Its output is raw attribute material, so run the survivors through the undecidability
+test before anything reaches C.
+
+---
+
+The energy/information move above is the other one with a measured basis. Across ~2500 analysed
 conflicts, technology at human scales resolves problems by manipulating **energy up to
 60% of the time**, then material. Biology at the same scales resolves them predominantly
 through **information and structure** — over 300 synthetic polymers exist and none
@@ -64,11 +82,18 @@ they are not concepts.
 These are not style preferences. Both are measured effects, and both are easy to get
 backwards. Detail and sources in `references/TECHNIQUES.md` §3.
 
-**1. State prohibitions at category level, never at exemplar level.**
+**1. If you state a prohibition at all, state it at category level.**
 
 Telling someone to avoid a *specific* common answer measurably **increases** fixation.
-Stating the same prohibition as a **category** mitigates it, reportedly doubling
-creative output.
+Stating the same prohibition as a **category** mitigates it, reportedly doubling creative
+output.
+
+⚠️ But hold this loosely. The category finding is **single-lab and unreplicated**, and the
+best-powered study in the area (N=303) found that discouraging instructions of *any* kind
+had **no effect** — feature incorporation in discouraged groups was no different from
+groups given no instruction at all. The robust asymmetry is: **you can push a room toward
+a reference; you cannot push it away.** So prefer rule 2 below, and treat prohibitions as
+a weak instrument even in their best form.
 
 | Don't say | Say |
 |---|---|
@@ -122,6 +147,13 @@ speculative nodes to their tree without asking is its own kind of vandalism.
 Be genuinely adversarial about the *reasoning* and not about the user. "This branch
 never questions X" is useful. "You're being unimaginative" is not, and it's usually
 wrong anyway — fixation is a property of how design problems are structured, not a
-character flaw. Cognitive-psychology work on the effect (Agogué and colleagues) finds
-it in experts as reliably as in novices; expertise deepens the K that makes the
-obvious answer obvious.
+character flaw. Experts and novices fixate **to the same extent**; what differs is that
+experts generate more non-redundant ideas, and that **defixation aids work on experts and
+do essentially nothing for novices**. So this pass is worth more, not less, with someone
+who knows the domain cold.
+
+The genuinely damning finding is not that experts fixate more. It is that they fixate
+equally **and cannot tell** — design faculty only partially perceive their own fixation,
+and chess masters who report searching for alternatives are still, on eye-tracking,
+looking at the familiar move. Treat "I've already considered the alternatives" as
+uninformative, from anyone, including yourself.

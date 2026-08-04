@@ -107,3 +107,26 @@ Only `abandoned` is neutral.
 techniques are experimentally supported, which are prescription only, and which
 widely-repeated claims about C-K are not supported at all. Consult it before adding a
 new technique to any skill.
+
+## An honest note on the undecidability gate
+
+This gate is the tool's central discipline, and it is weaker than it looks. In logic,
+*undecidability* means the demonstrated non-existence of a decision procedure. C-K's
+"undecidable in K" means only that K does not currently entail the proposition or its
+negation — ordinary epistemic incompleteness, which every unanswered question satisfies.
+The word imports rigour it does not carry.
+
+Worse: applying the gate strictly would need a formalised K to check entailment against.
+K here is a list of sentences, so the judgement is ultimately the designer's. A criterion
+that returns whatever its user wants is not a criterion.
+
+Use it anyway, but for what it actually is: **a forcing function that makes a K-relative
+judgement explicit and reviewable**, rather than a decision procedure. That is why every
+node records the K it was tested against — not because the test is objective, but because
+recording it is what lets someone later disagree with it. A gate you can argue with beats
+an intuition you cannot.
+
+The same caution applies to the Forcing correspondence sometimes cited as C-K's
+mathematical foundation. It is an analogy proposed and graded by its own authors, and it
+generates no constraint on what a designer should do. Nothing here would change if it
+were withdrawn.

@@ -315,6 +315,209 @@ completeness; **not** folded into any skill. Its documented pathologies are wort
 if anyone tries: over-constraint from treating indirect relations as direct, and lost
 rationale when assessments aren't documented during the pass.
 
+## 6e. TRIZ — a K→C engine with a restricted C→C repertoire
+
+**The mapping, which is the useful part.** Every TRIZ tool operates on an object whose
+identity is already settled: the matrix takes parameters *of a given system*; su-field
+takes S1/S2/F *of a given system*; IFR says "without complicating *the system*"; ARIZ's
+mini-problem literally reads *"with **minimum changes to the system**"*. TRIZ improves and
+transforms a **known** thing extremely well.
+
+So in C-K terms TRIZ is a powerful **K→C engine** — a knowledge base that supplies
+attributes — with **no operator for revising the object's identity**. Use the 40
+principles as an attribute source feeding a partition. Do **not** treat them as a
+partitioning method; they cannot produce an expansive partition on their own, because
+they presuppose the object that an expansive partition exists to revise. This is a scope
+critique, not a validity one, and it is the honest reason C-K and TRIZ compose rather
+than compete.
+
+### Worth importing
+
+**MATCEMIB field sweep — the best-evidenced ideation prompt found anywhere in this
+sweep.** When a branch is stuck, walk eight field types and spend a couple of minutes on
+each: **M**echanical, **A**coustic, **T**hermal, **C**hemical, **E**lectric,
+**M**agnetic, **I**ntermolecular, **B**iological.
+
+Belski, Livotov & Mayer (2016), *Procedia CIRP* 39:85–90 — 90 students, three arms,
+identical task, 16 minutes. The su-field group beat **both** the no-prompt control **and
+a random-word group**, on idea count *and* solution breadth. The random-word arm is a
+proper active comparator, so this rules out "any prompt helps." It replicates an earlier
+RMIT result. Note what it actually validates: *eight words naming field types*, not TRIZ
+as a whole.
+
+**Separation principles — a way to revive a refuted node.** When a concept was refuted
+because something must be both P and not-P, the refutation may be premature. Four
+questions, cheapest first:
+
+| | Ask | If no → |
+|---|---|---|
+| **Time** | Must both hold at the same moment? | retractable landing gear; a fuse |
+| **Space** | At the same point? | a knife: sharp edge, thick spine |
+| **Condition** | Under the same condition? | photochromic glass; a shear pin |
+| **Parts/whole** | At the same scale? | a bicycle chain: rigid links, flexible chain |
+
+**Size–Time–Cost (STC/RVS)** — six thought experiments, each followed by re-describing
+the problem: size → 0, size → ∞, time → 0, time → ∞, cost → 0, cost → ∞. The point is
+not the answers but destroying the implicit scale assumptions that make the current
+design look inevitable. This is the documented ancestor of the "take an attribute to its
+limit" move already in `ck-defix`. Note it is *not* a step in ARIZ-85C, contrary to
+common belief — it is a standalone psychological-inertia operator from earlier versions.
+
+### Evidence — use the tools, disregard the epistemology
+
+- **The patent study is undocumented.** Figures circulating range across two orders of
+  magnitude (40,000 to 3 million). The most granular chronology records ~4,000 by 1948
+  and ~5,000 by 1965 — Altshuller's *personal* analytical work. There is no published
+  protocol, no sampling frame, no inter-coder agreement. Anyone citing "2.5 million
+  patents" is not citing a documented study.
+- **It selects on the dependent variable.** Patents judged inventive were coded and their
+  commonalities reported. No base rate was ever established, so it cannot tell you that
+  *applying* the patterns produces inventive results.
+- **The matrix is questioned inside TRIZ itself.** ARIZ-85C contains no matrix step at
+  all — it routes to the Standards, Separation Principles and Effects. Borgianni et al.
+  (2021, *Design Science* 7) find principle selection is domain-dependent, not
+  deterministic, undermining the domain-independence claim. No head-to-head test against
+  random principle selection exists.
+- **The 40 principles are near-unfalsifiable.** They are abstract enough that almost any
+  solution retrofits to at least one, and the canonical example set repeatedly notes a
+  single example demonstrating two or three simultaneously.
+- **What does replicate:** a novelty/variety-up, fluency-down trade-off. Hernandez et al.
+  (2012) found TRIZ improved variety and novelty while *decreasing* idea count — and were
+  honest that much of it missed p<0.05. Same direction as Okudan et al. (2006) and Howard
+  et al. (2008). Consistent with §6d: fixation and its remedies are not fluency effects.
+
+## 6d. Reality check — including on this tool's own premise
+
+The skeptical strand. Several findings here **correct claims made earlier in this file**;
+where they conflict, this section wins.
+
+### On C-K itself
+
+**The undecidability gate is not the rigorous criterion it appears to be.** Three
+problems, worsening:
+
+1. **The word is borrowed.** In logic, *undecidability* means the demonstrated
+   non-existence of a decision procedure (Gödel, Church, Turing). C-K's "undecidable in
+   K" means only *K does not currently entail p or ¬p* — ordinary epistemic
+   incompleteness. Every unanswered question in the universe satisfies it.
+2. **K is never formalised, so entailment can't be checked.** In every published
+   application K is a natural-language list, so "is this undecidable in K?" is settled
+   by the facilitator's judgement. A criterion that returns whatever the facilitator
+   wants is not a criterion.
+3. **The Forcing correspondence is an analogy graded by its own authors.** Hatchuel,
+   Weil & Le Masson (2013) *interpret* Forcing as a design theory and find "common
+   notions". There is no theorem, no independent verification by set theorists, and —
+   decisively — it generates **no constraint on what a designer should do.** Nothing in
+   a session would change if it were withdrawn.
+
+**Published critique.** Coatanéa, Forest & Choulier (2010): C-K "appears incomplete for
+engineering design"; its "ability both to effectively assist and direct the creative
+process… is questioned". Choulier et al. (2011): function and structure — engineering
+design's two central concepts — "remain outside the perimeter of CK", and its "real
+operability scope… is probably limited compared with the initial ambition". These stand
+unrebutted. Ullah et al. (2012): C-K's inference is *not* classical abduction and is
+underspecified as published.
+
+**KCP has zero controlled evaluations.** No control group, no comparison against another
+method, no replication outside the originating school. Reported outcomes are of the form
+"two new research lines were integrated into the agenda" — a description of what
+happened, not evidence anything else would have done worse.
+
+**Agogué's experiments do not validate C-K.** They test one narrow claim — *does an
+example outside the dominant frame produce more original ideas than one inside it?*
+(yes, N=160, with independent convergence from Chan et al. 2011). They do **not** test
+the C/K duality, the four operators, the undecidability criterion, or partitioning as a
+reasoning operation. C-K's real credit here is generating a *testable operationalisation*
+— more than most design methods manage — but confirming a derived prediction is not
+confirming the theory, especially when the prediction follows from plain associative
+memory models too.
+
+### Corrections to §2 and §3 above
+
+**Fixation is not a fluency effect.** Jansson & Smith (1991) found idea *quantity*
+unaffected in all four experiments. It is a variety-and-conformity effect. Watching for
+"the team ran out of ideas" watches the wrong variable. Also worth knowing: that
+foundational paper **reports no inferential statistics at all** — no p-values, no effect
+sizes — and its famous "even professionals fixate" experiment has n=6 and n=7.
+
+**Your own first idea fixates you harder than an external example.** Leahy et al. (2020):
+participants given an example fixated *less* than controls fixated on their own
+self-generated first concept. This is the most actionable finding in the whole sweep, and
+it inverts the usual worry.
+
+**Whether a stimulus is expansive depends on the audience, not the stimulus.** Cassotti
+et al. (2015): the same example fixates adults and stimulates children. This is C-K's own
+R1 arriving from the other direction — and it means a reusable library of "defixation
+stimuli" is impossible in principle. Fu et al. (2013) make the same point for
+near/far: the terms are relative to the stimulus set, with no absolute scale.
+
+**"Don't copy this" mostly does nothing.** Vasconcelos, Neroni & Crilly (2018), **N=303**:
+exposure to examples affected output, "whereas exposure to the instructions did not";
+feature incorporation in discouraged groups was no different from no-instruction or
+no-stimulus groups. **You can push a room toward a reference; you cannot push it away.**
+Wang et al. (2023) list direct don't-copy instruction as consistently null.
+
+This *complicates but does not kill* the category-abstraction finding (Ezzat et al. 2020),
+which remains **single-lab and unreplicated**. Honest position: instruction effects are
+inconsistent; the best-powered study found null; state prohibitions abstractly if you
+state them at all, and do not rely on them.
+
+**Expertise: my earlier framing was half wrong.** Experts do **not** fixate more on
+external examples — Viswanathan & Linsey (2013) found faculty and novices "fixate to the
+same extent". What differs: experts generate more non-redundant ideas, and **defixation
+aids work on experts and do nothing for novices**. Wiley (1998) does support the
+schema-fixation mechanism (domain knowledge created mental set, and generic instructions
+didn't help). So: expertise relocates fixation inward rather than deepening it, and the
+damning finding is that experts fixate equally **and cannot tell** — Linsey et al. (2010)
+found faculty "only partially perceive" their own fixation; Bilalić et al. (2008) showed
+chess masters who reported searching for alternatives were still eye-tracking the
+familiar one. Self-assessment of one's own openness is worthless as a signal.
+
+### The finding that most threatens this tool
+
+**Wang, Okada & Takagi (2023)**, systematic review of 53 experimental studies:
+*"Elimination of fixation leads to an increase in solution rates of closed-ended problems.
+However, in open-ended problem solving, defixation does not necessarily lead to an
+improvement in the performance of problem solving."*
+
+Design problems are open-ended. So the chain **defixate → better designs is empirically
+unestablished for exactly the problem class this tool addresses.** Defixation reliably
+changes *what kinds of ideas appear*. That it produces *better outcomes* is inference.
+Note also that review reports **no quantitative meta-analysis and no standardised effect
+sizes** — anyone quoting an effect size for a defixation technique is inventing it.
+
+### The gap this tool doesn't address at all
+
+**Rietzschel, Nijstad & Stroebe (2006):** groups *and individuals* fail to select their
+most creative ideas from their own pool; selection systematically favours feasibility
+over originality. Generation and selection fail independently, so fixing generation buys
+nothing if selection is naive. This may be the dominant failure mode of ideation — and
+this tool has no selection step, which is either a gap or an accidental virtue. C-K's own
+P-phase prohibition on down-selecting is aligned with the finding.
+
+### For Stage 2 (workshop mode), if it is ever built
+
+- **Verbal group brainstorming was falsified in 1958** (Taylor et al.) and never
+  recovered. Nominal groups — individuals working alone, ideas pooled — out-produce real
+  ones; the loss grows with group size (Mullen et al. 1991 meta-analysis).
+- **The mechanism is production blocking** (Diehl & Stroebe 1987, 1991): only one person
+  speaks at a time, holding an idea degrades it. Evaluation apprehension and free-riding
+  were experimentally reduced *without* recovering the loss. **This is structural — you
+  cannot facilitate your way out of a queueing problem.**
+- **Write before speaking** (Paulus & Yang 2000). But 6-3-5's specific parameters have
+  never been validated; only the underlying principle has.
+- **"Defer judgment" lost head-to-head to debate-and-criticism instructions** across two
+  countries (Nemeth et al. 2004). Replication status unclear.
+- **Later ideas are more original** (Beaty & Silvia 2012, the serial-order effect). Argues
+  against timeboxing for efficiency — stopping early keeps only the unoriginal half.
+- **Participant satisfaction is a systematically biased quality signal** — the illusion of
+  group productivity is documented (Stroebe et al. 2010): real groups believe they did
+  better than nominal groups while doing worse.
+- Not evidence, despite constant citation: Google's Project Aristotle (unpublished,
+  uncontrolled), Sutton & Hargadon 1996 on IDEO (no control condition; never claimed
+  groups out-produce individuals), Dane 2010 on cognitive entrenchment (theory paper, no
+  data).
+
 ## 7. Implications for this tool
 
 1. **Do not build a "crazy idea" skill** on the premise that projectors are absurd. The
