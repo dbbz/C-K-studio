@@ -14,9 +14,13 @@ Read `references/GRAMMAR.md` first.
 
 ### 1. Seed K before writing C
 
-You cannot test undecidability against an empty K. Ask the user for — or research —
-the handful of propositions that define what is currently known and currently
-constraining. Four to eight is plenty.
+You cannot test undecidability against an empty K. Four to eight propositions defining
+what is currently known and currently constraining is plenty.
+
+**Research and present them; don't ask for them.** Supplying propositions from a blank
+page is hard work and it is your job, not theirs. Correcting a list you put in front of
+them is easy, fast, and produces sharper K — people who cannot generate a constraint
+will immediately tell you when one is wrong.
 
 ```bash
 node lib/ck.cjs add-k <session> --text "..." --status true --source "..." --op seed \
@@ -80,5 +84,12 @@ concept was posed. That is usually the most interesting thing about a root conce
 ## Present the framing before expanding
 
 Show the user the root, the seeded K, and the sentence explaining the undecidability.
-Ask whether the object is the right one to be designing. Do not partition until they
-agree — a wrong root wastes every subsequent operator.
+
+Then — rather than asking "is this the right object?", which invites a polite yes —
+**state which object you chose, why, and what you are therefore *not* designing.** That
+last clause is the one that draws a real objection, because it makes the cost concrete.
+"We're designing the delivery system, which means we're not designing the vehicle" gets
+a reaction; "does this look right?" does not.
+
+Do not partition until that lands. A wrong root wastes every subsequent operator, and
+reframing at step three costs one exchange.

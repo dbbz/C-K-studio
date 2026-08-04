@@ -3,10 +3,11 @@
 Findings from a literature sweep, kept so the skills encode what the literature
 supports rather than what is commonly repeated about C-K.
 
-**Status: partial.** The C-K-native strand completed. Three further strands —
-provocation techniques (de Bono PO, synectics, assumption reversal), TRIZ and its
-published C-K integrations, and an evidence/criticism reality-check — were cut short
-by a session limit and are **not yet done**. Do not treat their absence as a finding.
+**Status: one strand outstanding.** The C-K-native, imported-techniques, TRIZ and
+evidence/criticism strands are complete. Still missing: **provocation techniques** —
+de Bono PO and its movement operators, synectics, assumption reversal. Do not treat
+that absence as a finding; §6 covers the two documented provocation procedures that
+were found (virtual form, particles method), but not that family.
 
 Evidence grades: `[E1]` randomised experiment · `[E2]` quasi-experiment / classroom ·
 `[E3]` industrial case · `[E4]` prescription only, never evaluated.
@@ -315,77 +316,6 @@ completeness; **not** folded into any skill. Its documented pathologies are wort
 if anyone tries: over-constraint from treating indirect relations as direct, and lost
 rationale when assessments aren't documented during the pass.
 
-## 6e. TRIZ — a K→C engine with a restricted C→C repertoire
-
-**The mapping, which is the useful part.** Every TRIZ tool operates on an object whose
-identity is already settled: the matrix takes parameters *of a given system*; su-field
-takes S1/S2/F *of a given system*; IFR says "without complicating *the system*"; ARIZ's
-mini-problem literally reads *"with **minimum changes to the system**"*. TRIZ improves and
-transforms a **known** thing extremely well.
-
-So in C-K terms TRIZ is a powerful **K→C engine** — a knowledge base that supplies
-attributes — with **no operator for revising the object's identity**. Use the 40
-principles as an attribute source feeding a partition. Do **not** treat them as a
-partitioning method; they cannot produce an expansive partition on their own, because
-they presuppose the object that an expansive partition exists to revise. This is a scope
-critique, not a validity one, and it is the honest reason C-K and TRIZ compose rather
-than compete.
-
-### Worth importing
-
-**MATCEMIB field sweep — the best-evidenced ideation prompt found anywhere in this
-sweep.** When a branch is stuck, walk eight field types and spend a couple of minutes on
-each: **M**echanical, **A**coustic, **T**hermal, **C**hemical, **E**lectric,
-**M**agnetic, **I**ntermolecular, **B**iological.
-
-Belski, Livotov & Mayer (2016), *Procedia CIRP* 39:85–90 — 90 students, three arms,
-identical task, 16 minutes. The su-field group beat **both** the no-prompt control **and
-a random-word group**, on idea count *and* solution breadth. The random-word arm is a
-proper active comparator, so this rules out "any prompt helps." It replicates an earlier
-RMIT result. Note what it actually validates: *eight words naming field types*, not TRIZ
-as a whole.
-
-**Separation principles — a way to revive a refuted node.** When a concept was refuted
-because something must be both P and not-P, the refutation may be premature. Four
-questions, cheapest first:
-
-| | Ask | If no → |
-|---|---|---|
-| **Time** | Must both hold at the same moment? | retractable landing gear; a fuse |
-| **Space** | At the same point? | a knife: sharp edge, thick spine |
-| **Condition** | Under the same condition? | photochromic glass; a shear pin |
-| **Parts/whole** | At the same scale? | a bicycle chain: rigid links, flexible chain |
-
-**Size–Time–Cost (STC/RVS)** — six thought experiments, each followed by re-describing
-the problem: size → 0, size → ∞, time → 0, time → ∞, cost → 0, cost → ∞. The point is
-not the answers but destroying the implicit scale assumptions that make the current
-design look inevitable. This is the documented ancestor of the "take an attribute to its
-limit" move already in `ck-defix`. Note it is *not* a step in ARIZ-85C, contrary to
-common belief — it is a standalone psychological-inertia operator from earlier versions.
-
-### Evidence — use the tools, disregard the epistemology
-
-- **The patent study is undocumented.** Figures circulating range across two orders of
-  magnitude (40,000 to 3 million). The most granular chronology records ~4,000 by 1948
-  and ~5,000 by 1965 — Altshuller's *personal* analytical work. There is no published
-  protocol, no sampling frame, no inter-coder agreement. Anyone citing "2.5 million
-  patents" is not citing a documented study.
-- **It selects on the dependent variable.** Patents judged inventive were coded and their
-  commonalities reported. No base rate was ever established, so it cannot tell you that
-  *applying* the patterns produces inventive results.
-- **The matrix is questioned inside TRIZ itself.** ARIZ-85C contains no matrix step at
-  all — it routes to the Standards, Separation Principles and Effects. Borgianni et al.
-  (2021, *Design Science* 7) find principle selection is domain-dependent, not
-  deterministic, undermining the domain-independence claim. No head-to-head test against
-  random principle selection exists.
-- **The 40 principles are near-unfalsifiable.** They are abstract enough that almost any
-  solution retrofits to at least one, and the canonical example set repeatedly notes a
-  single example demonstrating two or three simultaneously.
-- **What does replicate:** a novelty/variety-up, fluency-down trade-off. Hernandez et al.
-  (2012) found TRIZ improved variety and novelty while *decreasing* idea count — and were
-  honest that much of it missed p<0.05. Same direction as Okudan et al. (2006) and Howard
-  et al. (2008). Consistent with §6d: fixation and its remedies are not fluency effects.
-
 ## 6d. Reality check — including on this tool's own premise
 
 The skeptical strand. Several findings here **correct claims made earlier in this file**;
@@ -517,6 +447,77 @@ P-phase prohibition on down-selecting is aligned with the finding.
   uncontrolled), Sutton & Hargadon 1996 on IDEO (no control condition; never claimed
   groups out-produce individuals), Dane 2010 on cognitive entrenchment (theory paper, no
   data).
+
+## 6e. TRIZ — a K→C engine with a restricted C→C repertoire
+
+**The mapping, which is the useful part.** Every TRIZ tool operates on an object whose
+identity is already settled: the matrix takes parameters *of a given system*; su-field
+takes S1/S2/F *of a given system*; IFR says "without complicating *the system*"; ARIZ's
+mini-problem literally reads *"with **minimum changes to the system**"*. TRIZ improves and
+transforms a **known** thing extremely well.
+
+So in C-K terms TRIZ is a powerful **K→C engine** — a knowledge base that supplies
+attributes — with **no operator for revising the object's identity**. Use the 40
+principles as an attribute source feeding a partition. Do **not** treat them as a
+partitioning method; they cannot produce an expansive partition on their own, because
+they presuppose the object that an expansive partition exists to revise. This is a scope
+critique, not a validity one, and it is the honest reason C-K and TRIZ compose rather
+than compete.
+
+### Worth importing
+
+**MATCEMIB field sweep — the best-evidenced ideation prompt found anywhere in this
+sweep.** When a branch is stuck, walk eight field types and spend a couple of minutes on
+each: **M**echanical, **A**coustic, **T**hermal, **C**hemical, **E**lectric,
+**M**agnetic, **I**ntermolecular, **B**iological.
+
+Belski, Livotov & Mayer (2016), *Procedia CIRP* 39:85–90 — 90 students, three arms,
+identical task, 16 minutes. The su-field group beat **both** the no-prompt control **and
+a random-word group**, on idea count *and* solution breadth. The random-word arm is a
+proper active comparator, so this rules out "any prompt helps." It replicates an earlier
+RMIT result. Note what it actually validates: *eight words naming field types*, not TRIZ
+as a whole.
+
+**Separation principles — a way to revive a refuted node.** When a concept was refuted
+because something must be both P and not-P, the refutation may be premature. Four
+questions, cheapest first:
+
+| | Ask | If no → |
+|---|---|---|
+| **Time** | Must both hold at the same moment? | retractable landing gear; a fuse |
+| **Space** | At the same point? | a knife: sharp edge, thick spine |
+| **Condition** | Under the same condition? | photochromic glass; a shear pin |
+| **Parts/whole** | At the same scale? | a bicycle chain: rigid links, flexible chain |
+
+**Size–Time–Cost (STC/RVS)** — six thought experiments, each followed by re-describing
+the problem: size → 0, size → ∞, time → 0, time → ∞, cost → 0, cost → ∞. The point is
+not the answers but destroying the implicit scale assumptions that make the current
+design look inevitable. This is the documented ancestor of the "take an attribute to its
+limit" move already in `ck-defix`. Note it is *not* a step in ARIZ-85C, contrary to
+common belief — it is a standalone psychological-inertia operator from earlier versions.
+
+### Evidence — use the tools, disregard the epistemology
+
+- **The patent study is undocumented.** Figures circulating range across two orders of
+  magnitude (40,000 to 3 million). The most granular chronology records ~4,000 by 1948
+  and ~5,000 by 1965 — Altshuller's *personal* analytical work. There is no published
+  protocol, no sampling frame, no inter-coder agreement. Anyone citing "2.5 million
+  patents" is not citing a documented study.
+- **It selects on the dependent variable.** Patents judged inventive were coded and their
+  commonalities reported. No base rate was ever established, so it cannot tell you that
+  *applying* the patterns produces inventive results.
+- **The matrix is questioned inside TRIZ itself.** ARIZ-85C contains no matrix step at
+  all — it routes to the Standards, Separation Principles and Effects. Borgianni et al.
+  (2021, *Design Science* 7) find principle selection is domain-dependent, not
+  deterministic, undermining the domain-independence claim. No head-to-head test against
+  random principle selection exists.
+- **The 40 principles are near-unfalsifiable.** They are abstract enough that almost any
+  solution retrofits to at least one, and the canonical example set repeatedly notes a
+  single example demonstrating two or three simultaneously.
+- **What does replicate:** a novelty/variety-up, fluency-down trade-off. Hernandez et al.
+  (2012) found TRIZ improved variety and novelty while *decreasing* idea count — and were
+  honest that much of it missed p<0.05. Same direction as Okudan et al. (2006) and Howard
+  et al. (2008). Consistent with §6d: fixation and its remedies are not fluency effects.
 
 ## 7. Implications for this tool
 

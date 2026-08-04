@@ -166,6 +166,13 @@ partition pass should read as a sequence of distinct moves rather than a batch.
 
 ## Then stop
 
-Show the user the new children, flag which are expansive and what each breaks, and
-let them pick where to go next. Do not cascade three levels deep unprompted — depth
-without adjudication is how a C-tree turns into fiction.
+Show the user the new children and flag which are expansive and what each breaks.
+
+Then **recommend one and say why**, rather than offering a menu. A list of equal-looking
+options asks them to make a call they have less information to make than you do, and
+"which would you like to explore?" is usually answered by picking the most familiar one —
+which is the branch least worth exploring. Naming your choice and your reason gives them
+something concrete to disagree with, and disagreement is what you actually want.
+
+Do not cascade three levels deep unprompted — depth without adjudication is how a C-tree
+turns into fiction.

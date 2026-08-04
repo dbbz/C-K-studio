@@ -41,6 +41,7 @@ knowledge space ◀── K→K learning ──┘
 
 | Skill | Operator | What it enforces |
 |---|---|---|
+| `ck-facilitate` | all | Runs the whole session as practitioner — sequencing, diagnosis, when to stop |
 | `ck` | — | Session hub: start, resume, route, handle canvas triggers |
 | `ck-frame` | — | The undecidability gate. Rejects requirements dressed as concepts |
 | `ck-expand` | C→C | Negate constitutive properties; label every partition; name what it breaks |
