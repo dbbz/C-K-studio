@@ -185,7 +185,137 @@ P-phase process.
 
 ---
 
-## 6. Implications for this tool
+## 6. Imported techniques — the closed-world family
+
+TRIZ → SIT (Israeli simplification, early 1990s) → splits into **ASIT** (Horowitz) and
+**USIT** (Sickafus, developed inside Ford from 1995). Treat these as **one family with
+three dialects**, not three methods — they share two conditions and most of a toolset.
+
+### The "crazy idea, then harvest" technique actually exists here
+
+Two named, documented procedures match the pattern of *deliberately construct something
+unrealistic, then systematically extract what's actionable*. Both are better specified
+than anything in the popular creativity literature.
+
+**Function Follows Form (SIT).** Invert the usual order. Instead of need → form, first
+construct a **Virtual Product** — a form, often absurd — then interrogate it: *what is
+this good for, who would want it?* The stated justification is Finke's creative-cognition
+work (Geneplore model, *Creative Cognition*, MIT Press 1992): people are measurably
+better at finding uses for a given form than at inventing a form for a given need.
+
+**The Particles Method (USIT).** The full harvesting procedure, which is the part
+popular accounts always leave vague:
+
+1. Sketch the problem situation, then sketch the **ideal solution** — Sickafus's
+   definition: *"does its job perfectly, costs nothing, and doesn't exist."* Add
+   intermediate sketches until the morph is logical.
+2. Mark **particles** (x's) exactly where change must happen. *Don't analyse areas with
+   no particles.*
+3. Particles are **magical** — they may do anything physical, chemical, biological or
+   mathematical that makes technological sense. **"Whimsical effects are not allowed."**
+   That single constraint is what separates this from fantasy.
+4. Build an **and/or tree**: top = the ideal solution stated *compoundly*; next level =
+   its clauses; then work backwards through the sketches asking *what are the particles
+   doing here to accomplish that clause* → **actions**. Decompose terminal actions into
+   the **properties** particles must have.
+5. **Translate back**: particle actions become **functions** of real objects; particle
+   properties become **active attributes**. Attributes that appear across different
+   clauses are the best leads; ones implying contradictions are "potent starting points."
+
+**Mapping to C-K.** This is an **attribute generator** — K→C, then C→C. The ideal-solution
+sketch behaves like a concept (undecidable, not-yet-existing); the tree decomposition
+manufactures candidate attributes; the translation step hands them to partitioning. It
+does *not* replace the undecidability gate, and its output still has to pass it.
+
+### The two conditions
+
+**Closed World** — all building blocks for the solution are already present in the
+problem, the product, or its immediate environment; the solution is a *reorganisation* of
+existing objects. Horowitz's empirical claim: elegant inventive solutions never introduce
+entirely new component types. Functionally it converts an open design problem into a
+**puzzle**.
+
+**Qualitative Change** — in the problem state, the unwanted effect worsens monotonically
+as some *main problem factor* increases. An inventive solution **eliminates or reverses**
+that relationship — graphically, moves the problem characteristic **to zero slope**.
+
+### The tension with C-K, stated honestly
+
+The closed world forbids importing new objects. C-K's whole K-phase doctrine is the
+opposite: *"out of the box thinking requires knowledge from out of the box"* — import more
+knowledge than the room possesses. These are genuinely opposed prescriptions.
+
+The reconciliation worth using: the closed world is a disciplined generator of **R3
+moves** (reattribute the property to another entity already in the situation). That is
+precisely the smart-cart/shopper's-phone move. So use it when a branch is stuck on an
+attribute the object can't carry — and do **not** use it as a general stance, because as
+a general stance it forecloses exactly the expansive partitions C-K exists to find.
+
+### Templates (ASIT / SIT)
+
+Unification / Task Unification · Multiplication · Division · Breaking Symmetry /
+Attribute Dependency · Object Removal / Subtraction. The authors identify **Attribute
+Dependency** as the highest-yield.
+
+**Evidence — the only quantitative validation in this whole area, and it is compromised.**
+Goldenberg, Mazursky & Solomon (*Marketing Science* 18(3), 1999): six templates explained
+**89%** of 200 award-winning print ads; **50%** of award-winners vs **2.5%** of
+non-winners fit the templates; template-trained subjects out-produced controls. But every
+validating study is authored by the method's originators, who are principals of the firm
+selling it; there is **no independent replication**; the outcome measure is contest
+success, not market performance; and the templates are largely absent from the later
+advertising-creativity literature, which moved to divergence/relevance constructs.
+
+## 6b. BioTRIZ — one genuinely useful empirical result
+
+Vincent, Bogatyreva, Bogatyrev, Bowyer & Pahl (2006), *J. R. Soc. Interface* 3(9):471–482.
+~500 biological phenomena, 270 functions, ~2500 conflicts, compressed into a **6×6** field
+(*substance, structure, energy, information, space, time*, from "things do things
+somewhere"). **PRIZM** is the technological matrix; **BioTRIZ** the biological one.
+
+**The finding worth carrying into defixation:** at scales up to 1 m — where nearly all
+technology sits — problems are solved by manipulating **energy up to 60% of the time**,
+then material. Biology at the same scales solves predominantly through **information and
+space/structure**. Over 300 synthetic polymers exist and none matches proteins, whose
+advantage is informational rather than energetic; insect cuticle spans orders of magnitude
+in stiffness with one material.
+
+**Corrections to what usually gets repeated:**
+- The **0.12** similarity is a matrix-similarity between the *principles recommended* by
+  PRIZM vs BioTRIZ for the same conflicts — **not** "biology and technology are 12%
+  similar." Only *structure/space* (0.73) is strongly similar.
+- The worked example in that paper is a **cat's-claw tyre**, not building insulation.
+- The authors' own caveat: their dataset is **less than a thousandth** of TRIZ's, and the
+  6×6 compression "blunts the contradictions tool."
+
+The same paper is also the best published debunking of biomimicry's founding myths
+(Crystal Palace, Eiffel Tower, sharkskin swimsuits, polar-bear hair). The boxfish-car
+rationale has since been formally refuted — Van Wassenbergh et al. (2015) show boxfish
+carapaces are *destabilising*.
+
+**Directly relevant C-K paper:** Salgueiredo & Hatchuel (2016), *AI EDAM* 30(2):159–170,
+"Beyond analogy: A model of bioinspiration for creative design" — argues bioinspiration is
+**not** reducible to one-way analogical transfer. It requires expansion in *both* knowledge
+bases, source and target. Copying a biological solution without expanding biological
+knowledge does not work.
+
+## 6c. Morphological analysis — noted, but a different animal
+
+Zwicky (1969); Ritchey, *J. Operational Research Society* 57(7), 2006. Parameters ×
+discrete values = a field; **Cross-Consistency Assessment** judges each *pair* of values
+for compatibility, and the residue is the solution space.
+
+Its one transferable insight: **configurations grow exponentially, pairwise assessments
+only quadratically** — a field of 100,000 configurations needs a few hundred pairwise
+judgements. Typical solution space is 1–10% of the problem space.
+
+**But it is enumerate-then-filter, where C-K is partition-and-expand.** It presupposes the
+parameter list, which is exactly what an expansive partition revises. Recorded here for
+completeness; **not** folded into any skill. Its documented pathologies are worth knowing
+if anyone tries: over-constraint from treating indirect relations as direct, and lost
+rationale when assessments aren't documented during the pass.
+
+## 7. Implications for this tool
 
 1. **Do not build a "crazy idea" skill** on the premise that projectors are absurd. The
    supported construct is *contrasted and undecidable*, and provocation belongs to K.
@@ -201,6 +331,20 @@ P-phase process.
 7. **The expansive-ratio metric has no literature basis.** Keep it as a smoke detector
    (as `ck-map` already says), and never as a score — fluency-like metrics are
    explicitly argued to be biased estimators of C-expansion.
+8. **`ck-expand` gains the virtual-form move** (§6) — the documented version of "crazy
+   idea, then harvest", with the two constraints that make it work: no whimsical
+   effects, and translate particle *actions* into functions and *properties* into
+   attributes.
+9. **`ck-defix` gains the energy/information forcing move** (§6b) — the single
+   empirically-grounded prompt in the imported set.
+10. **`ck-learn` gains the cross-domain import caution** (§6b, Salgueiredo & Hatchuel) —
+    borrowing from another field requires expanding knowledge *in that field*, not just
+    lifting its answer.
+11. **Do not adopt the closed world as a general stance** (§6). It forbids importing new
+    objects, which is the opposite of C-K's K-phase doctrine. Use it narrowly, as an R3
+    generator when a branch is stuck.
+12. **Morphological analysis stays out** (§6c). Enumerate-then-filter presupposes the
+    parameter list that an expansive partition exists to revise.
 
 ## Sources
 

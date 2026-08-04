@@ -63,6 +63,42 @@ to migrate the design object up a level: from *a smart cart in a supermarket* to
 smart supermarket with appropriate carts*. That migration is what "revises the identity
 of the object" concretely means. `[E2]` — TECHNIQUES.md R4.
 
+## The virtual-form move: build the impossible thing, then harvest it
+
+This is the disciplined version of "think of something unrealistic, then extract what's
+usable". It runs *backwards* from an ideal, and it is an **attribute generator** — its
+output feeds partitioning, it does not replace it.
+
+1. **Sketch the ideal solution.** The working definition: *it does its job perfectly,
+   costs nothing, and does not exist.* Do not moderate it toward buildability.
+2. **Mark exactly where change must happen.** Only those places. Anything not marked is
+   out of scope for this pass — the focus is most of the value.
+3. **Let the marked places do magic — but only physical magic.** They may do anything
+   physical, chemical, biological or mathematical that makes technological sense.
+   **Whimsical effects are not allowed.** That one constraint is the whole difference
+   between this and daydreaming.
+4. **Decompose.** State the ideal *compoundly* ("the hole is square **and** passes all
+   the way through"), split it into clauses, and for each clause work backwards asking
+   *what would have to be happening here for that clause to hold?* Those are **actions**.
+   Decompose each action into the **properties** required to perform it.
+5. **Translate back into C-K terms.** Actions become **functions of real objects**;
+   properties become **candidate attributes**. Attributes that recur across different
+   clauses are the strongest leads. Attributes that imply a contradiction are better
+   still — those are where an expansive partition is hiding.
+6. **Gate the output.** Every candidate attribute still has to pass the undecidability
+   test. Most won't, and the ones K refutes are knowledge worth recording — but they
+   are not concepts.
+
+Steps 4–6 are the part that matters, and the part popular write-ups omit. An
+unrealistic idea with no harvesting procedure is not a technique.
+
+**One caution.** A related family (SIT/ASIT/USIT) pairs this with a *closed world*
+condition: forbid any object not already in the problem or its immediate environment.
+That is a good generator of the reattribution move above — but it is the exact opposite
+of C-K's doctrine that expansion needs knowledge from outside the room. Use the closed
+world to unstick a specific branch, never as a standing rule. See
+`references/TECHNIQUES.md` §6.
+
 ## The first partition of a root: author a projector set
 
 When partitioning the root concept itself, treat the children as a **set** rather than

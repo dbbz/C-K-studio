@@ -57,6 +57,28 @@ to mind. So K→K is often not about acquiring anything new; it is about surfaci
 the designer already knows but never activates. Ask what they know that they haven't
 thought to apply here.
 
+### 2c. If you are importing from another field, expand *its* knowledge too
+
+Borrowing from biology, another industry, or an unrelated discipline is a standard K→K
+move and it fails in a standard way: the borrower lifts the *answer* without acquiring
+the knowledge that makes the answer work, and the transfer doesn't survive contact with
+the real problem.
+
+The C-K analysis of bioinspiration makes this precise — it is **not** reducible to
+one-way analogical transfer. It requires expansion in *both* knowledge bases, source and
+target. So when you import: record what you learned about the **source domain's own
+constraints**, not merely the mechanism you liked. If your K gains a solution but no
+understanding of why the source arrived at it, the import will not hold.
+
+The cautionary literature here is unusually blunt. A large share of canonical
+"inspired-by-nature" designs turn out to be post-hoc storytelling — the Crystal Palace
+water-lily, the Eiffel Tower femur, sharkskin swimsuits, and the boxfish-shaped car,
+whose stability rationale was later refuted outright when boxfish carapaces were shown to
+be *destabilising*. Evolution optimises reproductive fitness under phylogenetic
+constraints, not your engineering objective, so "nature does it this way" carries no
+presumption of fitness for your purpose. Record the mechanism and its evidence; do not
+record the narrative.
+
 ### 3. Classify what you found
 
 Every finding lands in exactly one of three buckets. Sort them explicitly:

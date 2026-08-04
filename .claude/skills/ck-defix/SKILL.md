@@ -42,6 +42,18 @@ mechanical — use them when inspiration doesn't arrive:
 | **Displace it in time** | Before the need, after the fact, or never? | the part arrives before it breaks |
 | **Take an attribute to its limit** | Zero, infinite, or negative? | a battery with zero stored energy |
 | **Swap the beneficiary** | What if it's designed for a non-obvious party? | packaging designed for the recycler |
+| **Leave the energy attractor** | Is every partition manipulating energy or material? | solve it with structure or information instead |
+
+That last one is the only forcing move here with a measured basis. Across ~2500 analysed
+conflicts, technology at human scales resolves problems by manipulating **energy up to
+60% of the time**, then material. Biology at the same scales resolves them predominantly
+through **information and structure** — over 300 synthetic polymers exist and none
+matches proteins, whose advantage is informational rather than energetic.
+
+So "add power, add material, add strength" is not just one option among many; it is a
+documented attractor. When a tree is full of it, the productive question is *what would
+solve this with no extra energy and no new material — only a different arrangement or a
+different piece of information?* See `references/TECHNIQUES.md` §6b.
 
 Run the *survivors* through the undecidability test. Many limit-moves produce
 propositions K refutes instantly — those are knowledge, and worth adding to K, but
