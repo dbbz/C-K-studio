@@ -47,6 +47,50 @@ Run the *survivors* through the undecidability test. Many limit-moves produce
 propositions K refutes instantly — those are knowledge, and worth adding to K, but
 they are not concepts.
 
+## Two rules from the experimental evidence
+
+These are not style preferences. Both are measured effects, and both are easy to get
+backwards. Detail and sources in `references/TECHNIQUES.md` §3.
+
+**1. State prohibitions at category level, never at exemplar level.**
+
+Telling someone to avoid a *specific* common answer measurably **increases** fixation.
+Stating the same prohibition as a **category** mitigates it, reportedly doubling
+creative output.
+
+| Don't say | Say |
+|---|---|
+| "Don't propose a parachute." | "Don't propose anything in the class *slowing the fall*." |
+| "Not another subscription model." | "Nothing in the class *recurring payment for access*." |
+
+So the taxonomy of restrictive branches you build during detection **is** the
+intervention — it's not just diagnosis. Name the class, not the instance.
+
+**2. Flank the obvious answer; do not suppress it.**
+
+The instinct is to get the fixated solution off the table. The evidence says that isn't
+necessary and the attempt is where the damage happens. A group given the fixated
+example *and* an expansive one, side by side, performed close to groups given only the
+expansive one. What reliably harms is a **restrictive example standing alone** — it cuts
+both originality *and* fluency, and it wipes out the advantage trained designers
+otherwise hold over engineers.
+
+So when you report fixation, always pair it: name the class the tree is stuck in, and
+put one concrete concept from an unvisited branch next to it. Naming the fixation
+without supplying somewhere else to stand is the intervention that backfires.
+
+## Why "just don't be obvious" fails
+
+Defixation needs two capacities, and suppression only supplies one: **inhibiting** the
+answer that arrives unbidden, and **expanding** toward somewhere else. Telling a designer
+to avoid the obvious does the first and nothing of the second — which is exactly the
+condition under which specific prohibitions were found to backfire.
+
+Steering carries the same risk in sharper form. Per-idea feedback works when it is
+correctly matched to the branch — but *mismatched* feedback is substantially worse than
+saying nothing at all. If you are unsure which branch a concept belongs to, say nothing
+rather than guess.
+
 ## Report
 
 Lead with the diagnosis, then the proposals:

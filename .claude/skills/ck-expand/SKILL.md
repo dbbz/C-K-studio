@@ -37,6 +37,50 @@ settles — those are knowledge, not concepts. What survives is your expansive s
 **Step 4. Add restrictive partitions deliberately, not by default.** They're how a
 branch gets close enough to reality to conjoin. Just know which you're writing.
 
+This is the literature's own move, not a heuristic invented here — it is how the tested
+defixation stimuli in the hen's-egg experiments were authored. See
+`references/TECHNIQUES.md` §4 (R2).
+
+## Two more moves, for when negation stalls
+
+**Reattribute the property to a different entity.** When an attribute you just added is
+being killed by knowledge about the object, stop modelling the *object* and model the
+*attribute*. Then ask which other entity in the situation could carry it, and partition
+on the carrier.
+
+> A team adds "a display" to a smart shopping cart. Knowledge about carts — weather,
+> shocks, loads — makes displays expensive, and the concept dies. Forced to model
+> *displays* instead, they find most shoppers already carry one. A display is an
+> attribute of **the user**, not of the cart. Almost every objection evaporates.
+
+Each candidate carrier is a genuine expansive partition, because the object was not
+known to have that attribute *there*. `[E2]` — TECHNIQUES.md R3.
+
+**Hybridise with the object's channel-shifted twin.** Introduce a different
+instantiation of the same function — the online "shopping cart" beside the physical one
+— and build hybrids in C. Reported to produce expansive partitions systematically, and
+to migrate the design object up a level: from *a smart cart in a supermarket* to *a
+smart supermarket with appropriate carts*. That migration is what "revises the identity
+of the object" concretely means. `[E2]` — TECHNIQUES.md R4.
+
+## The first partition of a root: author a projector set
+
+When partitioning the root concept itself, treat the children as a **set** rather than
+as individual ideas. The KCP specification is the only published guidance:
+
+- each is the (often **reformulated**) root plus *a few* added attributes;
+- each attribute is **directional** — it commits that branch to one region;
+- the branches are **mutually contrasted**;
+- **as a set of 3–6 they reasonably cover the whole expansion of the root.**
+
+Coverage is a set-level property. Never judge one of these alone — the question is
+whether the group of them spans the field. And they are explicitly **not proposals**:
+nobody is meant to build a projector, so do not soften one to make it buildable.
+
+Check each is *undecidable* in K, not *false*. A branch known false in K is not a
+concept and cannot be partitioned — which is why "make it deliberately impossible" is
+bad advice, however often it is repeated. See `references/TECHNIQUES.md` §1.
+
 ## Quotas
 
 - **3–6 children per pass.** More is a list, not a partition.

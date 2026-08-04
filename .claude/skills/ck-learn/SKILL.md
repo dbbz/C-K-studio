@@ -31,6 +31,32 @@ attributes that were *tried*, which is exactly what K→C needs.
 Keep each K entry to one proposition. Compound entries can't be referenced cleanly by
 a concept node.
 
+### 2b. Hunt specifically for the K that softens definitions
+
+Not all knowledge helps a design. The C-K literature is unusually specific about which
+kinds of K make expansive partitions *formulable at all*, and this instruction is the
+most under-used thing in the method. Go looking for:
+
+- **Paradoxes** — where the object's own field contradicts itself
+- **Polysemy** — the several incompatible things the object's *name* denotes
+- **Strange cases** — edge instances that barely qualify as the object
+- **Genealogy** — what the object was before, and what it displaced. Objects that
+  changed identity once are visibly capable of doing so again
+- **Provocative examples** — cases far from established design rules, including from
+  unrelated fields
+
+Then the counter-intuitive part: **do not resolve the ambiguity you find.** The point is
+not to arrive at the correct definition of the object. It is to leave its definition
+*soft*, because a hardened definition is exactly what makes an attribute look
+impossible rather than merely unknown.
+
+One caution worth taking seriously: fixation is a failure of **activation**, not of
+possession. Ten-year-olds asked how to drop an egg safely rarely mention parachutes —
+not because they don't know what a parachute is, but because that knowledge doesn't come
+to mind. So K→K is often not about acquiring anything new; it is about surfacing what
+the designer already knows but never activates. Ask what they know that they haven't
+thought to apply here.
+
 ### 3. Classify what you found
 
 Every finding lands in exactly one of three buckets. Sort them explicitly:

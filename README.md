@@ -45,8 +45,8 @@ knowledge space ◀── K→K learning ──┘
 | `ck-frame` | — | The undecidability gate. Rejects requirements dressed as concepts |
 | `ck-expand` | C→C | Negate constitutive properties; label every partition; name what it breaks |
 | `ck-learn` | K→K, K→C | Research aimed at decidability, sorted into deciding / refuting / attribute-bearing |
-| `ck-conjoin` | C→K | A conjunction requires new knowledge, not enthusiasm |
-| `ck-defix` | — | Six fixation signatures, seven forcing moves |
+| `ck-conjoin` | C→K | A conjunction requires new knowledge; a refutation climbs and re-partitions |
+| `ck-defix` | — | Six fixation signatures, seven forcing moves, and the two evidence-backed rules |
 | `ck-map` | — | Render, assess, hand off |
 
 Skills live in `.claude/skills/` and are invocable as `/ck-frame`, `/ck-expand`, and so
@@ -125,6 +125,7 @@ step 22, one step ahead since.
 | `lib/watch-events.cjs` | Monitor script: canvas clicks → Claude notifications |
 | `lib/start-viewer.sh`, `stop-viewer.sh` | Lifecycle |
 | `references/GRAMMAR.md` | The operator grammar and the undecidability test |
+| `references/TECHNIQUES.md` | Literature notes: which techniques have evidence, which do not |
 | `SCHEMA.md` | Event log format and the five invariants |
 | `sessions/` | Your sessions, plus the worked example |
 

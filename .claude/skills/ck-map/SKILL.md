@@ -71,7 +71,13 @@ will be buried if you just walk the tree in order.
 
 ## A note on the metrics
 
-The expansive ratio is a smoke detector, not a score. A session in a convergence
+The expansive ratio is **this tool's invention, not the literature's** — no such metric
+appears in the C-K corpus, and that is worth saying out loud when reporting it. What the
+literature does say is adjacent and cautionary: counting-style measures are **biased**
+estimators of concept-space expansion, because a session can score well while never
+leaving one branch. Originality and category-shift are the endorsed proxies.
+
+So the ratio is a smoke detector, not a score. A session in a convergence
 phase *should* see it fall as restrictive partitions accumulate toward conjunction.
 What matters is whether it fell because the work moved toward realisation, or because
 nobody questioned the object. The `log` distinguishes these; the number alone doesn't.

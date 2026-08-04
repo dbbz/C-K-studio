@@ -43,7 +43,20 @@ vessel, foils are a known means — even though its parent was expansive.
 - **Expansive** — K does not know the attribute is compatible, and adding it forces
   the object's definition to be revised.
 
-**The test:** name the property of the object's received identity that the attribute
+**The formal criterion:** if the added property is *already known in K as a property of
+one of the entities concerned*, the partition is restrictive; if it is not, the
+partition is expansive.
+
+Two things follow that people routinely get wrong:
+
+- **Expansiveness is relative to a specific K and a specific entity.** "A house with a
+  red roof" is restrictive because red-roofed houses are in K. The very same attribute
+  on a different entity may be expansive — which is why moving an attribute to another
+  carrier is a partitioning move in its own right.
+- **The test is K-membership, not surprisingness.** An attribute can feel startling and
+  still be restrictive. Do not judge by how the partition sounds.
+
+**In practice:** name the property of the object's received identity that the attribute
 violates. If you can name it, the partition is expansive and that name goes in
 `breaks`. If you cannot, it is restrictive. There is no third option, and a node
 that claims to be expansive without a `breaks` is rejected by `lib/ck.cjs`.
@@ -87,3 +100,10 @@ Only `abandoned` is neutral.
    Usually means a restrictive partition was mislabelled expansive.
 5. **Solution smuggling** — the root concept is written so that a known product is
    the obvious answer. Then the session is documentation, not design.
+
+## Where the evidence is
+
+`references/TECHNIQUES.md` holds the literature notes behind these rules — which
+techniques are experimentally supported, which are prescription only, and which
+widely-repeated claims about C-K are not supported at all. Consult it before adding a
+new technique to any skill.

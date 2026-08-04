@@ -56,8 +56,31 @@ node lib/ck.cjs set <session> C4 --status conjunct --k K5 --summary "C4 closed."
 `--for C4` is what makes it a conjunction *of that concept*, and it is how invariant 4
 is checked. Without it the status change is refused.
 
-Refutation is simpler — no C→K entry is required, since what you learned is ordinary
-knowledge:
+## A refutation never kills the parent
+
+The most valuable rule in the corpus, and the easiest to miss: **"C0+A1 is false" does
+not imply "C0 is false."** A refutation settles one *partition* of a concept, not the
+concept. Marking the branch refuted and moving elsewhere in the tree throws away the
+best opportunity in the session.
+
+The move, in order:
+
+1. Mark precisely the node that was refuted — never its parent.
+2. **Climb to the parent** and re-partition it.
+3. Partition it **using the knowledge the refutation just produced.** That knowledge did
+   not exist when the parent was first partitioned, so it can supply attributes that
+   were unavailable then.
+
+In the ESA/CNES Mars-engine case this is what reopened a concept that looked dead: the
+new partition was possible *only because* the negative results had generated the
+knowledge to formulate it. Log the re-partition as `--op "K→C"`, since that is what it
+is. See `references/TECHNIQUES.md` §4 (R5).
+
+If a refutation produced no new knowledge, that is worth noticing on its own — it
+usually means the branch was decidable from the start and was never a concept.
+
+Refutation is otherwise simple — no C→K entry is required, since what you learned is
+ordinary knowledge:
 
 ```bash
 node lib/ck.cjs add-k <session> --text "Why it fails." --status false --source "..." --op "K→K" --for C1
