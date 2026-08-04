@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+# C-K Studio entry point. Dispatches to lib/, resolving the toolchain relative to
+# itself so it works from any directory — cwd stays the user's project, which is
+# where sessions/ and .ck/ are meant to land.
+set -euo pipefail
+
+HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+
+case "${1:-}" in
+  view)    shift; exec "$HERE/lib/start-viewer.sh" "$@" ;;
+  stop)    shift; exec "$HERE/lib/stop-viewer.sh" "$@" ;;
+  watch)   shift; exec node "$HERE/lib/watch-events.cjs" "$@" ;;
+  render)  shift; exec node "$HERE/lib/render.cjs" "$@" ;;
+  migrate) shift; exec node "$HERE/lib/migrate-v3.cjs" "$@" ;;
+  *)       exec node "$HERE/lib/ck.cjs" "$@" ;;
+esac

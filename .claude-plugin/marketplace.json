@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-marketplace-manifest.json",
+  "name": "ck-tools",
+  "owner": { "name": "Djalel Benbouzid" },
+  "description": "C-K design tooling for Claude Code.",
+  "plugins": [
+    {
+      "name": "ck-studio",
+      "source": "./",
+      "description": "Concept–Knowledge design sessions with a live canvas.",
+      "version": "1.0.0",
+      "category": "productivity",
+      "keywords": ["design", "innovation", "c-k-theory"]
+    }
+  ]
+}

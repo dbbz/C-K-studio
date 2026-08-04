@@ -1,0 +1,39 @@
+name: validate
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  plugin:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      # Manifest JSON, source paths, and version agreement between the marketplace
+      # entry and plugin.json. It does NOT read skills/ when the root is a
+      # marketplace — hence the separate step below.
+      - name: Validate plugin and marketplace
+        run: npx -y @anthropic-ai/claude-code plugin validate . --strict
+
+      - name: Validate skill frontmatter
+        run: node scripts/check-skills.cjs
+
+      # The library has no dependencies and no test suite; a parse check is what
+      # there is to check.
+      - name: Parse-check the toolchain
+        run: |
+          for f in lib/*.cjs; do node --check "$f"; done
+          bash -n bin/ck lib/start-viewer.sh lib/stop-viewer.sh
+
+      - name: No cwd-relative call sites left in skills
+        run: |
+          if grep -rn 'node lib/\|\./lib/\|`references/' skills/; then
+            echo "::error::skills must not reference lib/ or references/ by relative path"
+            exit 1
+          fi
