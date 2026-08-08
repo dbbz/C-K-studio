@@ -84,6 +84,9 @@ concept was posed. That is usually the most interesting thing about a root conce
 ## Present the framing before expanding
 
 Show the user the root, the seeded K, and the sentence explaining the undecidability.
+Keep it to the root, the two or three K entries that actually bind, and that one
+sentence — the rest is on the canvas. Reading out all eight propositions spends their
+attention before the session has asked them anything.
 
 Then — rather than asking "is this the right object?", which invites a polite yes —
 **state which object you chose, why, and what you are therefore *not* designing.** That

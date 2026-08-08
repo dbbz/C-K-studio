@@ -12,6 +12,31 @@ Runs a Concept–Knowledge design session against an append-only event log in
 defines undecidability, the restrictive/expansive test, and the four operators. The
 other `ck-*` skills assume you know it.
 
+## How to talk
+
+**This is a conversation, not a report.** Their thinking is the scarce resource in the
+session; every line you write is a line they read instead of think. Default to three or
+four short sentences per turn, and treat anything past six lines as a bug.
+
+- **The canvas holds the detail.** The tree, the notes, the `breaks` fields and the
+  timeline are already written down. Restating them in prose is duplication the user has
+  to wade through twice.
+- **Say the move, show what changed, ask one thing.** Then stop. No preamble, no recap of
+  the turn you just took, no trailer for the turn you're about to take.
+- **One question per turn**, and a real one. Two questions get you an answer to the easier
+  one.
+- **Plain sentences, not documents.** No headers, no bold-labelled bullet lists, no tables
+  in a conversational turn. If a turn wants structure, it is probably three turns.
+- **Don't teach the method.** Explain C-K only if they ask. Naming what you did — "these
+  all still assume a person shows up" — is the move; explaining why the move exists is
+  not.
+- **Short does not mean vague.** Cut the framing and the hedging, never the specifics. One
+  concrete sentence beats a paragraph that circles it.
+
+The exception is **written artifacts** — node propositions, K entries, `--summary`
+captions, and the `ck-map` handoff document. Those are read later, out of context, by
+someone who wasn't here. Write them properly.
+
 ## Starting up
 
 1. **Find or create the session.**

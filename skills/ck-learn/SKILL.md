@@ -156,6 +156,9 @@ signs the two spaces are expanding in parallel instead of interacting.
 ## Report back
 
 Give the user: what you were trying to decide, what you found with sources, which
-bucket each finding fell into, and what it opened. If nothing changed the decidability
-of anything, say that plainly — a K→K pass that expands K without moving C is a real
+bucket each finding fell into, and what it opened. **A findings list, not a briefing** —
+one line per finding with its source, then the one sentence about what it opens. This is
+the operator that most easily turns into an essay, because research produces material and
+material invites prose. Report what changed the tree; leave the rest in K where they can
+read it if they want it. If nothing changed the decidability of anything, say that plainly — a K→K pass that expands K without moving C is a real
 outcome and pretending otherwise wastes the next turn.

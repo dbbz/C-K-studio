@@ -109,7 +109,8 @@ ck set <session> C1 --status refuted --k K2 \
 
 You do not have the user's situated knowledge, and logical status depends on it.
 Propose the conjunction — name the leaf, name the K that settles it, quote the
-evidence — and ask them to confirm. If they push back, the concept stays open and
+evidence — and ask them to confirm. Three sentences and a question; the case either
+stands on the K you cite or it doesn't, and length won't fix it. If they push back, the concept stays open and
 their objection becomes a K entry with them as the source.
 
 ## After a conjunction

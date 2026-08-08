@@ -2,7 +2,7 @@
   "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
   "name": "ck-studio",
   "displayName": "C-K Studio",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Concept–Knowledge design sessions with an undecidability gate, an append-only event log, and a live browser canvas. Not a brainstorm app.",
   "author": { "name": "Djalel Benbouzid" },
   "repository": "https://github.com/dbbz/C-K-studio",

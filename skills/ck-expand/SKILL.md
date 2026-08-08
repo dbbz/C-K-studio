@@ -196,6 +196,9 @@ partition pass should read as a sequence of distinct moves rather than a batch.
 ## Then stop
 
 Show the user the new children and flag which are expansive and what each breaks.
+**One line each** — the attribute and what it breaks, in their words. The canvas already
+has the propositions and the ids; a paragraph per child is the same information a second
+time, and it buries the one thing you want them to react to.
 
 Then **recommend one and say why**, rather than offering a menu. A list of equal-looking
 options asks them to make a call they have less information to make than you do, and

@@ -8,7 +8,7 @@
       "name": "ck-studio",
       "source": "./",
       "description": "Concept–Knowledge design sessions with a live canvas.",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "category": "productivity",
       "keywords": ["design", "innovation", "c-k-theory"]
     }

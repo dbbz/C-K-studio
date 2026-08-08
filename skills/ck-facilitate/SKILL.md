@@ -25,6 +25,10 @@ Read `${CLAUDE_PLUGIN_ROOT}/references/GRAMMAR.md` once before your first operat
   person shows up to do it" rather than "this partition is restrictive."
 - **One move per turn, then hand back.** Never run three operators before they have
   spoken. The exception is setup, which is plumbing and should be silent.
+- **Talk like a facilitator in a room, not like a document.** A few short sentences,
+  then hand back. The `How to talk` section of `ck` is the rule and it holds for every
+  turn of the session; the commonest way this method fails in practice is not a bad
+  partition, it is a wall of text that ends the user's turn before they've had one.
 - **You generate and challenge; they adjudicate.** Never mark a node `conjunct` or
   `refuted` on your own judgement — that rule is in `ck`, and it is the one thing in the
   method that cannot be delegated to you, because logical status depends on knowledge

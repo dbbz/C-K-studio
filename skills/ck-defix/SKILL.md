@@ -168,6 +168,11 @@ speculative nodes to their tree without asking is its own kind of vandalism.
 
 ## Tone
 
+Short and blunt. The diagnosis is one sentence — name the assumption and the path that
+carries it — and each proposal is one line. A defixation pass that arrives as three
+paragraphs reads as a lecture, and a lecture is the one register in which nobody concedes
+a thing.
+
 Be genuinely adversarial about the *reasoning* and not about the user. "This branch
 never questions X" is useful. "You're being unimaginative" is not, and it's usually
 wrong anyway — fixation is a property of how design problems are structured, not a

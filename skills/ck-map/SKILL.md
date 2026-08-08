@@ -56,6 +56,10 @@ arrow keys step through it one operation at a time.
 
 ## Handoff document
 
+This is the one place in the session where length is allowed — it is read later, by
+someone who wasn't in the room. Write the document properly, and keep the turn that
+hands it over to a couple of sentences. Don't summarise the report in chat as well.
+
 When the user wants something to share or keep, write
 `sessions/<slug>-report.md` covering:
 
