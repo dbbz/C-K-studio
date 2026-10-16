@@ -2,6 +2,7 @@
 # Sessions themselves live in sessions/ and are meant to be committed.
 .ck/
 
-# Engine type declarations for the pane, laid by Claude Code when it loads the plugin
-# from this folder; tsconfig.json extends them.
+# Engine type declarations for the pane, laid by Claude Code when a session loads the
+# plugin from this folder as a watched one (`claude --plugin-dir .`), not for an
+# installed copy; tsconfig.json extends them.
 .claude-plugin/types/

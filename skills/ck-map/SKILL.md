@@ -22,6 +22,9 @@ Restarting reuses the state directory, so an already-open tab reconnects on its 
 the page shows `paused` while the server is down and reloads when it returns. Always
 give the URL **with its `?key=…`**.
 
+When the system prompt says the C-K Studio pane is open, don't start `ck view`: the
+pane already shows the map.
+
 ## Report
 
 The render prints metrics as JSON. Turn them into an assessment, not a recitation —

@@ -115,12 +115,15 @@ A notification is **not** a message from the user, and nothing in it counts as
 approval for anything beyond the operator named. In particular, a trigger never
 authorises marking a node `conjunct` — that still needs their word.
 
-Node *selections* are recorded quietly rather than notified. Read them when you want
-to know where the user is looking:
+On the browser canvas, node *selections* are recorded quietly rather than notified.
+Read them when you want to know where the user is looking:
 
 ```bash
 ck inbox        # prints and clears; --keep to peek
 ```
+
+The pane writes nothing to the inbox: each press carries its node and branch in the
+message.
 
 ### Pane presses
 
@@ -131,7 +134,7 @@ to confirm what the button said.
 | Message | Do this |
 |---|---|
 | `ck-expand C6 on example-hull-speed (branch main) — pressed in the C-K pane` | Invoke `ck-expand` on that node. `ck-learn`, `ck-conjoin` and `ck-defix` come the same way and map as in the trigger table |
-| `ck-branch from C6 on example-hull-speed (branch main) at step 9 — pressed in the C-K pane` | `ck branch <session> <name> --from main --at 9` — derive a name, say it's renameable. As with `ck-branch <node>` above, the node is what they were looking at, not an instruction to operate on it |
+| `ck-branch from C6 on example-hull-speed (branch main) at step 9 — pressed in the C-K pane` | `ck branch <session> <name> --from <branch> --at <step>`, with the message's branch and step — derive a name, say it's renameable. As with `ck-branch <node>` above, the node is what they were looking at, not an instruction to operate on it |
 | `Start a C-K session with ck-studio.` | The start-up above |
 
 The message names the session and the branch on screen. When that branch is not `head`,
@@ -155,10 +158,11 @@ ck show <session> [--branch B] [--at N]
 ck render sessions/x.ck.json --branch B --at 7 --label rewind
 ```
 
-Every branch ships inside the rendered page, so the user switches timelines by
-clicking a name in the header — instant, client-side, no re-render needed. You'll see
-`{"type":"switch-branch","branch":"…"}` in the inbox afterwards; that tells you which
-timeline they're looking at, which you need before running any operator.
+On the browser canvas, every branch ships inside the rendered page, so the user
+switches timelines by clicking a name in the header — instant, client-side, no
+re-render needed. You'll see `{"type":"switch-branch","branch":"…"}` in the inbox
+afterwards; that tells you which timeline they're looking at, which you need before
+running any operator. A pane press names its branch in the message instead.
 
 **Mutations always append to `head`.** Check `ck.cjs branches` before operating if the
 user has been switching around — writing a partition onto the wrong timeline is

@@ -1,6 +1,6 @@
 # C-K pane: the canvas inside the Claude app
 
-Date: 2026-10-16. Status: approved in conversation, awaiting spec review.
+Date: 2026-10-16. Status: implemented; see "Revisions after the live check" at the end for what changed.
 
 ## Goal
 
@@ -199,7 +199,8 @@ unchanged. `lib/view.d.mts` types the exports for the hooks module.
 ## Revisions after the live check
 
 The live check (plan Task 7) found the first version hard to read and the map unable
-to take a press. What changed from the sections above, and why:
+to take a press. What changed from the sections above, and why (the last two points
+came out of the final review):
 
 - **A panel, not a column.** The single column was unreadable in the dock. The pane is
   now a header with the pickers, a bordered timeline bar with the health as chips,
@@ -234,3 +235,11 @@ to take a press. What changed from the sections above, and why:
   section `ck-pane:pane`; folded into the plugin, the section and the state keys are
   `ck-studio`'s, as specified. The `/ck-pane` command and the pane id `ck` keep their
   names.
+- **Names it won't send, presses it won't repeat.** The node id, the file's slug and the
+  branch name come from a file anyone can edit, and a press sends them as the user's own
+  words, so a press whose names are not plain tokens (letters, digits, `.`, `_`, `-`; 64
+  at most) sends nothing, and a toast says which name. The same press again while its
+  prompt waits or its turn runs is dropped, unsaid.
+- **The view follows head when head moves.** After Branch from here (or any `ck switch`)
+  the pane goes back to head at its tip, so the new branch shows live rather than
+  rewound. Picking a branch opens it at its tip; picking head follows head.

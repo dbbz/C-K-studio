@@ -3,7 +3,7 @@
   "name": "ck-studio",
   "displayName": "C-K Studio",
   "version": "1.2.0",
-  "description": "Concept–Knowledge design sessions with an undecidability gate, an append-only event log, and a live browser canvas. Not a brainstorm app.",
+  "description": "Concept–Knowledge design sessions with an undecidability gate, an append-only event log, and a live canvas: a pane in the Claude app, a browser page from the terminal. Not a brainstorm app.",
   "author": { "name": "Djalel Benbouzid" },
   "repository": "https://github.com/dbbz/C-K-studio",
   "license": "MIT",

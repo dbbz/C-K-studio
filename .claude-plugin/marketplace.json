@@ -7,7 +7,7 @@
     {
       "name": "ck-studio",
       "source": "./",
-      "description": "Concept–Knowledge design sessions with a live canvas.",
+      "description": "Concept–Knowledge design sessions with a live canvas, in the Claude app or the browser.",
       "version": "1.2.0",
       "category": "productivity",
       "keywords": ["design", "innovation", "c-k-theory"]

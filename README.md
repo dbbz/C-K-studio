@@ -88,7 +88,8 @@ while the plugin is enabled, `ck` shadows any other command by that name.
 
 In the Claude app the canvas is a pane docked beside the conversation. It opens by
 itself when the project's `sessions/` holds a session; `/ck-pane` opens it otherwise, or
-again after you close it.
+again after you close it. In a project with no session yet, the pane holds a **Start a
+session** button that asks Claude to start one.
 
 It shows the same session the browser canvas does. Under the session and branch pickers
 and the timeline, a map of the tree gives the overview, and you can hide it. Below that
@@ -113,6 +114,12 @@ timeline, and `g` goes back to the latest step.
 There is no server, URL or Monitor to start in the app: the pane reads `sessions/`
 itself and redraws after every `ck` command. The browser canvas stays for the terminal
 and for presenting a session.
+
+While the pane is open, the plugin tells Claude so in the system prompt, and Claude
+leaves the browser canvas alone unless you ask for it. Where an organization manages
+Claude Code, a plugin you install yourself doesn't get to add to the system prompt, so
+Claude isn't told and may start the browser canvas as well. That is harmless: both show
+the same file.
 
 ## The operators
 
@@ -297,8 +304,9 @@ a Node new enough to `require` an ES module, so each gets the format it can load
 one source.
 
 `tsconfig.json` type-checks the pane against the declarations Claude Code lays in
-`.claude-plugin/types/` (gitignored) when it loads the plugin from this folder:
-`npx -y -p typescript@5.6 tsc -p .`
+`.claude-plugin/types/` (gitignored): `npx -y -p typescript@5.6 tsc -p .`. Claude Code
+lays them only when a session loads the plugin from this folder as a watched one
+(`claude --plugin-dir .`), not for an installed copy, so run one such session first.
 
 ## From the research notes
 
