@@ -268,6 +268,8 @@ export function renderMap(model: PaneModel, mode: MapMode): { source: string; wi
 /** One row of the tree view: a concept in tree order, with what its line draws. */
 export type TreeRow = {
   id: string
+  /** How deep it hangs in the walk: 0 for a root, one more per ancestor. A guide is three characters per level. */
+  depth: number
   /** The guide lines before it: `│  ` or three spaces per ancestor below the root, then `├─ ` or `└─ `. */
   guide: string
   mark: 'R' | 'E' | '·'
@@ -314,6 +316,7 @@ export function treeRows(model: PaneModel): TreeRow[] {
     const guide = parentOf(id) === null ? '' : `${lines.join('')}${hasLaterSibling(id) ? '├─ ' : '└─ '}`
     rows.push({
       id,
+      depth: model.depth[id] ?? 0,
       guide,
       mark: letter(c),
       label: attributeOf(c),

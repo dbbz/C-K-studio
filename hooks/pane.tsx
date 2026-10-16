@@ -36,6 +36,9 @@ const PX_PER_COLUMN = 8
 /** From this many columns the tree sits beside the card and the knowledge. */
 const WIDE_COLUMNS = 100
 
+/** A graphical tree row's indent per level, in cells: a child's chip starts under its parent's id. */
+const TREE_INDENT = 3
+
 /** What the keys do, told where the surface has them (not on mobile). */
 const KEYS_CAPTION = 'Keys: j/k concept · h/l step · g latest'
 
@@ -436,11 +439,16 @@ export async function drawPane($: EngineInterface, e: PaneEvent): Promise<Render
       return node === undefined ? v : { ...v, node }
     })
 
-  // The tree view: one row per concept, its guide lines, then one Button holding the
-  // partition letter (so partition is never colour alone), the id, the label and the
-  // status, named for a screen reader. The selected row is led by ▸ and drawn heavier, and
-  // its Button keeps the surface's own chrome; the rest are plain, led by two spaces so the
-  // labels line up. The node the step touched ends in a dot.
+  // The tree view: one row per concept, its Button named for a screen reader, the partition
+  // letter (so partition is never colour alone) before the id, and the node the step
+  // touched ending in a dot. The terminal draws a row as its guide lines, then one Button
+  // holding the letter, the id, the label and the status; the selected row is led by ▸ and
+  // drawn heavier, and its Button keeps the surface's own chrome; the rest are plain, led
+  // by two spaces so the labels line up. A graphical surface draws every Button as its own
+  // native button, plain or not, and its rows are taller than a guide glyph, so there a row
+  // is indented by its depth, its Button a chip of the letter and the id alone (as the
+  // map's boxes are), primary when selected, and the label and status text beside it.
+  const select = (row: TreeRow) => () => void setView(v => ({ ...v, node: row.id }))
   const markOf = (row: TreeRow) =>
     row.mark === 'R' ? (
       <Text color={RESTRICTIVE} weight="semibold">
@@ -458,8 +466,9 @@ export async function drawPane($: EngineInterface, e: PaneEvent): Promise<Render
     row.mark === '·'
       ? `${row.id}, root concept, ${row.status}`
       : `${row.id}, ${partitionName[row.mark]}, ${row.label}, ${row.status}`
-  const treeRow = (row: TreeRow) => {
-    const faded = row.status === 'refuted' || row.status === 'abandoned' ? { dimColor: true } : {}
+  const fadedOf = (row: TreeRow) => (row.status === 'refuted' || row.status === 'abandoned' ? { dimColor: true } : {})
+  const guideRow = (row: TreeRow) => {
+    const faded = fadedOf(row)
     // A list of strings and Text runs, the only children a Button holds.
     const runs: RenderNode[] = [
       row.isSelected ? <Text color="claude">{'▸ '}</Text> : '  ',
@@ -494,13 +503,58 @@ export async function drawPane($: EngineInterface, e: PaneEvent): Promise<Render
           key={`node-${row.id}`}
           label={nameOf(row)}
           {...(row.isSelected ? {} : { plain: true as const })}
-          onPress={() => void setView(v => ({ ...v, node: row.id }))}
+          onPress={select(row)}
         >
           {runs}
         </Button>
       </Box>
     )
   }
+  // The label grows into the room the chip leaves and is cut at its end; the status and
+  // the dot ride in its Text, so they follow the label and go with it when it is cut.
+  const chipRow = (row: TreeRow) => {
+    const faded = fadedOf(row)
+    return (
+      <Box
+        key={`row-${row.id}`}
+        flexDirection="row"
+        alignItems="center"
+        gap="sm"
+        paddingLeft={row.depth * TREE_INDENT}
+      >
+        <Button
+          key={`node-${row.id}`}
+          label={nameOf(row)}
+          {...(row.isSelected ? { variant: 'primary' as const } : {})}
+          {...faded}
+          onPress={select(row)}
+        >
+          {[
+            markOf(row),
+            ' ',
+            <Text weight="semibold">{row.id}</Text>,
+            ...(row.status === 'conjunct' ? [<Text color="success">{' ✓'}</Text>] : []),
+          ]}
+        </Button>
+        <Box flexGrow={1} flexShrink={1} width={0}>
+          <Text wrap="truncate-end" weight={row.isSelected ? 'semibold' : 'regular'} {...faded}>
+            {[
+              row.label,
+              ...(row.status === 'open'
+                ? []
+                : [
+                    <Text size="caption" weight="regular" dimColor>
+                      {`  ${row.status}`}
+                    </Text>,
+                  ]),
+              ...(row.isFresh ? [<Text color="claude">{' •'}</Text>] : []),
+            ]}
+          </Text>
+        </Box>
+      </Box>
+    )
+  }
+  const hasGuides = e.surface === 'terminal'
   const tree = (
     <Box key="tree" flexDirection="column" gap="xs" {...share(9)}>
       <Box flexDirection="row" justifyContent="space-between" alignItems="center">
@@ -517,8 +571,14 @@ export async function drawPane($: EngineInterface, e: PaneEvent): Promise<Render
         ) : null}
       </Box>
       {rows.length > 0 ? (
-        // No gap between the rows, so each guide line meets the next.
-        <Box flexDirection="column">{rows.map(treeRow)}</Box>
+        hasGuides ? (
+          // No gap between the rows, so each guide line meets the next.
+          <Box flexDirection="column">{rows.map(guideRow)}</Box>
+        ) : (
+          <Box flexDirection="column" gap="xs">
+            {rows.map(chipRow)}
+          </Box>
+        )
       ) : (
         <Text dimColor>{`No concepts at step ${m.step}.`}</Text>
       )}

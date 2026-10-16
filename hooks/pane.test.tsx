@@ -137,7 +137,7 @@ test('desktop draws the map above the tree, terminal the tree alone', async ($, 
 
   const desktop = await openPane($, 'desktop')
   expect(await svgMap(desktop)).toBeDefined()
-  expect(stringsIn(await desktop.find({ key: 'node-C6' }))).toContain('+ has no hull')
+  expect(stringsIn(await desktop.find({ key: 'row-C6' }))).toContain('+ has no hull')
   await desktop.unmount()
 
   const terminal = await openPane($, 'terminal')
@@ -265,125 +265,209 @@ test('pressing a concept selects it', async ($, on) => {
   }
 })
 
-// One test per surface: each starts from a fresh $.state, at the tip.
-for (const surface of SURFACES) {
+/** The rows at the tip, in tree order. */
+const TIP_ROWS = ['C0', 'C1', 'C2', 'C3', 'C4', 'C5', 'C6', 'C7', 'C8', 'C9', 'C10', 'C12']
+
+/** The surfaces that draw every Button as their own native button: the tree's rows are chips there. */
+const GRAPHICAL = ['desktop', 'mobile'] as const
+
+/** A graphical row's label: the Text in the Box beside its chip. */
+function labelIn(row: unknown): Drawn | undefined {
+  const box = (row as Drawn | undefined)?.children?.[1] as Drawn | undefined
+  return box?.children?.[0] as Drawn | undefined
+}
+
+// One test per surface (the graphical ones below): each starts from a fresh $.state, at the tip.
+test('the selected row is marked (terminal)', async ($, on) => {
+  world(on)
+  const ui = await openPane($, 'terminal')
+  const plainness = async () => (await treeButtons(ui)).map(b => [b.key, 'plain' in b.props ? b.props.plain : 'none'])
+  const rowsMarking = (id: string) => TIP_ROWS.map(k => [`node-${k}`, k === id ? 'none' : true])
+
+  // How a row says it is selected: its first run, and its label's weight.
+  const marking = async (id: string) => {
+    const runs = ((await ui.find({ key: `node-${id}` }))?.children ?? []) as (Drawn | string)[]
+    const lead = runs[0]
+    const label = runs.find(run => typeof run !== 'string' && run.props?.wrap === 'truncate-end') as Drawn | undefined
+    return {
+      lead: stringsIn(lead).join(''),
+      leadColor: typeof lead === 'string' ? undefined : lead?.props?.color,
+      labelWeight: label?.props?.weight,
+    }
+  }
+  const SELECTED = { lead: '▸ ', leadColor: 'claude', labelWeight: 'semibold' }
+  const UNSELECTED = { lead: '  ', leadColor: undefined, labelWeight: 'regular' }
+
+  // At the tip C12 is selected: its Button alone is drawn without `plain`, led by ▸, its label heavy.
+  expect(await treeButtons(ui)).toHaveLength(12)
+  expect(await ui.find({ key: 'node-C12' })).toBeDefined()
+  expect('plain' in ((await ui.find({ key: 'node-C12' }))?.props ?? {})).toBe(false)
+  expect(await plainness()).toEqual(rowsMarking('C12'))
+  expect(await marking('C12')).toEqual(SELECTED)
+  expect(await marking('C6')).toEqual(UNSELECTED)
+
+  await ui.press({ key: 'node-C6' })
+  expect('plain' in ((await ui.find({ key: 'node-C6' }))?.props ?? {})).toBe(false)
+  expect((await ui.find({ key: 'node-C12' }))?.props.plain).toBe(true)
+  expect(await plainness()).toEqual(rowsMarking('C6'))
+  expect(await marking('C6')).toEqual(SELECTED)
+  expect(await marking('C12')).toEqual(UNSELECTED)
+})
+
+test('a row draws its concept (terminal)', async ($, on) => {
+  world(on)
+  const ui = await openPane($, 'terminal')
+  const runs = async (id: string) => ((await ui.find({ key: `node-${id}` }))?.children ?? []) as (Drawn | string)[]
+  const text = (run: Drawn | string | undefined) => stringsIn(run).join('')
+  const props = (run: Drawn | string | undefined) => (typeof run === 'string' ? undefined : run?.props)
+
+  // C4: the lead, its partition letter, the id, a check for conjunct, two spaces, the label, the status.
+  const c4 = await runs('C4')
+  expect(c4.map(text)).toEqual(['  ', 'R', ' ', 'C4', ' ✓', '  ', '+ supported by a submerged wing', '  conjunct'])
+  expect(props(c4[1])).toMatchObject({ color: '#2a78d6', weight: 'semibold' })
+  expect(props(c4[3])).toMatchObject({ weight: 'semibold' })
+  expect(props(c4[4])).toMatchObject({ color: 'success' })
+  expect(props(c4[6])).toMatchObject({ wrap: 'truncate-end', weight: 'regular' })
+  expect(props(c4[7])).toMatchObject({ size: 'caption', dimColor: true })
+
+  // C6: open, so no status; the expansive letter.
+  const c6 = await runs('C6')
+  expect(c6.map(text)).toEqual(['  ', 'E', ' ', 'C6', '  ', '+ has no hull'])
+  expect(props(c6[1])).toMatchObject({ color: '#eb6834', weight: 'semibold' })
+  expect(props(c6[3])?.dimColor).toBeUndefined()
+
+  // C1 is refuted: its id and label are dim.
+  const c1 = await runs('C1')
+  expect(c1.map(text)).toEqual(['  ', 'R', ' ', 'C1', '  ', '+ more power', '  refuted'])
+  expect(props(c1[3])).toMatchObject({ dimColor: true })
+  expect(props(c1[5])).toMatchObject({ dimColor: true })
+
+  // The root's mark is a dim dot, in no colour.
+  const c0 = await runs('C0')
+  expect(c0.map(text)).toEqual(['  ', '·', ' ', 'C0', '  ', 'root concept'])
+  expect(props(c0[1])).toMatchObject({ dimColor: true })
+  expect(props(c0[1])?.color).toBeUndefined()
+
+  // The selected row (C12 at the tip) is led by ▸; the fresh row ends in the claude-coloured dot.
+  const c12 = await runs('C12')
+  expect(c12.map(text)).toEqual(['▸ ', 'R', ' ', 'C12', '  ', '+ the network never stops', ' •'])
+  expect(props(c12.at(-1))).toMatchObject({ color: 'claude' })
+  expect(c6.map(text)).not.toContain(' •')
+
+  // Each Button is named for a screen reader: id, partition, label, status.
+  const labelOf = async (id: string) => (await ui.find({ key: `node-${id}` }))?.props.label
+  expect(await labelOf('C12')).toBe('C12, restrictive, + the network never stops, open')
+  expect(await labelOf('C6')).toBe('C6, expansive, + has no hull, open')
+  expect(await labelOf('C1')).toBe('C1, restrictive, + more power, refuted')
+  expect(await labelOf('C4')).toBe('C4, restrictive, + supported by a submerged wing, conjunct')
+  expect(await labelOf('C0')).toBe('C0, root concept, open')
+
+  // Each row: its guide, mono and dim, its spaces unbreakable, beside the Button; the root has none.
+  const tree = await ui.find({ key: 'tree' })
+  const rowOf = (id: string): Drawn | undefined => {
+    const walk = (node: unknown): Drawn | undefined => {
+      const el = node as Drawn
+      if (typeof el !== 'object' || el === null) return undefined
+      const keyOf = (child: unknown) => (child as Drawn).key ?? (child as Drawn).props?.key
+      if ((el.children ?? []).some(child => keyOf(child) === `node-${id}`)) return el
+      for (const child of el.children ?? []) {
+        const found = walk(child)
+        if (found) return found
+      }
+      return undefined
+    }
+    return walk(tree)
+  }
+  const row12 = rowOf('C12')
+  expect(row12?.props).toMatchObject({ flexDirection: 'row', alignItems: 'center' })
+  expect(row12?.props?.gap).toBeUndefined()
+  expect(row12?.children).toHaveLength(2)
+  expect((row12?.children?.[0] as Drawn).props).toMatchObject({ mono: true, dimColor: true })
+  expect(stringsIn(row12?.children?.[0])).toEqual(['\u00a0'.repeat(9) + '└─\u00a0'])
+  expect(stringsIn(rowOf('C4')?.children?.[0])).toEqual(['\u00a0'.repeat(3) + '├─\u00a0'])
+  expect(rowOf('C0')?.children).toHaveLength(1)
+  await ui.unmount()
+})
+
+for (const surface of GRAPHICAL) {
   test(`the selected row is marked (${surface})`, async ($, on) => {
     world(on)
     const ui = await openPane($, surface)
-    const plainness = async () => (await treeButtons(ui)).map(b => [b.key, 'plain' in b.props ? b.props.plain : 'none'])
-    const rowsMarking = (id: string) =>
-      ['C0', 'C1', 'C2', 'C3', 'C4', 'C5', 'C6', 'C7', 'C8', 'C9', 'C10', 'C12'].map(k => [
-        `node-${k}`,
-        k === id ? 'none' : true,
-      ])
+    // No row is plain: a graphical surface draws its own button either way. The selected chip is primary.
+    const marking = async () => (await treeButtons(ui)).map(b => [b.key, b.props.variant ?? 'none', 'plain' in b.props])
+    const rowsMarking = (id: string) => TIP_ROWS.map(k => [`node-${k}`, k === id ? 'primary' : 'none', false])
+    const labelWeight = async (id: string) => labelIn(await ui.find({ key: `row-${id}` }))?.props?.weight
 
-    // How a row says it is selected: its first run, and its label's weight.
-    const marking = async (id: string) => {
-      const runs = ((await ui.find({ key: `node-${id}` }))?.children ?? []) as (Drawn | string)[]
-      const lead = runs[0]
-      const label = runs.find(run => typeof run !== 'string' && run.props?.wrap === 'truncate-end') as Drawn | undefined
-      return {
-        lead: stringsIn(lead).join(''),
-        leadColor: typeof lead === 'string' ? undefined : lead?.props?.color,
-        labelWeight: label?.props?.weight,
-      }
-    }
-    const SELECTED = { lead: '▸ ', leadColor: 'claude', labelWeight: 'semibold' }
-    const UNSELECTED = { lead: '  ', leadColor: undefined, labelWeight: 'regular' }
-
-    // At the tip C12 is selected: its Button alone is drawn without `plain`, led by ▸, its label heavy.
     expect(await treeButtons(ui)).toHaveLength(12)
-    expect(await ui.find({ key: 'node-C12' })).toBeDefined()
-    expect('plain' in ((await ui.find({ key: 'node-C12' }))?.props ?? {})).toBe(false)
-    expect(await plainness()).toEqual(rowsMarking('C12'))
-    expect(await marking('C12')).toEqual(SELECTED)
-    expect(await marking('C6')).toEqual(UNSELECTED)
+    expect(await marking()).toEqual(rowsMarking('C12'))
+    expect(await labelWeight('C12')).toBe('semibold')
+    expect(await labelWeight('C6')).toBe('regular')
 
     await ui.press({ key: 'node-C6' })
-    expect('plain' in ((await ui.find({ key: 'node-C6' }))?.props ?? {})).toBe(false)
-    expect((await ui.find({ key: 'node-C12' }))?.props.plain).toBe(true)
-    expect(await plainness()).toEqual(rowsMarking('C6'))
-    expect(await marking('C6')).toEqual(SELECTED)
-    expect(await marking('C12')).toEqual(UNSELECTED)
+    expect(await marking()).toEqual(rowsMarking('C6'))
+    expect(await labelWeight('C6')).toBe('semibold')
+    expect(await labelWeight('C12')).toBe('regular')
   })
-}
 
-test('a row draws its concept', async ($, on) => {
-  world(on)
-  for (const surface of SURFACES) {
+  test(`a row draws its concept (${surface})`, async ($, on) => {
+    world(on)
     const ui = await openPane($, surface)
-    const runs = async (id: string) => ((await ui.find({ key: `node-${id}` }))?.children ?? []) as (Drawn | string)[]
-    const text = (run: Drawn | string | undefined) => stringsIn(run).join('')
-    const props = (run: Drawn | string | undefined) => (typeof run === 'string' ? undefined : run?.props)
+    const text = (run: unknown) => stringsIn(run).join('')
+    const props = (run: unknown) => (typeof run === 'string' ? undefined : (run as Drawn | undefined)?.props)
+    const row = async (id: string) => (await ui.find({ key: `row-${id}` })) as Drawn | undefined
+    const chip = async (id: string) => ((await ui.find({ key: `node-${id}` }))?.children ?? []) as (Drawn | string)[]
+    const label = async (id: string) => (labelIn(await row(id))?.children ?? []) as (Drawn | string)[]
 
-    // C4: the lead, its partition letter, the id, a check for conjunct, two spaces, the label, the status.
-    const c4 = await runs('C4')
-    expect(c4.map(text)).toEqual(['  ', 'R', ' ', 'C4', ' ✓', '  ', '+ supported by a submerged wing', '  conjunct'])
-    expect(props(c4[1])).toMatchObject({ color: '#2a78d6', weight: 'semibold' })
-    expect(props(c4[3])).toMatchObject({ weight: 'semibold' })
-    expect(props(c4[4])).toMatchObject({ color: 'success' })
-    expect(props(c4[6])).toMatchObject({ wrap: 'truncate-end', weight: 'regular' })
-    expect(props(c4[7])).toMatchObject({ size: 'caption', dimColor: true })
+    // C4: the chip holds the partition letter, the id and a check for conjunct; the label and the status follow it.
+    const c4 = await chip('C4')
+    expect(c4.map(text)).toEqual(['R', ' ', 'C4', ' ✓'])
+    expect(props(c4[0])).toMatchObject({ color: '#2a78d6', weight: 'semibold' })
+    expect(props(c4[2])).toMatchObject({ weight: 'semibold' })
+    expect(props(c4[3])).toMatchObject({ color: 'success' })
+    expect((await label('C4')).map(text)).toEqual(['+ supported by a submerged wing', '  conjunct'])
+    expect(props((await label('C4'))[1])).toMatchObject({ size: 'caption', dimColor: true })
+    expect(labelIn(await row('C4'))?.props).toMatchObject({ wrap: 'truncate-end', weight: 'regular' })
+    // The label takes the room the chip leaves, so a long one is cut rather than wrapped.
+    expect(((await row('C4'))?.children?.[1] as Drawn | undefined)?.props).toMatchObject({ flexGrow: 1, flexShrink: 1, width: 0 })
 
     // C6: open, so no status; the expansive letter.
-    const c6 = await runs('C6')
-    expect(c6.map(text)).toEqual(['  ', 'E', ' ', 'C6', '  ', '+ has no hull'])
-    expect(props(c6[1])).toMatchObject({ color: '#eb6834', weight: 'semibold' })
-    expect(props(c6[3])?.dimColor).toBeUndefined()
+    const c6 = await chip('C6')
+    expect(c6.map(text)).toEqual(['E', ' ', 'C6'])
+    expect(props(c6[0])).toMatchObject({ color: '#eb6834', weight: 'semibold' })
+    expect((await label('C6')).map(text)).toEqual(['+ has no hull'])
+    expect((await ui.find({ key: 'node-C6' }))?.props.dimColor).toBeUndefined()
 
-    // C1 is refuted: its id and label are dim.
-    const c1 = await runs('C1')
-    expect(c1.map(text)).toEqual(['  ', 'R', ' ', 'C1', '  ', '+ more power', '  refuted'])
-    expect(props(c1[3])).toMatchObject({ dimColor: true })
-    expect(props(c1[5])).toMatchObject({ dimColor: true })
+    // C1 is refuted: its chip and its label are dim.
+    expect((await ui.find({ key: 'node-C1' }))?.props.dimColor).toBe(true)
+    expect(labelIn(await row('C1'))?.props?.dimColor).toBe(true)
+    expect((await label('C1')).map(text)).toEqual(['+ more power', '  refuted'])
 
     // The root's mark is a dim dot, in no colour.
-    const c0 = await runs('C0')
-    expect(c0.map(text)).toEqual(['  ', '·', ' ', 'C0', '  ', 'root concept'])
-    expect(props(c0[1])).toMatchObject({ dimColor: true })
-    expect(props(c0[1])?.color).toBeUndefined()
+    const c0 = await chip('C0')
+    expect(c0.map(text)).toEqual(['·', ' ', 'C0'])
+    expect(props(c0[0])).toMatchObject({ dimColor: true })
+    expect(props(c0[0])?.color).toBeUndefined()
 
-    // The selected row (C12 at the tip) is led by ▸; the fresh row ends in the claude-coloured dot.
-    const c12 = await runs('C12')
-    expect(c12.map(text)).toEqual(['▸ ', 'R', ' ', 'C12', '  ', '+ the network never stops', ' •'])
+    // The fresh row ends in the claude-coloured dot.
+    const c12 = await label('C12')
+    expect(c12.map(text)).toEqual(['+ the network never stops', ' •'])
     expect(props(c12.at(-1))).toMatchObject({ color: 'claude' })
-    expect(c6.map(text)).not.toContain(' •')
+    expect((await label('C6')).map(text)).not.toContain(' •')
 
     // Each Button is named for a screen reader: id, partition, label, status.
-    const labelOf = async (id: string) => (await ui.find({ key: `node-${id}` }))?.props.label
-    expect(await labelOf('C12')).toBe('C12, restrictive, + the network never stops, open')
-    expect(await labelOf('C6')).toBe('C6, expansive, + has no hull, open')
-    expect(await labelOf('C1')).toBe('C1, restrictive, + more power, refuted')
-    expect(await labelOf('C4')).toBe('C4, restrictive, + supported by a submerged wing, conjunct')
-    expect(await labelOf('C0')).toBe('C0, root concept, open')
+    expect((await ui.find({ key: 'node-C4' }))?.props.label).toBe(
+      'C4, restrictive, + supported by a submerged wing, conjunct',
+    )
+    expect((await ui.find({ key: 'node-C0' }))?.props.label).toBe('C0, root concept, open')
 
-    // Each row: its guide, mono and dim, its spaces unbreakable, beside the Button; the root has none.
-    const tree = await ui.find({ key: 'tree' })
-    const rowOf = (id: string): Drawn | undefined => {
-      const walk = (node: unknown): Drawn | undefined => {
-        const el = node as Drawn
-        if (typeof el !== 'object' || el === null) return undefined
-        const keyOf = (child: unknown) => (child as Drawn).key ?? (child as Drawn).props?.key
-        if ((el.children ?? []).some(child => keyOf(child) === `node-${id}`)) return el
-        for (const child of el.children ?? []) {
-          const found = walk(child)
-          if (found) return found
-        }
-        return undefined
-      }
-      return walk(tree)
+    // Each row is indented by its depth, three cells a level, and draws no guide glyph.
+    for (const [id, depth] of [['C0', 0], ['C3', 1], ['C6', 2], ['C10', 3], ['C12', 4]] as const) {
+      expect((await row(id))?.props).toMatchObject({ flexDirection: 'row', alignItems: 'center', paddingLeft: depth * 3 })
     }
-    const row12 = rowOf('C12')
-    expect(row12?.props).toMatchObject({ flexDirection: 'row', alignItems: 'center' })
-    expect(row12?.props?.gap).toBeUndefined()
-    expect(row12?.children).toHaveLength(2)
-    expect((row12?.children?.[0] as Drawn).props).toMatchObject({ mono: true, dimColor: true })
-    expect(stringsIn(row12?.children?.[0])).toEqual(['\u00a0'.repeat(9) + '└─\u00a0'])
-    expect(stringsIn(rowOf('C4')?.children?.[0])).toEqual(['\u00a0'.repeat(3) + '├─\u00a0'])
-    expect(rowOf('C0')?.children).toHaveLength(1)
+    expect(stringsIn(await ui.find({ key: 'tree' })).join('')).not.toMatch(/[│├└]/)
     await ui.unmount()
-  }
-})
+  })
+}
 
 const LEGEND = 'R restrictive · E expansive · ✓ conjunct · • latest step'
 
@@ -598,7 +682,7 @@ test('a map too big for an Svg says so, and the tree still lists every concept',
   expect(stringsIn(await ui.find({ key: 'map-section' }))).toContain('This tree is too large to draw as a map.')
   // Past a Select's 64: one row per concept.
   expect(await treeButtons(ui)).toHaveLength(601)
-  expect(stringsIn(await ui.find({ key: 'node-C599' }))).toContain('+ option 599')
+  expect(stringsIn(await ui.find({ key: 'row-C599' }))).toContain('+ option 599')
   await ui.press({ key: 'node-C540' })
   expect(await selectedId(ui)).toBe('C540')
 })
@@ -755,9 +839,11 @@ async function treeButtons(ui: Drawing) {
   return (await ui.findAll({ type: 'Button' })).filter(b => b.key?.startsWith('node-'))
 }
 
-/** The id of the selected row: the one row Button drawn without `plain`. */
+/** The id of the selected row: the one row Button drawn primary (a graphical surface), else without `plain` (the terminal). */
 async function selectedId(ui: Drawing): Promise<unknown> {
-  const marked = (await treeButtons(ui)).filter(b => !('plain' in b.props))
+  const rows = await treeButtons(ui)
+  const primary = rows.filter(b => b.props.variant === 'primary')
+  const marked = primary.length > 0 ? primary : rows.filter(b => !('plain' in b.props))
   return marked.length === 1 ? marked[0]?.key?.slice('node-'.length) : marked.map(b => b.key)
 }
 

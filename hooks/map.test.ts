@@ -400,6 +400,9 @@ describe('treeRows', () => {
       C10: '      └─ ',
       C12: '         └─ ',
     })
+    // The depth the indent of a surface that draws no guide comes from: a guide's length in levels.
+    for (const r of rows) expect(r.depth).toBe(r.guide.length / 3)
+    expect(Object.fromEntries(rows.map(r => [r.id, r.depth]))).toMatchObject({ C0: 0, C3: 1, C6: 2, C10: 3, C12: 4 })
     const row = (id: string) => rows.find(r => r.id === id)
     expect(row('C0')?.mark).toBe('·')
     expect(row('C1')?.mark).toBe('R')
@@ -439,6 +442,7 @@ describe('treeRows', () => {
       ['C7', '├─ '],
       ['C8', '└─ '],
     ])
+    expect(treeRows(forest).find(r => r.id === 'C6')?.depth).toBe(0)
   })
 
   test('the selected row and the fresh row', () => {
