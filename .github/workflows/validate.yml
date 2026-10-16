@@ -29,6 +29,7 @@ jobs:
       - name: Parse-check the toolchain
         run: |
           for f in lib/*.cjs; do node --check "$f"; done
+          node --check lib/view.mjs
           bash -n bin/ck lib/start-viewer.sh lib/stop-viewer.sh
 
       # docs/*.svg is generated. Rebuilding must be a no-op, or the README is
@@ -37,6 +38,13 @@ jobs:
         run: |
           node scripts/build-diagrams.cjs
           git diff --exit-code docs/
+
+      # lib/view.mjs is the one fold; lib/view.cjs is its generated CommonJS copy
+      # for the Node tools. Regenerating must be a no-op, or the two have drifted.
+      - name: lib/view.cjs is generated from lib/view.mjs
+        run: |
+          node scripts/build-view.cjs
+          git diff --exit-code lib/view.cjs
 
       - name: No cwd-relative call sites left in skills
         run: |
