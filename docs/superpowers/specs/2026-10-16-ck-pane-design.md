@@ -209,11 +209,15 @@ came out of the final review):
   left-to-right tidy tree drawn to the dock's width: labelled when it fits, ids alone
   when not, scaled down past that.
 - **A tree view replaces the node picker.** An `Svg` is drawn in a frame with no script
-  and can never take a click, so the map cannot be the navigator. One button row per
-  concept, keyed `node-<id>`, picks the node instead; each row carries its `R`/`E`
-  letter, and `▸` marks the selected one, so neither is told by colour or chrome alone.
-  The map stays as a read-only overview with a Hide/Show toggle (`isMapHidden` in
-  `$.state`). The terminal draws no map; the tree view is its text tree.
+  and can never take a click, so the map cannot be the navigator. One row per concept,
+  its button keyed `node-<id>`, picks the node instead; each row carries its `R`/`E`
+  letter, so partition is never told by colour alone. The terminal draws each row as one
+  plain button after its guide lines, `▸` marking the selected one. The desktop draws
+  every button as its own native button, so there a row is indented by its depth, its
+  button a chip of the letter and the id (as the map's boxes are), drawn primary when
+  selected, with the label beside it, heavier when selected. The map stays as a
+  read-only overview with a Hide/Show toggle (`isMapHidden` in `$.state`). The terminal
+  draws no map; the tree view is its text tree.
 - **A rewound banner.** While rewound, a banner under the timeline says the past is
   read-only and carries **Back to latest** and **Branch from here**; the card's
   operators give way to a caption. The rule is unchanged; the banner makes it hard to
