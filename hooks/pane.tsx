@@ -9,11 +9,11 @@
 import type { EngineInterface, Frozen, RenderElement, RenderInput, RenderNode, SelectOption } from 'claude-code'
 import type { Knowledge } from '../lib/view.mjs'
 import type { View } from '../types'
-import { isBusy, trackSubmit } from './busy'
-import { refresh, slugOf } from './load'
+import { trackSubmit } from './busy'
+import { messageOf, refresh, slugOf } from './load'
 import { renderMap, treeRows } from './map'
 import type { MapMode, TreeRow } from './map'
-import { branchText, buildModel, OPERATORS, pressText, START_TEXT } from './model'
+import { branchText, buildModel, OPERATORS, pressText, START_TEXT, unsafeName } from './model'
 import type { PaneModel } from './model'
 import {
   addPending,
@@ -108,18 +108,28 @@ export async function drawPane($: EngineInterface, e: PaneEvent): Promise<Render
   // turn, so its entry alone is taken back. While a turn runs a press waits behind it, and
   // the toast says so in `queued` (by default `doing`; null for a press that never queues).
   // A prompt that cannot be sent is said too, never lost silently.
-  const submit = async (text: string, doing: string, queued: string | null = doing) => {
-    if (queued !== null && isBusy()) $.ui.toast(`Queued: ${queued}`)
-    const entry = { text, doing }
-    await addPending($, entry)
-    try {
-      const sent = await trackSubmit(() => $.prompt.submit({ text, asUser: true }))
-      if (sent.drop !== undefined) await dropPending($, entry)
-    } catch {
-      $.ui.toast("Couldn't send that to Claude.")
-      await dropPending($, entry)
-    }
-  }
+  //
+  // The same press again while its turn runs, or while its prompt waits behind a turn, is
+  // the same request twice (a double click): it is dropped, and nothing is said. Only while
+  // a turn runs or waits: idle, nothing waits, so an entry whose turn never came (a queued
+  // prompt taken back) refuses nothing. The turn counts as running from the first press on,
+  // so a second press at once finds it so.
+  const submit = (text: string, doing: string, queued: string | null = doing) =>
+    trackSubmit(async wasBusy => {
+      if ((await readActivity($))?.text === text) return { drop: 'its turn is running' }
+      const entry = { text, doing }
+      if (!(await addPending($, entry, wasBusy))) return { drop: 'its prompt is waiting' }
+      if (queued !== null && wasBusy) $.ui.toast(`Queued: ${queued}`)
+      try {
+        const sent = await $.prompt.submit({ text, asUser: true })
+        if (sent.drop !== undefined) await dropPending($, entry)
+        return sent
+      } catch {
+        $.ui.toast("Couldn't send that to Claude.")
+        await dropPending($, entry)
+        return { drop: 'not sent' }
+      }
+    })
   const setView = (change: (v: View) => View) => changeView($, change)
 
   /** A section's name, above it. */
@@ -151,7 +161,7 @@ export async function drawPane($: EngineInterface, e: PaneEvent): Promise<Render
     activity === null ? null : (
       <Box key="activity" flexDirection="row" gap="sm" alignItems="center">
         <Text color="claude">●</Text>
-        <Text>{`Claude is working on: ${activity}`}</Text>
+        <Text>{`Claude is working on: ${activity.doing}`}</Text>
       </Box>
     )
 
@@ -197,26 +207,39 @@ export async function drawPane($: EngineInterface, e: PaneEvent): Promise<Render
       />
     ) : null
 
-  if ('error' in loaded) {
-    return (
-      <Box flexDirection="column" gap="md" width={columns}>
-        {header(
-          slugOf(loaded.file),
-          null,
-          filePicker ? (
-            <Box flexDirection="row" gap="sm" alignItems="center">
-              {filePicker}
-            </Box>
-          ) : null,
-        )}
-        {working}
-        {cardFrame([<Text color="warning">{`${loaded.file}: ${loaded.error}`}</Text>])}
-      </Box>
-    )
-  }
+  /** The file's name, the session picker and, in the card, why the session is not drawn. */
+  const notDrawn = (message: string) => (
+    <Box flexDirection="column" gap="md" width={columns}>
+      {header(
+        slugOf(loaded.file),
+        null,
+        filePicker ? (
+          <Box flexDirection="row" gap="sm" alignItems="center">
+            {filePicker}
+          </Box>
+        ) : null,
+      )}
+      {working}
+      {cardFrame([<Text color="warning">{message}</Text>])}
+    </Box>
+  )
+
+  if ('error' in loaded) return notDrawn(`${loaded.file}: ${loaded.error}`)
 
   const slug = slugOf(loaded.file)
-  const m = buildModel(loaded.session, slug, picked)
+  // The fold, the tree's rows and the map, before any drawing. A hand-edited file can parse
+  // as v3 and still hold what they cannot read (an add-c event with no node): a throw from a
+  // render hook would close the pane while the plugin thinks it open, so the card says why.
+  let m: PaneModel
+  let rows: TreeRow[]
+  let fitted: ReturnType<typeof fitMap> | null
+  try {
+    m = buildModel(loaded.session, slug, picked)
+    rows = treeRows(m)
+    fitted = Svg && m.C.length > 0 && !isMapHidden ? fitMap(m, columns * PX_PER_COLUMN) : null
+  } catch (err) {
+    return notDrawn(`This session could not be drawn: ${messageOf(err)}`)
+  }
   const c = m.selected
   const steps = m.steps
   const isWide = columns >= WIDE_COLUMNS
@@ -240,7 +263,11 @@ export async function drawPane($: EngineInterface, e: PaneEvent): Promise<Render
             m.branch,
             true,
           )}
-          onSelect={branch => void setView(v => ({ ...v, branch }))}
+          // Another branch opens at its tip on its latest node; head is followed, not pinned.
+          onSelect={branch => {
+            const isHead = m.branches.some(b => b.name === branch && b.isHead)
+            void setView(v => ({ ...v, branch: isHead ? null : branch, at: null, node: null }))
+          }}
         />
       ) : (
         <Text>{branchLabel}</Text>
@@ -284,6 +311,15 @@ export async function drawPane($: EngineInterface, e: PaneEvent): Promise<Render
     </Box>
   )
 
+  // A press that names the session's node, file and branch to Claude, unless one of them is
+  // not a plain token (model.ts, isSafeToken): then the toast says which, and nothing goes.
+  const submitNaming = (node: string, text: string, doing: string, queued?: string) => {
+    const unsafe = unsafeName(node, slug, m.branch)
+    if (unsafe === null) return submit(text, doing, queued)
+    $.ui.toast(`This session has a name the pane won't send: ${unsafe}.`)
+    return undefined
+  }
+
   // 3. Rewound: the past is read-only. The banner says so, and holds the way back to the tip
   // and the way to branch from the step shown. No hotkey starts a Claude turn.
   const rewound = m.isAtTip ? null : (
@@ -313,7 +349,8 @@ export async function drawPane($: EngineInterface, e: PaneEvent): Promise<Render
           key="branch-here"
           label="Branch from here"
           onPress={() =>
-            submit(
+            submitNaming(
+              c.id,
               branchText(c.id, slug, m.branch, m.step),
               `branch from ${c.id} at step ${m.step}`,
               `branch from ${c.id}`,
@@ -339,8 +376,7 @@ export async function drawPane($: EngineInterface, e: PaneEvent): Promise<Render
   let mapSection: RenderElement | null = null
   if (Svg && m.C.length > 0) {
     let overview: RenderElement | null = null
-    if (!isMapHidden) {
-      const fitted = fitMap(m, columns * PX_PER_COLUMN)
+    if (fitted !== null) {
       // The Box carries the key `map`: an Svg element takes no key of its own. The legend is a
       // list, not a fragment: a fragment is a Box, which a Text cannot hold.
       overview =
@@ -465,7 +501,6 @@ export async function drawPane($: EngineInterface, e: PaneEvent): Promise<Render
       </Box>
     )
   }
-  const rows = treeRows(m)
   const tree = (
     <Box key="tree" flexDirection="column" gap="xs" {...share(9)}>
       <Box flexDirection="row" justifyContent="space-between" alignItems="center">
@@ -515,7 +550,7 @@ export async function drawPane($: EngineInterface, e: PaneEvent): Promise<Render
             key={`op-${o.op}`}
             label={o.label}
             {...(o.op === 'ck-expand' ? { variant: 'primary' as const } : {})}
-            onPress={() => submit(pressText(o.op, c.id, slug, m.branch), `${o.verb} ${c.id}`)}
+            onPress={() => submitNaming(c.id, pressText(o.op, c.id, slug, m.branch), `${o.verb} ${c.id}`)}
           />
         ))}
       </Box>

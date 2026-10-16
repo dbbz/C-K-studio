@@ -62,7 +62,7 @@ export type View = {
 /**
  * The open session file as last read: its parsed session, or why it could not
  * be shown. `mtimeMs` is the stat the read went with, so the file is re-read
- * only when it changes.
+ * only when it changes; 0 beside an error, so a failed read is tried again.
  */
 export type Loaded =
   | { file: string; mtimeMs: number; session: Session }
@@ -72,8 +72,8 @@ export type Loaded =
 export type FileEntry = { file: string; mtimeMs: number }
 
 /**
- * A press in the pane whose turn has not started: the prompt it sent, which the turn's
- * text matches when it starts, and what the pane says while that turn runs.
+ * A press in the pane: the prompt it sent, which the turn's text matches when it starts,
+ * and what the pane says while that turn runs.
  */
 export type Pending = { text: string; doing: string }
 
@@ -90,8 +90,8 @@ declare module 'claude-code' {
       isClosed: boolean
       /** The user hid the map: the tree view alone navigates. */
       isMapHidden: boolean
-      /** What the running turn's press asked Claude for, until the turn completes; null when nothing. */
-      activity: string | null
+      /** The press whose turn is running, its prompt and what it asked Claude for, until the turn completes; null when none. */
+      activity: Pending | null
       /** The presses whose turns have not started, oldest first. */
       pending: Pending[]
     }

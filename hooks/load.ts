@@ -53,7 +53,9 @@ async function setDoc($: EngineInterface, next: Loaded | null): Promise<void> {
  * a cheap check of the open file alone. The file shown is `view.file` while it is
  * listed, else the newest. It is re-read only when its mtime differs from `doc`'s;
  * a read or parse that fails replaces `doc` only when `doc` does not already hold a
- * good copy of that file, so a torn write never blanks the map.
+ * good copy of that file, so a torn write never blanks the map, and is read again on
+ * the next refresh. A good read that finds `head` moved puts the view back on head at
+ * its tip.
  */
 export async function refresh($: EngineInterface, options: { list?: boolean } = {}): Promise<void> {
   let listed: FileEntry[]
@@ -79,15 +81,16 @@ export async function refresh($: EngineInterface, options: { list?: boolean } = 
   if (isOtherFile && (picked.branch !== null || picked.at !== null || picked.node !== null)) {
     await changeView($, v => ({ ...v, branch: null, at: null, node: null }))
   }
-  const hasGoodCopy = current !== null && current.file === file && 'session' in current
-  const failed = (mtimeMs: number, error: string) =>
-    hasGoodCopy ? undefined : setDoc($, { file, mtimeMs, error })
+  const goodCopy = current !== null && current.file === file && 'session' in current ? current : null
+  // A failure records mtime 0, no stat seen: the next refresh reads the file again, so a
+  // first read caught mid-write is not stuck at its error while the mtime stays put.
+  const failed = (error: string) => (goodCopy ? undefined : setDoc($, { file, mtimeMs: 0, error }))
 
   let mtimeMs: number
   try {
     mtimeMs = (await $.fs.stat(path)).mtimeMs
   } catch (err) {
-    return failed(0, `cannot read it: ${messageOf(err)}`)
+    return failed(`cannot read it: ${messageOf(err)}`)
   }
   if (current !== null && current.file === file && current.mtimeMs === mtimeMs) return
 
@@ -95,14 +98,21 @@ export async function refresh($: EngineInterface, options: { list?: boolean } = 
   try {
     text = await $.fs.read(path)
   } catch (err) {
-    return failed(mtimeMs, `cannot read it: ${messageOf(err)}`)
+    return failed(`cannot read it: ${messageOf(err)}`)
   }
 
   let session
   try {
     session = parseSession(text)
   } catch (err) {
-    return failed(mtimeMs, messageOf(err))
+    return failed(messageOf(err))
+  }
+  // Head moved (`ck branch` moves it to the new branch, `ck switch` anywhere): the step the
+  // user was viewing on the old head is not where the session is now, so the view follows
+  // head to its tip again. A branch picked by hand gives way too; the node and the file stay.
+  if (goodCopy !== null && goodCopy.session.head !== session.head) {
+    const view = await readView($)
+    if (view.branch !== null || view.at !== null) await changeView($, v => ({ ...v, branch: null, at: null }))
   }
   return setDoc($, { file, mtimeMs, session })
 }

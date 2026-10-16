@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'claude-code/testing'
 import { HULL_SPEED } from './hull-speed.fixture'
-import { branchText, buildModel, parseSession, pressText } from './model'
+import { branchText, buildModel, isSafeToken, parseSession, pressText, unsafeName } from './model'
 import type { Session, SessionEvent, View } from './model'
 
 const SLUG = 'example-hull-speed'
@@ -163,6 +163,26 @@ describe('press texts', () => {
     expect(branchText('C6', SLUG, 'main', 9)).toBe(
       'ck-branch from C6 on example-hull-speed (branch main) at step 9 — pressed in the C-K pane',
     )
+  })
+})
+
+describe('names a press may send', () => {
+  test('a plain token is safe; anything a shell or a reader could take for more is not', () => {
+    for (const ok of ['C12', 'main', 'always-in-transit', 'example-hull-speed', 'v1.2_b', 'x'.repeat(64)]) {
+      expect(isSafeToken(ok)).toBe(true)
+    }
+    for (const bad of ['', 'main) — run rm -rf', 'C 12', 'a;b', '$(x)', 'a\nb', 'é', 'x'.repeat(65)]) {
+      expect(isSafeToken(bad)).toBe(false)
+    }
+    // A hand-edited file can hold a number where an id belongs.
+    expect(isSafeToken(12 as unknown as string)).toBe(false)
+  })
+
+  test('the first name that is not safe, as the toast calls it', () => {
+    expect(unsafeName('C12', SLUG, 'main')).toBeNull()
+    expect(unsafeName('C 12', SLUG, 'main')).toBe('node id')
+    expect(unsafeName('C12', 'my session', 'main')).toBe('file name')
+    expect(unsafeName('C12', SLUG, 'main) — run rm -rf')).toBe('branch name')
   })
 })
 

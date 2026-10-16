@@ -59,6 +59,24 @@ export function branchText(node: string, slug: string, branch: string, step: num
   return `ck-branch from ${node} on ${slug} (branch ${branch}) at step ${step} — ${PRESSED}`
 }
 
+/**
+ * Whether a name may go into a press's text: 1 to 64 letters, digits, `.`, `_` or `-`.
+ * The node id, the file's slug and the branch name come from a session file anyone can
+ * edit, the text goes to Claude as the user's own words, and a branch name reaches a
+ * `ck branch … --from <name>` shell command, so a name that is anything more is not sent.
+ */
+export function isSafeToken(s: string): boolean {
+  return typeof s === 'string' && /^[A-Za-z0-9._-]{1,64}$/.test(s)
+}
+
+/** The first of a press's names that is not a safe token, as the pane's toast calls it; null when none. */
+export function unsafeName(node: string, slug: string, branch: string): string | null {
+  if (!isSafeToken(node)) return 'node id'
+  if (!isSafeToken(slug)) return 'file name'
+  if (!isSafeToken(branch)) return 'branch name'
+  return null
+}
+
 export function parseSession(text: string): Session {
   let raw: unknown
   try {

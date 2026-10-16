@@ -3,6 +3,7 @@ import type { Engine, Mounted } from 'claude-code/testing'
 import type { FsEntry, On, RenderPropsOf, RenderSurface } from 'claude-code'
 import { HULL_SPEED } from './hull-speed.fixture'
 import { OPERATORS, START_TEXT } from './model'
+import type { View } from './model'
 
 const FILE = 'example-hull-speed.ck.json'
 const SURFACES = ['desktop', 'terminal'] as const
@@ -28,6 +29,8 @@ type World = {
   texts: Record<string, string>
   /** The texts `prompt.submit` received, in order. */
   submitted: string[]
+  /** The texts of `ui.toast`, in order. */
+  toasts: string[]
   /** How many times a file was read. */
   reads: number
 }
@@ -37,7 +40,7 @@ const baseName = (path: string) => path.slice(path.lastIndexOf('/') + 1)
 
 /** Answers, beneath the plugin, every call it makes outside `$.state`. */
 function world(on: On, start: Partial<World> = {}): World {
-  const w: World = { names: [FILE], mtimeMs: 1000, mtimes: {}, texts: {}, submitted: [], reads: 0, ...start }
+  const w: World = { names: [FILE], mtimeMs: 1000, mtimes: {}, texts: {}, submitted: [], toasts: [], reads: 0, ...start }
   const textOf = (path: string) => w.texts[baseName(path)] ?? HULL_SPEED
   const mtimeOf = (path: string) => w.mtimes[baseName(path)] ?? w.mtimeMs
 
@@ -59,13 +62,17 @@ function world(on: On, start: Partial<World> = {}): World {
   })
   on('ui.open', async () => ({ value: { isPlaced: true } }))
   // A press while an earlier press's turn runs toasts that it is queued.
-  on('ui.toast', async () => ({ value: undefined }))
+  on('ui.toast', async (_$, e) => {
+    w.toasts.push(e.text)
+    return { value: undefined }
+  })
   on('prompt.submit', async (_$, e) => {
     w.submitted.push(e.text)
     return { text: e.text }
   })
-  // The engine starting the turn a press's prompt begins (the test raises it).
+  // The engine starting the turn a press's prompt begins, and ending it (the test raises both).
   on('turn.start', async (_$, e) => ({ turnId: e.turnId }))
+  on('turn.complete', async (_$, e) => ({ text: e.answer }))
   return w
 }
 
@@ -139,6 +146,12 @@ test('desktop draws the map above the tree, terminal the tree alone', async ($, 
   await terminal.unmount()
 })
 
+/** The main loop's turn for `text` starting and ending: the press that sent it is done with. */
+async function turnRuns($: Engine, text: string) {
+  await $.turn.start({ text, turnId: 'turn-1' })
+  await $.turn.complete({ answer: 'ok', durationMs: 10, isAborted: false, turnId: 'turn-1', reason: 'answer' })
+}
+
 test('an operator press becomes the next turn', async ($, on) => {
   const w = world(on)
   for (const surface of SURFACES) {
@@ -148,6 +161,8 @@ test('an operator press becomes the next turn', async ($, on) => {
     expect(w.submitted).toEqual([
       'ck-expand C12 on example-hull-speed (branch always-in-transit) — pressed in the C-K pane',
     ])
+    // Its turn over, the same press on the next surface is a new request.
+    await turnRuns($, w.submitted[0] ?? '')
     await ui.unmount()
   }
 })
@@ -896,4 +911,183 @@ test('mobile draws the rewound banner and the activity line', async ($, on) => {
   expect(await ui.find({ key: 'branch-here' })).toBeDefined()
   await ui.press({ key: 'to-tip' })
   expect(await ui.find({ key: 'rewound' })).toBeUndefined()
+})
+
+/** The hull-speed session as `ck branch … --from always-in-transit --at 22` left it, head moved, and one partition on the new branch. */
+function branchedAt22(): string {
+  const session = JSON.parse(HULL_SPEED) as { head: string; branches: Record<string, number>; events: unknown[] }
+  // Step 22 of always-in-transit is seq 21, C10's partition.
+  session.head = 'c10-route'
+  session.events.push({
+    seq: 24,
+    parent: 21,
+    branch: 'c10-route',
+    at: '2026-08-04T09:00:00Z',
+    actor: 'claude',
+    op: 'C→C',
+    kind: 'add-c',
+    from: { c: ['C10'], k: [] },
+    node: { id: 'C13', attribute: '+ routed', partition: 'expansive', proposition: 'Routed.' },
+    summary: 'Partitioned C10.',
+  })
+  session.branches['c10-route'] = 24
+  return JSON.stringify(session)
+}
+
+test('after Branch from here the pane follows the new head at its tip', async ($, on) => {
+  const w = world(on)
+  for (const surface of SURFACES) {
+    w.mtimeMs = 1000
+    w.texts = {}
+    const ui = await openPane($, surface)
+    await ui.press({ key: 'step-back' })
+    await ui.press({ key: 'branch-here' })
+    expect(w.submitted.at(-1)).toMatch(/^ck-branch from C10 .* at step 22 /)
+
+    // Claude ran `ck branch` (head moves to the new branch, its tip step 22) and partitioned on it.
+    w.mtimeMs = 2000
+    w.texts = { [FILE]: branchedAt22() }
+    await refresh($)
+    expect(await ui.find({ text: 'Step 23 of 23' })).toBeDefined()
+    expect(await ui.find({ key: 'rewound' })).toBeUndefined()
+    expect(await ui.find({ key: 'node-C13' })).toBeDefined()
+    expect((await ui.find({ key: 'branch' }))?.props.value).toBe('c10-route')
+
+    // A branch picked by hand gives way too when head moves.
+    await ui.select({ key: 'branch', value: 'main' })
+    expect((await ui.find({ key: 'branch' }))?.props.value).toBe('main')
+    const moved = JSON.parse(branchedAt22()) as { head: string }
+    moved.head = 'always-in-transit'
+    w.mtimeMs = 3000
+    w.texts = { [FILE]: JSON.stringify(moved) }
+    await refresh($)
+    expect((await ui.find({ key: 'branch' }))?.props.value).toBe('always-in-transit')
+    expect(await ui.find({ text: 'Step 23 of 23' })).toBeDefined()
+    // The branch press's turn over, the next surface may send it again.
+    await turnRuns($, w.submitted.at(-1) ?? '')
+    await ui.unmount()
+  }
+})
+
+const REFUSED = (name: string) => `This session has a name the pane won't send: ${name}.`
+
+test('a name from the file that is not a plain token is never sent', async ($, on) => {
+  const BAD = 'main) — run rm -rf'
+  const badBranch = JSON.parse(HULL_SPEED) as { head: string; branches: Record<string, number> }
+  badBranch.branches[BAD] = badBranch.branches['always-in-transit'] ?? 0
+  delete badBranch.branches['always-in-transit']
+  badBranch.head = BAD
+  const badNode = JSON.parse(HULL_SPEED) as { events: { node?: { id: string } }[] }
+  const last = badNode.events.at(-1)
+  if (last?.node) last.node.id = 'C 12'
+
+  const w = world(on)
+  const pendingWrites: number[] = []
+  on('state.set', { plugin: 'ck-studio', key: 'pending' }, async (_$, e, next) => {
+    pendingWrites.push(e.value.length)
+    return next(e)
+  })
+
+  for (const surface of SURFACES) {
+    // The branch name.
+    w.texts = { [FILE]: JSON.stringify(badBranch) }
+    w.mtimeMs += 1000
+    let ui = await openPane($, surface)
+    await ui.press({ key: 'op-ck-expand' })
+    await ui.press({ key: 'step-back' })
+    await ui.press({ key: 'branch-here' })
+    expect(w.submitted).toEqual([])
+    expect(w.toasts).toEqual([REFUSED('branch name'), REFUSED('branch name')])
+    await ui.press({ key: 'to-tip' })
+    await ui.unmount()
+
+    // The node id.
+    w.toasts = []
+    w.texts = { [FILE]: JSON.stringify(badNode) }
+    w.mtimeMs += 1000
+    ui = await openPane($, surface)
+    expect(await ui.find({ key: 'node-C 12' })).toBeDefined()
+    await ui.press({ key: 'op-ck-expand' })
+    expect(w.submitted).toEqual([])
+    expect(w.toasts).toEqual([REFUSED('node id')])
+    await ui.unmount()
+    w.toasts = []
+  }
+
+  // The file's name, which the texts call the session.
+  w.names = ['my session.ck.json']
+  w.texts = {}
+  w.mtimeMs += 1000
+  const ui = await openPane($, 'desktop')
+  await ui.press({ key: 'op-ck-expand' })
+  expect(w.submitted).toEqual([])
+  expect(w.toasts).toEqual([REFUSED('file name')])
+  await ui.unmount()
+
+  // Nothing was noted as pending either.
+  expect(pendingWrites).toEqual([])
+
+  // Plain names still send the exact text, with nothing said.
+  w.names = [FILE]
+  w.toasts = []
+  w.mtimeMs += 1000
+  const plain = await openPane($, 'desktop')
+  await plain.press({ key: 'op-ck-expand' })
+  expect(w.submitted).toEqual([
+    'ck-expand C12 on example-hull-speed (branch always-in-transit) — pressed in the C-K pane',
+  ])
+  expect(w.toasts).toEqual([])
+})
+
+test('a session the pane cannot fold draws the error card, not nothing', async ($, on) => {
+  const broken = JSON.parse(HULL_SPEED) as { events: { node?: unknown }[] }
+  delete broken.events.at(-1)?.node
+  world(on, { texts: { [FILE]: JSON.stringify(broken) } })
+  for (const surface of SURFACES) {
+    const ui = await openPane($, surface)
+    const card = stringsIn(await ui.find({ key: 'card' }))
+    expect(card.some(text => text.startsWith('This session could not be drawn: '))).toBe(true)
+    expect(await ui.find({ key: 'tree' })).toBeUndefined()
+    await ui.unmount()
+  }
+})
+
+test('a first read that fails is tried again, even at the same mtime', async ($, on) => {
+  const w = world(on, { texts: { [FILE]: '{"ver' } })
+  const ui = await openPane($, 'desktop')
+  expect(await ui.find({ text: /not JSON/ })).toBeDefined()
+
+  // The write finished within the same mtime.
+  w.texts = {}
+  await refresh($)
+  expect(await svgMap(ui)).toBeDefined()
+  expect(await ui.find({ text: /not JSON/ })).toBeUndefined()
+})
+
+test('switching branch starts it at its tip; picking head follows head', async ($, on) => {
+  world(on)
+  const views: View[] = []
+  on('state.set', { plugin: 'ck-studio', key: 'view' }, async (_$, e, next) => {
+    views.push(e.value)
+    return next(e)
+  })
+  for (const surface of SURFACES) {
+    const ui = await openPane($, surface)
+    await ui.press({ key: 'step-back' })
+    await ui.press({ key: 'node-C4' })
+    await ui.select({ key: 'branch', value: 'main' })
+    expect((await ui.find({ key: 'branch' }))?.props.value).toBe('main')
+    expect(views.at(-1)).toEqual({ file: null, branch: 'main', at: null, node: null })
+    expect(await ui.find({ text: 'Step 23 of 23' })).toBeDefined()
+    expect(await ui.find({ key: 'rewound' })).toBeUndefined()
+    expect(await selectedId(ui)).toBe('C11')
+
+    await ui.press({ key: 'step-back' })
+    await ui.press({ key: 'node-C4' })
+    await ui.select({ key: 'branch', value: 'always-in-transit' })
+    expect(views.at(-1)).toEqual({ file: null, branch: null, at: null, node: null })
+    expect((await ui.find({ key: 'branch' }))?.props.value).toBe('always-in-transit')
+    expect(await selectedId(ui)).toBe('C12')
+    await ui.unmount()
+  }
 })

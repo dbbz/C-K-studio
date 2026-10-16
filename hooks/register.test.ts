@@ -498,11 +498,11 @@ test('a prompt the user typed also makes a press wait its turn', async ($, on) =
     agentId: 'agent-1',
     reason: 'answer',
   })
-  await ui.press({ key: 'op-ck-expand' })
-  expect(w.toasts).toEqual(['Queued: partition C12', 'Queued: partition C12'])
+  await ui.press({ key: 'op-ck-learn' })
+  expect(w.toasts).toEqual(['Queued: partition C12', 'Queued: expand K for C12'])
 
   await mainTurnEnds($)
-  await ui.press({ key: 'op-ck-expand' })
+  await ui.press({ key: 'op-ck-defix' })
   expect(w.toasts).toHaveLength(2)
 })
 
@@ -722,4 +722,31 @@ test('Branch from here and Start a session say what Claude is working on', async
   expect(w.submitted.at(-1)).toBe(START_TEXT)
   await mainTurnStarts($, START_TEXT, 'turn-2')
   expect(await ui.find({ text: 'Claude is working on: start a session' })).toBeDefined()
+})
+
+test('the same press again while its prompt waits or its turn runs is dropped, unsaid', async ($, on) => {
+  const w = world(on)
+  const ui = await mountPane($)
+
+  // Two presses in a row: the second finds the first still waiting for its turn.
+  await ui.press({ key: 'op-ck-expand' })
+  await ui.press({ key: 'op-ck-expand' })
+  expect(w.submitted).toEqual([PRESSED('ck-expand')])
+  expect(w.toasts).toEqual([])
+
+  // Its turn running, the same press is still the same request.
+  await mainTurnStarts($, PRESSED('ck-expand'))
+  await ui.press({ key: 'op-ck-expand' })
+  expect(w.submitted).toEqual([PRESSED('ck-expand')])
+  expect(w.toasts).toEqual([])
+
+  // Another operator is another request, and waits its turn; two at once go once.
+  await Promise.all([ui.press({ key: 'op-ck-learn' }), ui.press({ key: 'op-ck-learn' })])
+  expect(w.submitted).toEqual([PRESSED('ck-expand'), PRESSED('ck-learn')])
+  expect(w.toasts).toEqual(['Queued: expand K for C12'])
+
+  // The turn over and the session idle, nothing waits: the same press is a new request.
+  await mainTurnEnds($)
+  await ui.press({ key: 'op-ck-expand' })
+  expect(w.submitted).toEqual([PRESSED('ck-expand'), PRESSED('ck-learn'), PRESSED('ck-expand')])
 })

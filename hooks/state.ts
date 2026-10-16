@@ -31,8 +31,9 @@ const isClosed = atom({ plugin: 'ck-studio', key: 'isClosed' } as const, false)
 const isMapHidden = atom({ plugin: 'ck-studio', key: 'isMapHidden' } as const, false)
 
 /**
- * What the running turn's press asked Claude for: set when the main loop's turn starts with
- * a pending press's prompt, null when the turn completes or was not the pane's.
+ * The press whose turn is running, its prompt and what it asked Claude for: set when the
+ * main loop's turn starts with a pending press's prompt, null when the turn completes or
+ * was not the pane's.
  */
 const activity = atom({ plugin: 'ck-studio', key: 'activity' } as const, null)
 
@@ -76,16 +77,28 @@ export function toggleIsMapHidden($: StateDollar): Promise<boolean> {
   return update($, isMapHidden, value => !value)
 }
 
-export function readActivity($: StateDollar): Promise<string | null> {
+export function readActivity($: StateDollar): Promise<Pending | null> {
   return read($, activity)
 }
-export function writeActivity($: StateDollar, value: string | null): Promise<string | null> {
+export function writeActivity($: StateDollar, value: Pending | null): Promise<Pending | null> {
   return update($, activity, () => value)
 }
 
-/** Notes a press before its prompt goes, so its turn is known when it starts. */
-export function addPending($: StateDollar, entry: Pending): Promise<Pending[]> {
-  return update($, pending, list => [...list, entry])
+/**
+ * Notes a press before its prompt goes, so its turn is known when it starts; true when
+ * noted. With `isOnce`, a press whose prompt is pending already is the same request
+ * again: it is not noted, `pending` is left unwritten, and the answer is false. The
+ * check is made again inside the write, so of two presses at once only one is noted.
+ */
+export async function addPending($: StateDollar, entry: Pending, isOnce = false): Promise<boolean> {
+  const isWaiting = (list: Pending[]) => isOnce && list.some(p => p.text === entry.text)
+  if (isWaiting(await read($, pending))) return false
+  let isAdded = false
+  await update($, pending, list => {
+    isAdded = !isWaiting(list)
+    return isAdded ? [...list, entry] : list
+  })
+  return isAdded
 }
 
 /** Forgets a press whose prompt did not enter: the latest entry equal to it, and nothing else. */
@@ -99,17 +112,17 @@ export function dropPending($: StateDollar, entry: Pending): Promise<Pending[]> 
 
 /**
  * The main loop's turn starting with `text`: the oldest press that sent it is taken from
- * `pending`, and `activity` becomes what it asked for; null when no press sent it. A turn
- * no press sent leaves `pending` unwritten.
+ * `pending` and becomes `activity`; null when no press sent it. A turn no press sent
+ * leaves `pending` unwritten.
  */
-export async function startActivity($: StateDollar, text: string): Promise<string | null> {
-  let doing: string | null = null
+export async function startActivity($: StateDollar, text: string): Promise<Pending | null> {
+  let press: Pending | null = null
   if ((await read($, pending)).some(p => p.text === text)) {
     await update($, pending, list => {
       const at = list.findIndex(p => p.text === text)
-      doing = at < 0 ? null : (list[at]?.doing ?? null)
+      press = at < 0 ? null : (list[at] ?? null)
       return at < 0 ? list : [...list.slice(0, at), ...list.slice(at + 1)]
     })
   }
-  return update($, activity, () => doing)
+  return update($, activity, () => press)
 }
