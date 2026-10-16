@@ -6,7 +6,8 @@ description: Start, resume, or steer a C-K (Concept-Knowledge) design session. U
 # C-K design session
 
 Runs a Concept–Knowledge design session against an append-only event log in
-`sessions/`, with a live browser canvas whose buttons call back into these skills.
+`sessions/`, with a live canvas whose buttons call back into these skills: a pane
+beside the conversation in the Claude app, a browser page from the terminal.
 
 **Read `${CLAUDE_PLUGIN_ROOT}/references/GRAMMAR.md` before your first operator call in a session.** It
 defines undecidability, the restrictive/expansive test, and the four operators. The
@@ -38,6 +39,10 @@ captions, and the `ck-map` handoff document. Those are read later, out of contex
 someone who wasn't here. Write them properly.
 
 ## Starting up
+
+When the system prompt says the C-K Studio pane is open, skip steps 2 and 3. The pane
+shows the session live and refreshes after every `ck` command, so there is no server,
+URL or Monitor to start. Start the browser canvas there only if the user asks for it.
 
 1. **Find or create the session.**
    ```bash
@@ -86,7 +91,7 @@ captionless events is unreadable.
 
 ## Canvas triggers — the return path
 
-The Monitor turns a button press into a notification like:
+From the browser canvas, the Monitor turns a button press into a notification like:
 
 ```
 TRIGGER ck-expand C6
@@ -116,6 +121,24 @@ to know where the user is looking:
 ```bash
 ck inbox        # prints and clears; --keep to peek
 ```
+
+### Pane presses
+
+In the Claude app there is no Monitor: a press in the pane arrives as a **user
+message**, in exactly one of these forms. Act on it as on a trigger, without asking them
+to confirm what the button said.
+
+| Message | Do this |
+|---|---|
+| `ck-expand C6 on example-hull-speed (branch main) — pressed in the C-K pane` | Invoke `ck-expand` on that node. `ck-learn`, `ck-conjoin` and `ck-defix` come the same way and map as in the trigger table |
+| `ck-branch from C6 on example-hull-speed (branch main) at step 9 — pressed in the C-K pane` | `ck branch <session> <name> --from main --at 9` — derive a name, say it's renameable. As with `ck-branch <node>` above, the node is what they were looking at, not an instruction to operate on it |
+| `Start a C-K session with ck-studio.` | The start-up above |
+
+The message names the session and the branch on screen. When that branch is not `head`,
+`ck switch` to it first: mutations append to `head`, and the press was about the
+timeline they were looking at. (A branch press needs no switch; `--from` names it.)
+
+As with a trigger, a press never authorises marking a node `conjunct`.
 
 ## Time travel and branches
 

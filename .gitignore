@@ -1,3 +1,7 @@
 # Viewer runtime: rendered screens, server state, captured events.
 # Sessions themselves live in sessions/ and are meant to be committed.
 .ck/
+
+# Engine type declarations for the pane, laid by Claude Code when it loads the plugin
+# from this folder; tsconfig.json extends them.
+.claude-plugin/types/

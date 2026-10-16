@@ -84,6 +84,36 @@ Sessions are written to `sessions/` in your current directory rather than into t
 plugin, so they live and get committed alongside the work they are about. Note that
 while the plugin is enabled, `ck` shadows any other command by that name.
 
+## In the Claude app
+
+In the Claude app the canvas is a pane docked beside the conversation. It opens by
+itself when the project's `sessions/` holds a session; `/ck-pane` opens it otherwise, or
+again after you close it.
+
+It shows the same session the browser canvas does. Under the session and branch pickers
+and the timeline, a map of the tree gives the overview, and you can hide it. Below that
+the concepts are a tree of clickable rows: pick one and its card shows the partition,
+the proposition, what it breaks, and the operators. The knowledge list puts the entries
+that concept rests on first. Step the timeline back and the past is read-only here too:
+a banner offers **Back to latest** and **Branch from here** in place of the operators.
+
+A press becomes your next message to Claude, so you can read in the transcript what you
+asked for:
+
+```
+ck-expand C6 on my-session (branch main) — pressed in the C-K pane
+```
+
+It starts a turn at once, or waits behind the one running, and the pane says what
+Claude is working on until that turn ends.
+
+While the pane has focus, `j` and `k` move between concepts, `h` and `l` step the
+timeline, and `g` goes back to the latest step.
+
+There is no server, URL or Monitor to start in the app: the pane reads `sessions/`
+itself and redraws after every `ck` command. The browser canvas stays for the terminal
+and for presenting a session.
+
 ## The operators
 
 <picture>
@@ -143,12 +173,17 @@ auditability (the operator sequence *is* the file).
 
 **Bidirectional.** Canvas buttons don't just leave a note for later — `lib/watch-events.cjs`
 runs under the `Monitor` tool and turns each press into a notification, so clicking
-*partition* on a node wakes Claude and runs `ck-expand` without you typing anything.
+*partition* on a node wakes Claude and runs `ck-expand` without you typing anything. The
+pane in the Claude app needs none of that path: a press there is submitted as your own
+message.
 
-**One renderer, two runtimes.** `lib/view.cjs` holds pure functions (`chainOf`,
+**One fold, three runtimes.** `lib/view.mjs` holds pure functions (`chainOf`,
 `divergence`, `foldEvents`, `metrics`, `renderTree`, `renderK`) used in Node for the
-initial paint and serialised into the page for scrubbing and branch switching. There is
-no second implementation to drift out of sync.
+initial paint and serialised into the page for scrubbing and branch switching. The Node
+tools are CommonJS, so they load `lib/view.cjs`, which `scripts/build-view.cjs`
+generates from it. The pane imports the same functions from `lib/view.mjs`, so the
+browser canvas, `ck show` and the pane cannot disagree about what a session holds. There
+is no second implementation to drift out of sync.
 
 **Tool and data are in different trees.** The plugin holds the code and the shared
 theory docs; your project holds `sessions/` and `.ck/`. Every entry point takes that
@@ -196,20 +231,25 @@ since.
 |---|---|
 | `bin/ck` | The `ck` command: resolves `lib/` relative to itself, leaves cwd alone |
 | `lib/ck.cjs` | Event-DAG mutation CLI — branches and invariant enforcement live here |
-| `lib/view.cjs` | Pure chain/fold/render functions, shared by Node and the browser |
+| `lib/view.mjs` | Pure chain/fold/render functions: the one fold, shared by Node, the browser and the pane |
+| `lib/view.cjs` | Generated from `lib/view.mjs` for the CommonJS tools — edit the `.mjs` |
 | `lib/render.cjs` | Session → canvas HTML |
 | `lib/ck-server.cjs` | Zero-dep viewer server (SSE reload + click capture) |
 | `lib/watch-events.cjs` | Monitor script: canvas clicks → Claude notifications |
+| `hooks/` | The pane: a Claude Code hooks module that draws the session in the Claude app |
+| `types/index.d.ts` | The pane's `$.state` contract |
 | `skills/` | The nine skills above |
 | `references/GRAMMAR.md` | The operator grammar and the undecidability test |
 | `references/TECHNIQUES.md` | Literature notes: which techniques have evidence, which do not |
 | `SCHEMA.md` | Event log format and the five invariants |
+| `scripts/build-view.cjs` | Writes `lib/view.cjs` from `lib/view.mjs` |
 | `sessions/` | The worked example. *Your* sessions go in your own project, not here |
 
 ## Status
 
-**Stage 1 (built): the solo core.** Full operator set, canvas, invariants, fixation
-detection, timeline, bidirectional triggers.
+**Stage 1 (built): the solo core.** Full operator set, canvas (in the browser, and as a
+pane in the Claude app), invariants, fixation detection, timeline, bidirectional
+triggers.
 
 **Stage 2 (not built): KCP workshop mode.** The Knowledge–Concept–Proposal protocol for
 facilitated group sessions: K-sharing rounds, concept projectors, multi-participant
@@ -222,8 +262,8 @@ Both reuse the same event log, so they are additive rather than a rewrite.
 
 ## Developing this repo
 
-Install from the working copy, so edits to skills and `lib/` take effect where you can
-see them:
+Install from the working copy, so edits to skills, `lib/` and the pane take effect where
+you can see them:
 
 ```
 /plugin marketplace add .
@@ -233,12 +273,15 @@ see them:
 Before pushing, run what CI runs:
 
 ```bash
-claude plugin validate . --strict     # manifests; does NOT read skills/
+claude plugin validate . --strict     # manifests and the pane's hooks; does NOT read skills/
 node scripts/check-skills.cjs         # frontmatter, which the above misses
+claude plugin test .                  # the pane's tests, hooks/*.test.ts(x)
 for f in lib/*.cjs; do node --check "$f"; done
+node --check lib/view.mjs
 bash -n bin/ck lib/start-viewer.sh lib/stop-viewer.sh
 
-node scripts/build-diagrams.cjs && git diff --exit-code docs/   # figures in sync
+node scripts/build-diagrams.cjs && git diff --exit-code docs/        # figures in sync
+node scripts/build-view.cjs && git diff --exit-code lib/view.cjs     # fold in sync
 ```
 
 `version` appears in both `.claude-plugin/plugin.json` and the marketplace entry; keep
@@ -247,6 +290,15 @@ them equal or `--strict` will say so.
 The figures in `docs/` are generated — edit `scripts/build-diagrams.cjs`, not the SVG.
 It emits a light and a dark file per figure from one source, so the two themes cannot
 disagree, and GitHub picks between them with `<picture>`.
+
+`lib/view.cjs` is generated too — edit `lib/view.mjs` and rerun
+`scripts/build-view.cjs`. The pane cannot load CommonJS, and the Node tools cannot assume
+a Node new enough to `require` an ES module, so each gets the format it can load from
+one source.
+
+`tsconfig.json` type-checks the pane against the declarations Claude Code lays in
+`.claude-plugin/types/` (gitignored) when it loads the plugin from this folder:
+`npx -y -p typescript@5.6 tsc -p .`
 
 ## From the research notes
 

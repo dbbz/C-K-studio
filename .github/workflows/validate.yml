@@ -21,6 +21,11 @@ jobs:
       - name: Validate plugin and marketplace
         run: npx -y @anthropic-ai/claude-code plugin validate . --strict
 
+      # The pane's unit and drawing tests, hooks/*.test.ts(x). They run against the
+      # engine's test kit, so no app and no session are needed.
+      - name: Test the pane
+        run: npx -y @anthropic-ai/claude-code plugin test .
+
       - name: Validate skill frontmatter
         run: node scripts/check-skills.cjs
 

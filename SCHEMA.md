@@ -2,7 +2,7 @@
 
 A session is an **append-only event DAG in one file**. Nothing is ever edited or
 deleted; the concept tree and the knowledge base are *derived* by walking a branch
-back to the root and folding it (`lib/view.cjs → chainOf`, `foldEvents`).
+back to the root and folding it (`lib/view.mjs → chainOf`, `foldEvents`).
 
 Four things fall out of that choice rather than being built:
 

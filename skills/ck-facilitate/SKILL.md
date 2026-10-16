@@ -67,6 +67,9 @@ Then arm the `Monitor` watcher (`lib/watch-events.cjs`, `persistent: true`) once
 URL **with its `?key=…`**. Pass `--summary` on every mutation; a timeline of captionless
 events is unreadable, and the timeline is half the deliverable.
 
+When the system prompt says the C-K Studio pane is open, skip `ck view` and the
+watcher: the pane already shows the session, as `ck` explains.
+
 ## The opening move — park their first idea
 
 Their own first idea fixates them harder than any example you could show them. Leahy et

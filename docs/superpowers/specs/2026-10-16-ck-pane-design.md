@@ -195,3 +195,42 @@ unchanged. `lib/view.d.mts` types the exports for the hooks module.
   layout above a leaf-count threshold.
 - **Plugin name during development.** The installed `ck-studio` is disabled here, so
   the development copy runs as `ck-pane` to avoid two plugins of one name.
+
+## Revisions after the live check
+
+The live check (plan Task 7) found the first version hard to read and the map unable
+to take a press. What changed from the sections above, and why:
+
+- **A panel, not a column.** The single column was unreadable in the dock. The pane is
+  now a header with the pickers, a bordered timeline bar with the health as chips,
+  warnings in their own box, the map, then the tree beside the card and the knowledge
+  in a dock of 100 columns or more, stacked in a narrower one. The map is a
+  left-to-right tidy tree drawn to the dock's width: labelled when it fits, ids alone
+  when not, scaled down past that.
+- **A tree view replaces the node picker.** An `Svg` is drawn in a frame with no script
+  and can never take a click, so the map cannot be the navigator. One button row per
+  concept, keyed `node-<id>`, picks the node instead; each row carries its `R`/`E`
+  letter, and `▸` marks the selected one, so neither is told by colour or chrome alone.
+  The map stays as a read-only overview with a Hide/Show toggle (`isMapHidden` in
+  `$.state`). The terminal draws no map; the tree view is its text tree.
+- **A rewound banner.** While rewound, a banner under the timeline says the past is
+  read-only and carries **Back to latest** and **Branch from here**; the card's
+  operators give way to a caption. The rule is unchanged; the banner makes it hard to
+  miss.
+- **Keys, for navigation only.** `j`/`k` move between concepts, `h`/`l` step the
+  timeline, `g` goes to the latest step. Nothing that starts a Claude turn has a key, so
+  a stray keystroke never sends a message.
+- **Knowledge first.** The K entries the selected concept rests on are listed first,
+  under "Rests on", and the rest after, rather than emphasised in place among them.
+- **What Claude is working on.** A press notes its text as pending before it is
+  submitted; when a main-loop turn starts with that text, the pane says "Claude is
+  working on: …" until the turn completes. Matching the turn's own text keeps a press
+  queued behind another turn from claiming the one already running, and a turn no press
+  started says nothing.
+- **Opening on attach.** In the desktop app `session.start` has no page to draw on, so
+  its open is not placed. The pane also opens on `session.attach`, and the section for
+  Claude appears from then.
+- **Section id `ck-studio:pane`.** The development copy ran as `ck-pane` and named its
+  section `ck-pane:pane`; folded into the plugin, the section and the state keys are
+  `ck-studio`'s, as specified. The `/ck-pane` command and the pane id `ck` keep their
+  names.
