@@ -134,6 +134,18 @@ describe('order and depth', () => {
     expect(buildModel(tree, 'tree', { ...TIP, node: 'C99' }).selected?.id).toBe('C7')
   })
 
+  test('a parent cycle in a hand-edited file builds a model, not a hang', () => {
+    // C1 is its own parent: the depth walk would never reach a root.
+    const self = buildModel(treeOf(['C0', null], ['C1', 'C1']), 'tree', TIP)
+    expect(self.C.map(c => c.id)).toEqual(['C0', 'C1'])
+    expect(self.order).toEqual(['C0'])
+    // C1 and C2 each the other's parent, C3 an open restrictive leaf under them: the
+    // fixation walk up from C3 would go round C1 and C2 for ever.
+    const pair = buildModel(treeOf(['C0', null], ['C1', 'C2'], ['C2', 'C1'], ['C3', 'C1']), 'tree', TIP)
+    expect(pair.C.map(c => c.id)).toEqual(['C0', 'C1', 'C2', 'C3'])
+    expect(pair.order).toEqual(['C0'])
+  })
+
   test('depth on the hull-speed tree', () => {
     const { depth } = model()
     expect(depth.C0).toBe(0)
